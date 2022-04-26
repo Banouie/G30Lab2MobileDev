@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.g30lab3.app.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_editProfileFragment"
+        android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_showProfileFragment"
+        android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
+        android:label="fragment_show_profile"
+        tools:layout="@layout/fragment_show_profile" />
+    <fragment
+        android:id="@+id/nav_timeSlotDetailsFragment"
+        android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
+        android:label="fragment_time_slot_details"
+        tools:layout="@layout/fragment_time_slot_details" />
+
+</navigation>
