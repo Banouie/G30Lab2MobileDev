@@ -28,10 +28,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+        /**
+         * modificare il binding, attualmente binding.textHome produce errore
+         */
+/*
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+*/
+
         return root
     }
 

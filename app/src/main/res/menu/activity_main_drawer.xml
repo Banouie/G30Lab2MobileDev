@@ -9,16 +9,29 @@
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_showProfileFragment"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            android:title="Show Profile" />
+        <item
             android:id="@+id/nav_editProfileFragment"
             android:icon="@drawable/ic_edit"
-            android:title="@string/menu_gallery" />
+            android:title="Edit Profile" />
         <item
-            android:id="@+id/nav_showProfileFragment"
+            android:id="@+id/nav_showTimesSlots"
             android:icon="@drawable/ic_view"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_show_time_slots" />
+
+        <item
+            android:id="@+id/nav_editTimeSlots"
+            android:icon="@drawable/ic_baseline_edit_calendar_24"
+            android:title="@string/menu_show_time_slots" />
+
+        <!--
         <item
             android:id="@+id/nav_timeSlotDetailsFragment"
             android:icon="@drawable/ic_new_ads"
             android:title="@string/menu_slideshow" />
+            -->
+
     </group>
 </menu>

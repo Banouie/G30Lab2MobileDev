@@ -41,9 +41,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_editProfileFragment,
                 R.id.nav_showProfileFragment,
-                R.id.nav_timeSlotDetailsFragment
+                R.id.nav_editProfileFragment,
+                R.id.nav_timeSlotDetailsFragment,
+                R.id.nav_showTimesSlots,
+                R.id.nav_editTimeSlots
             ), drawerLayout
         )
 
