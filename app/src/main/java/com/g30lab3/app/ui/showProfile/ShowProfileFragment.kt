@@ -44,14 +44,36 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
 
         val sharedPref: SharedPreferences = this.requireActivity().getSharedPreferences("Profile_info", AppCompatActivity.MODE_PRIVATE)
+        //check if exist a profile configuration:
+        try{
+            var savedData: JSONObject= JSONObject(sharedPref.getString("profile",""))
+            //configuration exists, set values to config parameters
+            fullNameTextView.setText(savedData.getString("fullname"))
+            nickNameTextView.setText(savedData.getString("nickname"))
+            mailTextView.setText(savedData.getString("mail"))
+            locationTextView.setText(savedData.getString("location"))
+            skillsTextView.setText(savedData.getString("skills"))
+            descriptionTextView.setText(savedData.getString("description"))
+        }catch(e: JSONException){
+            //no configuration saved, set values to default parameters
+        }
 
+        //set Profile picture
+        try {
+            //if already exists a profile Image set it
+            activity?.openFileInput("profilePic.jpg").use {
+                profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
+            }
+        }catch(e: FileNotFoundException){
+            //no profileImage, set default image
+        }
 
     }
 
 
 
 
-        //restore previously saved configuration, if doesn't already exist set default configuration
+
 
 
 
