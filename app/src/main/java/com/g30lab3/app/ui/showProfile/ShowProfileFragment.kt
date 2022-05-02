@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 
 import org.json.JSONException
@@ -51,6 +53,11 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         locationTextView.setText(prefs.getString("LOCATION", "location"))
         descriptionTextView.setText(prefs.getString("DESCRIPTION", "description"))
         skillsTextView.setText(prefs.getString("SKILLS", "Skill1, skill2"))
+
+        val fab: View = view.findViewById(R.id.floating_action_button)
+        fab.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_nav_showProfileFragment_to_nav_editProfileFragment)
+        }
 
        /*
         try{

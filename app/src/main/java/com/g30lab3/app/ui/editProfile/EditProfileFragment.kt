@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 
 
@@ -48,8 +49,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     editor.putString("EMAIL", editEmail.text.toString()).apply()
                     editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
                     editor.putString("SKILLS", editSkills.text.toString()).apply()
-                    Toast.makeText(context , "Data should be saved, check it on Show Profile page :)", Toast.LENGTH_SHORT).show()
-                    //TODO back button pressed shoul bring user to the ShowProfile
+                    Toast.makeText(context , "Changes saved", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
                 }
 
 

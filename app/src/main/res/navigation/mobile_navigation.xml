@@ -14,14 +14,18 @@
         android:id="@+id/nav_editProfileFragment"
         android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
         android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_nav_editProfileFragment_to_nav_showProfileFragment"
+            app:destination="@id/nav_showProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_showProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
         android:label="fragment_show_profile"
         tools:layout="@layout/fragment_show_profile" >
         <action
-            android:id="@+id/action_nav_showProfileFragment_to_nav_editProfileFragment2"
+            android:id="@+id/action_nav_showProfileFragment_to_nav_editProfileFragment"
             app:destination="@id/nav_editProfileFragment" />
     </fragment>
     <fragment
