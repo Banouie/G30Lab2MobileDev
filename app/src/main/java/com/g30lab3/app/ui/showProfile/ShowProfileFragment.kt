@@ -59,6 +59,16 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             findNavController().navigate(R.id.action_nav_showProfileFragment_to_nav_editProfileFragment)
         }
 
+        //set Profile picture
+        try {
+            //if already exists a profile Image set it
+            requireActivity().openFileInput("profilePic.jpg").use {
+                profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
+            }
+        }catch(e: FileNotFoundException){
+            //no profileImage, set default image
+        }
+
        /*
         try{
 
