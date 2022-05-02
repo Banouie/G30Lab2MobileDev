@@ -1,21 +1,17 @@
 package com.g30lab3.app.ui.showProfile
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
-import androidx.viewbinding.ViewBindings
-import com.g30lab3.app.databinding.FragmentShowProfileBinding
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
-import com.g30lab3.app.ui.editProfile.EditProfileFragment
+import com.g30lab3.app.ui.editProfile.editEmail
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.FileNotFoundException
@@ -43,10 +39,24 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
-        val sharedPref: SharedPreferences = this.requireActivity().getSharedPreferences("Profile_info", AppCompatActivity.MODE_PRIVATE)
+        val sharedPref: SharedPreferences = this.requireActivity().getSharedPreferences("Profile", MODE_PRIVATE)
         //check if exist a profile configuration:
+
+        val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
+        val fullName = prefs.getString("FULL_NAME", "Full Name")
+
+        fullNameTextView.setText(fullName)
+        nickNameTextView.setText(prefs.getString("NICKNAME", "nickname"))
+        mailTextView.setText(prefs.getString("EMAIL", "email@address"))
+        locationTextView.setText(prefs.getString("LOCATION", "location"))
+        descriptionTextView.setText(prefs.getString("DESCRIPTION", "description"))
+        skillsTextView.setText(prefs.getString("SKILLS", "Skill1, skill2"))
+
+       /*
         try{
-            var savedData: JSONObject= JSONObject(sharedPref.getString("profile",""))
+
+
+            var savedData: JSONObject= JSONObject(sharedPref.getString("Profile",""))
             //configuration exists, set values to config parameters
             fullNameTextView.setText(savedData.getString("fullname"))
             nickNameTextView.setText(savedData.getString("nickname"))
@@ -67,7 +77,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         }catch(e: FileNotFoundException){
             //no profileImage, set default image
         }
-
+*/
     }
 
 

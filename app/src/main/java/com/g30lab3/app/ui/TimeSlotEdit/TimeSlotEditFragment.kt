@@ -10,7 +10,7 @@ import android.widget.EditText
 import com.g30lab3.app.R
 import com.google.android.material.datepicker.MaterialDatePicker
 
-class EditProfileFragment : Fragment(R.layout.fragment_time_slot_edit) {
+class EditProfileFragment : Fragment(R.layout.fragment_time_slot_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

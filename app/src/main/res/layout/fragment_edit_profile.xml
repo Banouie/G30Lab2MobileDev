@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:title="Edit Profile"
     tools:context="ui.editProfile.EditProfileFragment">
 
     <LinearLayout
@@ -54,6 +56,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
                     android:hint="Full Name"
+
                     android:inputType="textPersonName|textCapWords"
                     android:textColor="#000000"
                     android:textColorHint="#41616161"

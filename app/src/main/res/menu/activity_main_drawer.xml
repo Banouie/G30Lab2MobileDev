@@ -19,12 +19,17 @@
         <item
             android:id="@+id/nav_showTimesSlots"
             android:icon="@drawable/ic_view"
-            android:title="@string/menu_show_time_slots" />
+            android:title="Time Slots" />
 
         <item
             android:id="@+id/nav_editTimeSlots"
             android:icon="@drawable/ic_baseline_edit_calendar_24"
-            android:title="@string/menu_show_time_slots" />
+            android:title="Time Slots Edit" />
+
+        <item
+            android:id="@+id/nav_timeSlotDetailsFragment"
+            android:icon="@drawable/ic_baseline_edit_calendar_24"
+            android:title="Time Slot Detail" />
 
         <!--
         <item
