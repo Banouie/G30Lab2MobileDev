@@ -4,46 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.g30lab3.app.R
 import com.g30lab3.app.databinding.FragmentHomeBinding
+import com.g30lab3.app.timeSlotVM
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private var _binding: FragmentHomeBinding? = null
+    val vm by viewModels<timeSlotVM>()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var text:TextView = view.findViewById(R.id.textView2)
+        var button:Button = view.findViewById(R.id.button)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-
-        /**
-         * modificare il binding, attualmente binding.textHome produce errore
-         */
-/*
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        vm.items.observe(requireActivity()){
+            text.text = it.toString()
         }
-*/
 
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        button.setOnClickListener{
+            vm.add()
+        }
     }
 }
