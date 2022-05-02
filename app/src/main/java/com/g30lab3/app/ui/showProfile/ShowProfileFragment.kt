@@ -9,6 +9,8 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -41,7 +43,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
-        val sharedPref: SharedPreferences = this.requireActivity().getSharedPreferences("Profile", MODE_PRIVATE)
+        val sharedPref: SharedPreferences =
+            this.requireActivity().getSharedPreferences("Profile", MODE_PRIVATE)
         //check if exist a profile configuration:
 
         val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
@@ -65,70 +68,20 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             requireActivity().openFileInput("profilePic.jpg").use {
                 profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
             }
-        }catch(e: FileNotFoundException){
+        } catch (e: FileNotFoundException) {
             //no profileImage, set default image
         }
 
-       /*
-        try{
+        //Handle back button pressed, go to Home Screen
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_nav_showProfileFragment_to_nav_home)
+                }
 
+            })
 
-            var savedData: JSONObject= JSONObject(sharedPref.getString("Profile",""))
-            //configuration exists, set values to config parameters
-            fullNameTextView.setText(savedData.getString("fullname"))
-            nickNameTextView.setText(savedData.getString("nickname"))
-            mailTextView.setText(savedData.getString("mail"))
-            locationTextView.setText(savedData.getString("location"))
-            skillsTextView.setText(savedData.getString("skills"))
-            descriptionTextView.setText(savedData.getString("description"))
-        }catch(e: JSONException){
-            //no configuration saved, set values to default parameters
-        }
-
-        //set Profile picture
-        try {
-            //if already exists a profile Image set it
-            activity?.openFileInput("profilePic.jpg").use {
-                profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
-            }
-        }catch(e: FileNotFoundException){
-            //no profileImage, set default image
-        }
-*/
-    }
-
-
-
-
-
-
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //manage Result intent from EditProfile
-        if (requestCode == 1 && resultCode == AppCompatActivity.RESULT_OK) {
-            if (data != null) {
-                //retrive updated data
-                val fullname: String = data.getStringExtra("group30.lab1.FULL_NAME").toString()
-                val nickname: String = data.getStringExtra("group30.lab1.NICKNAME").toString()
-                val mail: String = data.getStringExtra("group30.lab1.MAIL").toString()
-                val location: String = data.getStringExtra("group30.lab1.LOCATION").toString()
-                val skills: String = data.getStringExtra("group30.lab1.SKILLS").toString()
-                val description: String = data.getStringExtra("group30.lab1.DESCRIPTION").toString()
-                //update layout
-                fullNameTextView.setText(fullname)
-                nickNameTextView.setText(nickname)
-                mailTextView.setText(mail)
-                locationTextView.setText(location)
-                skillsTextView.setText(skills)
-                descriptionTextView.setText(description)
-
-            }
-        }
-    }
 
 /*
     private var _binding: FragmentShowProfileBinding? = null
@@ -167,3 +120,4 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
  */
 
     }
+}

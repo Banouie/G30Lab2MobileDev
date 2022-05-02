@@ -50,6 +50,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         editEmail.setText(showInfo.getString("EMAIL", ""))
         editDescription.setText(showInfo.getString("DESCRIPTION", ""))
         editSkills.setText(showInfo.getString("SKILLS", ""))
+        //handle back button to navigate to ShowProfile with updated profile date
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
