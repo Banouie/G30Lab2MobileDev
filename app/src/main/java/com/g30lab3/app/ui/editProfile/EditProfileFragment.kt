@@ -11,23 +11,13 @@ import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-lateinit var editName: EditText
-lateinit var editNickName: EditText
-lateinit var editEmail: EditText
-lateinit var editLocation: EditText
-lateinit var editDescription: EditText
-lateinit var editSkills :  EditText
-/**
- * A simple [Fragment] subclass.
- * Use the [EditProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
+    lateinit var editName: EditText
+    lateinit var editNickName: EditText
+    lateinit var editEmail: EditText
+    lateinit var editLocation: EditText
+    lateinit var editDescription: EditText
+    lateinit var editSkills :  EditText
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +31,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         // SharedPreference created to fill all the fields in the edit profile fragment
         val showInfo = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
 
-
         editName.setText(showInfo.getString("FULL_NAME", ""))
         editLocation.setText(showInfo.getString("LOCATION", ""))
         editNickName.setText(showInfo.getString("NICKNAME", ""))
@@ -53,7 +42,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val editor = requireContext().getSharedPreferences("Profile", MODE_PRIVATE).edit()
-
                     editor.putString("FULL_NAME", editName.text.toString()).apply()
                     editor.putString("NICKNAME", editNickName.text.toString()).apply()
                     editor.putString("LOCATION", editLocation.text.toString()).apply()
@@ -61,6 +49,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
                     editor.putString("SKILLS", editSkills.text.toString()).apply()
                     Toast.makeText(context , "Data should be saved, check it on Show Profile page :)", Toast.LENGTH_SHORT).show()
+                    //TODO back button pressed shoul bring user to the ShowProfile
                 }
 
 

@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
-import com.g30lab3.app.ui.editProfile.editEmail
+
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.FileNotFoundException
@@ -112,6 +112,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             }
         }
     }
+
 /*
     private var _binding: FragmentShowProfileBinding? = null
 

@@ -19,7 +19,11 @@
         android:id="@+id/nav_showProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
         android:label="fragment_show_profile"
-        tools:layout="@layout/fragment_show_profile" />
+        tools:layout="@layout/fragment_show_profile" >
+        <action
+            android:id="@+id/action_nav_showProfileFragment_to_nav_editProfileFragment2"
+            app:destination="@id/nav_editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_timeSlotDetailsFragment"
         android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
