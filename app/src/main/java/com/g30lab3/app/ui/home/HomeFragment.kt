@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.g30lab3.app.R
 import com.g30lab3.app.databinding.FragmentHomeBinding
+import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.timeSlotVM
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -22,12 +23,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         var text:TextView = view.findViewById(R.id.textView2)
         var button:Button = view.findViewById(R.id.button)
 
-        vm.items.observe(requireActivity()){
+        vm.all.observe(requireActivity()){
             text.text = it.toString()
         }
 
         button.setOnClickListener{
-            vm.add()
+            vm.add(timeSlot(0,"Prova","prova","prova","prova",1,"prova"))
         }
+
+
     }
 }

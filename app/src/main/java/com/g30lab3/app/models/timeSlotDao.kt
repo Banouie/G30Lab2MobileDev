@@ -20,4 +20,7 @@ interface timeSlotDao {
 
     @Query("DELETE FROM timeSlots")
     fun deleteAll()
+
+    @Query("SELECT * FROM timeSlots WHERE id=:id")
+    fun getUsingId(id:Int): LiveData<timeSlot>
 }

@@ -8,12 +8,31 @@ import androidx.room.PrimaryKey
 class timeSlot {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var title: String = "Empty title"
-    var description: String = "Description"
-    var date:String = "1/1/2000"
-    var time:String = "12:00"
+    var title: String = ""
+    var description: String = ""
+    var date: String = ""
+    var time: String = ""
     var duration: Int = 0
-    var location: String = "Nowhere"
+    var location: String = ""
 
-    override fun toString() = "{TimeSLot $id }"
+    //secondary constructor
+    constructor(
+        id: Int,
+        title: String,
+        description: String,
+        date: String,
+        time: String,
+        duration: Int,
+        location: String
+    ) {
+        this.id = id
+        this.title = title
+        this.description = description
+        this.date = date
+        this.time = time
+        this.duration = duration
+        this.location = location
+    }
+
+    override fun toString() = "{TimeSLot $id -> Title: $title, Description: $description, Date: $date, Time: $time, Duration: $duration, Location: $location\n }"
 }

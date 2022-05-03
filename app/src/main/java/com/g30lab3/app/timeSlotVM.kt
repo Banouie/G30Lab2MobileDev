@@ -8,26 +8,27 @@ import com.g30lab3.app.models.timeSlotRepository
 import kotlin.concurrent.thread
 
 class timeSlotVM(application: Application): AndroidViewModel(application) {
+
+    //obtain timeSlot repository instance
     val repo = timeSlotRepository(application)
 
+    // get a LiveData representation of all timeSlot in the DB to be observed from Views in application UI
+    val all: LiveData<List<timeSlot>> = repo.getAll()
 
-    val items: LiveData<List<timeSlot>> = repo.getAll()
+    /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
-    fun add() {
+    //Add a timeSlot to DB
+    fun add(timeSlot: timeSlot) {
         thread {
-            repo.add()
+            repo.add(timeSlot)
         }
     }
 
-    fun count() {
+    //delete all the timeSlots in the DB
+    fun clear(){
         thread {
-            repo.count()
+            repo.clear()
         }
     }
 
-    fun getAll(){
-        thread{
-            repo.getAll()
-        }
-    }
 }

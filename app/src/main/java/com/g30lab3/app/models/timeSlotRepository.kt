@@ -4,16 +4,28 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 
 class timeSlotRepository(application: Application) {
+
+    //get the DAO object of timeSlot Database
     private val Dao = timeSlotDatabase.getDatabase(application).timeSlotDao()
 
-    fun add() {
-        Dao.insert_timeSLot(timeSlot())
+    //Methods used from the app to interact with the DB throughout the Repository:
+
+    /*Add a timeSlot to the local DB*/
+    fun add(timeSlot: timeSlot) {
+        Dao.insert_timeSLot(timeSlot)
     }
 
+    /*Retrive all timeSlots in the DB*/
     fun getAll():LiveData<List<timeSlot>>{
         return Dao.findAll()
     }
 
-    fun count(): LiveData<Int> = Dao.count()
+
+    /*Delete all from DB*/
+    fun clear(){
+        Dao.deleteAll()
+    }
+
+
 
 }
