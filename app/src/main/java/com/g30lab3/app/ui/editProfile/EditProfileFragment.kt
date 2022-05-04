@@ -58,9 +58,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     AlertDialog.Builder(requireContext()).apply {
-                        setTitle("Please confirm")
-                        setMessage("Do you want to exit from editing profile? All changes will be saved")
-
+                        setTitle("Save changes?")
+                        setMessage("Exiting this screen any changes will be saved")
                         setPositiveButton("Yes") { _, _ ->
                             val editor = requireContext().getSharedPreferences("Profile", MODE_PRIVATE).edit()
                             editor.putString("FULL_NAME", editName.text.toString()).apply()
