@@ -50,7 +50,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Full Name"
-                app:startIconDrawable="@drawable/ic_person">
+                app:helperText="What is your name?"
+                app:startIconDrawable="@drawable/ic_person"
+                app:endIconMode="clear_text">
 
                 <EditText
                     android:id="@+id/edit_full_name"
@@ -66,8 +68,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nickname"
+                app:helperText="Choose a nickname"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_smile">
+                app:startIconDrawable="@drawable/ic_smile"
+                app:endIconMode="clear_text">
 
                 <EditText
                     android:id="@+id/edit_nickname"
@@ -84,8 +88,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="email@address"
+                app:helperText="Your mail address"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_mail">
+                app:startIconDrawable="@drawable/ic_mail"
+                app:endIconMode="clear_text">
 
                 <EditText
                     android:id="@+id/edit_mail"
@@ -101,8 +107,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Location"
+                app:helperText="Where are you?"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_location">
+                app:startIconDrawable="@drawable/ic_location"
+                app:endIconMode="clear_text">
 
                 <EditText
                     android:id="@+id/edit_location"
@@ -119,8 +127,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Your skills, use keywords"
+                app:helperText="Show us what you can do"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_skills">
+                app:startIconDrawable="@drawable/ic_skills"
+                app:endIconMode="clear_text">
 
                 <EditText
                     android:id="@+id/edit_skills"
@@ -134,9 +144,13 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Describe yourself"
+                android:hint="Desciption"
+                app:helperText="Describe yourself"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_coffe">
+                app:startIconDrawable="@drawable/ic_coffe"
+                app:endIconMode="clear_text"
+                app:counterEnabled="true"
+                app:counterMaxLength="140">
 
                 <EditText
                     android:id="@+id/edit_description"
