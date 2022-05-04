@@ -59,78 +59,84 @@
                 android:layout_weight="2">
 
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_full_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
+                        android:gravity="center_horizontal"
                         android:text="Full Name"
-                        android:textColor="#000000"
-                        android:textSize="34sp" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        app:layout_constraintBottom_toTopOf="@+id/show_nickname"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_nickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="3dp"
+                        android:gravity="center"
                         android:text="Nickname"
-                        android:textColor="#020202"
-                        android:textSize="24sp"
-                        android:textStyle="italic" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        app:layout_constraintBottom_toTopOf="@+id/show_mail"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/show_full_name" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_mail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
                         android:text="email@address"
-                        android:textColor="#020202"
-                        android:textSize="24sp"
-                        android:textStyle="italic" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        app:layout_constraintBottom_toTopOf="@+id/show_location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
                         android:text="Location"
-                        android:textColor="#020202"
-                        android:textSize="24sp"
-                        android:textStyle="italic" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        app:layout_constraintBottom_toTopOf="@+id/show_skills"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/show_mail" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_skills"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
                         android:text="Skill1, skill2"
-                        android:textColor="#000000"
-                        android:textSize="24sp"
-                        android:textStyle="italic" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        app:layout_constraintBottom_toTopOf="@+id/show_description"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/show_location" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/show_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
                         android:text="Desription"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:textStyle="italic" />
-                </LinearLayout>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        app:layout_constraintBottom_toTopOf="@+id/show_full_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/show_skills" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>
 
