@@ -1,6 +1,3 @@
-package com.g30lab3.app.ui.home
-
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,4 +43,3 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-}
