@@ -15,9 +15,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
+import com.google.android.material.snackbar.Snackbar
 import java.io.FileNotFoundException
 
 
@@ -67,7 +69,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             editor.putString("EMAIL", editEmail.text.toString()).apply()
                             editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
                             editor.putString("SKILLS", editSkills.text.toString()).apply()
-                            Toast.makeText(context , "Changes saved", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(view,"Profile info saved",Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.purple_500)).show()
                             findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
                         }
                         setNegativeButton("No"){_, _ ->
