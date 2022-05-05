@@ -1,139 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.TimeSlotEdit.EditProfileFragment">
+    android:layout_width="match_parent">
 
-
-    <!--Edit Title input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_title_Field"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Title"
-        app:helperText="A concise and clear title for your time slot"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_title"
-        app:endIconMode="clear_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <EditText
+        tools:context="ui.timeSlotEdit.TimeSlotEditFragment">
+
+
+        <!--Edit Title input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_title_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Title"
+            app:endIconMode="clear_text"
+            app:helperText="A concise and clear title for your time slot"
+            app:helperTextEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/edit_description_Field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_title">
 
-    <!--Edit Description input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_description_Field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Description"
-        app:helperText="Describe the activity that you offer"
-        app:helperTextEnabled="true"
-        app:layout_constraintTop_toBottomOf="@+id/edit_title_Field"
-        app:startIconDrawable="@drawable/ic_info"
-        app:endIconMode="clear_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
+        <!--Edit Description input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_description_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Description"
+            app:endIconMode="clear_text"
+            app:helperText="Describe the activity that you offer"
+
+            app:helperTextEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_title_Field"
+            app:startIconDrawable="@drawable/ic_info">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <!--Edit Date input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_date_Field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Date"
-        android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@+id/edit_description_Field"
-        app:startIconDrawable="@drawable/ic_date_time">
-
-        <EditText
+        <!--Edit Date input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_date_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:hint="Date"
+            app:helperText="When do you want to do it?"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_description_Field"
+            app:startIconDrawable="@drawable/ic_date_time">
+
+            <EditText
+                android:id="@+id/edit_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <!--Edit Time input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_time_Field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Time"
-        app:layout_constraintTop_toBottomOf="@+id/edit_date_Field"
-        app:startIconDrawable="@drawable/ic_time"
-        tools:layout_editor_absoluteX="16dp">
+        <!--Edit Time input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_time_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:hint="Time"
+            app:helperText="Starting time"
+            app:layout_constraintEnd_toStartOf="@+id/edit_duration_Field"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_date_Field"
+            app:startIconDrawable="@drawable/ic_time">
 
-        <EditText
+            <EditText
+                android:id="@+id/edit_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Edit Duration input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_duration_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:hint="Duration"
+            app:helperText="Duration in hours"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/edit_time_Field"
+            app:layout_constraintTop_toTopOf="@+id/edit_time_Field"
+            app:startIconDrawable="@drawable/ic_duration"
+            app:suffixText="hours">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="SpeakableTextPresentCheck"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Edit Location input field-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_location_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Location"
+            app:helperText="Your location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_duration_Field"
+            app:startIconDrawable="@drawable/ic_location">
 
-    <!--Edit Duration input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_duration_Field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Duration"
-        app:layout_constraintTop_toBottomOf="@+id/edit_time_Field"
-        app:startIconDrawable="@drawable/ic_duration"
-        tools:layout_editor_absoluteX="16dp">
-        <EditText
-            android:layout_width="match_parent"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/create_timeSlot"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Create Time Slot"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/edit_location_Field"
+            app:layout_constraintStart_toStartOf="@+id/edit_location_Field"
+            app:layout_constraintTop_toBottomOf="@+id/edit_location_Field">
 
-    <!--Edit Location input field-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_location_Field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Location"
-        app:layout_constraintTop_toBottomOf="@+id/edit_duration_Field"
-        app:startIconDrawable="@drawable/ic_location"
-        tools:layout_editor_absoluteX="16dp">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.button.MaterialButton>
 
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

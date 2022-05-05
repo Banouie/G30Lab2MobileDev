@@ -22,15 +22,18 @@
         app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
     <TextView
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/nav_header_title"
+        android:id="@+id/show_full_name"
+        android:hint="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/show_mail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle" />
+        android:hint="@string/nav_header_subtitle" />
 </LinearLayout>
