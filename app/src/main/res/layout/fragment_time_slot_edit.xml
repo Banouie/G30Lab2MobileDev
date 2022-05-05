@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.TimeSlotEdit.EditProfileFragment">
+    tools:context="ui.timeSlotEdit.TimeSlotEditFragment">
 
 
     <!--Edit Title input field-->
@@ -44,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_title_Field"
         app:startIconDrawable="@drawable/ic_info"
         app:endIconMode="clear_text"
+
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <EditText
@@ -68,6 +69,7 @@
         app:startIconDrawable="@drawable/ic_date_time">
 
         <EditText
+            android:id="@+id/edit_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -87,7 +89,6 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_date_Field"
         app:startIconDrawable="@drawable/ic_time"
         tools:layout_editor_absoluteX="16dp">
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

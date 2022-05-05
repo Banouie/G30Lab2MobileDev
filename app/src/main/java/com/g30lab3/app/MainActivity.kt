@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.nav_home,
                 R.id.nav_timeSlotEditFragment,
                 R.id.nav_showProfileFragment,
-                R.id.nav_editProfileFragment,
-                R.id.nav_timeSlotDetailsFragment
+                R.id.nav_timeSlotDetailsFragment,
+                R.id.nav_timeSlotEditFragment
             ), drawerLayout
         )
 

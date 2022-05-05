@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/nav_timeSlotEditFragment"
-        android:name="com.g30lab3.app.ui.TimeSlotEdit.EditProfileFragment"
+        android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
         android:label="fragment_time_slot_edit"
         tools:layout="@layout/fragment_time_slot_edit" />
 
