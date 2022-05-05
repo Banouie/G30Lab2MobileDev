@@ -130,13 +130,14 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/edit_time_Field"
             app:layout_constraintTop_toTopOf="@+id/edit_time_Field"
-            app:startIconDrawable="@drawable/ic_duration">
-
+            app:startIconDrawable="@drawable/ic_duration"
+            app:suffixText="hours">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Edit Location input field-->
