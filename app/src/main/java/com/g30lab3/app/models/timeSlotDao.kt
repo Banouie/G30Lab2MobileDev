@@ -2,6 +2,7 @@ package com.g30lab3.app.models
 
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -10,7 +11,7 @@ import androidx.room.Query
 interface timeSlotDao {
 
     @Query("SELECT * from timeSlots")
-    fun findAll() : LiveData<List<timeSlot>>
+    fun findAll() : MutableLiveData<List<timeSlot>>
 
     @Query("SELECT count() from timeSlots")
     fun count(): LiveData<Int>
