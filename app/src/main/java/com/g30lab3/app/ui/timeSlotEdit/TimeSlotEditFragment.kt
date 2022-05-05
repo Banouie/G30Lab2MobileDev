@@ -6,8 +6,7 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
-import com.g30lab3.app.databinding.FragmentHomeBinding
-import com.g30lab3.app.ui.timeSlotEdit.DatePickerFragment
+
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
@@ -65,6 +64,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
             }
         }
+
+        //TODO manage back button pression for saving edited timeslot
 
 
 
