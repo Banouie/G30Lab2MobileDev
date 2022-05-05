@@ -45,6 +45,10 @@
         android:id="@+id/nav_timeSlotEditFragment"
         android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
         android:label="fragment_time_slot_edit"
-        tools:layout="@layout/fragment_time_slot_edit" />
+        tools:layout="@layout/fragment_time_slot_edit" >
+        <action
+            android:id="@+id/action_nav_timeSlotEditFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 </navigation>

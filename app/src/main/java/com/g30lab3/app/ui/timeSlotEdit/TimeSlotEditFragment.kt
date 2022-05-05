@@ -7,8 +7,11 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
+import com.g30lab3.app.timeSlotVM
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -36,6 +39,9 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var duration: Int = 0
     var location: String = ""
     var newTimeSlot: timeSlot = timeSlot(0,title,description, date, time, duration, location)
+
+    // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
+    val vm by viewModels<timeSlotVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,10 +110,11 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
         // Manage the back button pressed and save the created timeSLot
         requireActivity().onBackPressedDispatcher.addCallback {
-            //Todo: add created timeSlot to DB
-            Snackbar.make(view, newTimeSlot.toString(), Snackbar.LENGTH_LONG)
+            vm.add(newTimeSlot)
+            Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
                 .show()
+            findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
         }
 
 
