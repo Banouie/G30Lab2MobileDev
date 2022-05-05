@@ -3,15 +3,17 @@ package com.g30lab3.app.ui.timeSlotEdit
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import androidx.fragment.app.DialogFragment
+import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.time.Duration.Companion.days
+
 
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
@@ -65,10 +67,13 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         }
 
 
-
-
-        //TODO manage back button pression for saving edited timeslot
+        //TODO manage back button pression for saving edited timeslot and also saving it if button create pressed
+        requireActivity().onBackPressedDispatcher.addCallback {
+            //just for debug
+            Snackbar.make(view,"Managed!", Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.purple_500)).show()
+        }
 
 
     }
+
 }
