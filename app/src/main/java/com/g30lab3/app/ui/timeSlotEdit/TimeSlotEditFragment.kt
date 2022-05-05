@@ -2,6 +2,7 @@ package com.g30lab3.app.ui.timeSlotEdit
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
@@ -31,6 +32,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     lateinit var durationSelector: TextInputLayout
     lateinit var locationSelector:TextInputLayout
 
+    lateinit var saveTimeSlotButton: Button
+
     //variables used to create the Time Slot
     var title: String = ""
     var description: String = ""
@@ -52,6 +55,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         timeSelector = view.findViewById(R.id.edit_time)
         durationSelector = view.findViewById(R.id.edit_duration_Field)
         locationSelector= view.findViewById(R.id.edit_location_Field)
+
+        saveTimeSlotButton = view.findViewById(R.id.create_timeSlot)
 
 
         //Set the title of the timeSlot using the one digitized from the user
@@ -108,8 +113,17 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             newTimeSlot.date=date
         }
 
-        // Manage the back button pressed and save the created timeSLot
+        // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
         requireActivity().onBackPressedDispatcher.addCallback {
+            vm.add(newTimeSlot)
+            Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
+                .show()
+            findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+        }
+
+        // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
+        saveTimeSlotButton.setOnClickListener {
             vm.add(newTimeSlot)
             Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
