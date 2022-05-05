@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="circleImageView" parent="">
+
+    <style name="circleImageView">
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
+        <item name="cornerSizeBottomLeft">1dp</item>
+        <item name="cornerSizeBottomRight">1dp</item>
     </style>
 </resources>
