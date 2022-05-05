@@ -7,31 +7,44 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.g30lab3.app.R
+import com.g30lab3.app.models.timeSlot
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
 
+    lateinit var titleSelector: TextInputLayout
+    lateinit var descriptionSelector: TextInputLayout
     lateinit var dateSelector: EditText
     lateinit var timeSelector: EditText
+    lateinit var durationSelector: TextInputLayout
+    lateinit var locationSelector:TextInputLayout
 
-    var time: String=""
-    var date: String=""
+    //variables used to create the Time Slot
+    var title: String = ""
+    var description: String = ""
+    var date: String = ""
+    var time: String = ""
+    var duration: Int = 0
+    var location: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        titleSelector = view.findViewById(R.id.edit_title_Field)
         dateSelector = view.findViewById(R.id.edit_date)
         timeSelector = view.findViewById(R.id.edit_time)
+        durationSelector = view.findViewById(R.id.edit_duration_Field)
 
-        // *** time picker relative code ***
+
+        // *** TIME picker relative code ***
         val timePicker =
             MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -48,7 +61,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             timeSelector.setText(time)
         }
 
-        // *** date picker relative code ***
+        // *** DATE picker relative code ***
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
@@ -66,11 +79,17 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             dateSelector.setText(date)
         }
 
-
-        //TODO manage back button pression for saving edited timeslot and also saving it if button create pressed
+        // Manage the back button pressed and save the created timeSLot
         requireActivity().onBackPressedDispatcher.addCallback {
-            //just for debug
-            Snackbar.make(view,"Managed!", Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.purple_500)).show()
+            title = titleSelector.editText?.text.toString()
+            description = descriptionSelector.editText?.text.toString()
+            duration = durationSelector.editText?.text.toString().toInt()
+            location=locationSelector.editText?.text.toString()
+            var createdTimeSlot: timeSlot = timeSlot(0,title,description, date, time, duration, location)
+            //Todo add created timeSlot to DB
+            Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
+                .show()
         }
 
 
