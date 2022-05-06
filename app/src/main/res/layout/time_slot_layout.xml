@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_date_time"
+                    app:drawableStartCompat="@drawable/ic_date_time"
                     android:drawablePadding="8dp"
                     android:text="@string/date"
                     android:textAppearance="?attr/textAppearanceBody2"
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/ic_time"
+                    app:drawableStartCompat="@drawable/ic_time"
                     android:drawablePadding="8dp"
                     android:text="@string/time"
                     android:textAppearance="?attr/textAppearanceBody2"
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/ic_location"
+                    app:drawableStartCompat="@drawable/ic_location"
                     android:drawablePadding="8dp"
                     android:text="@string/location"
                     android:textAppearance="?attr/textAppearanceBody2"
@@ -80,13 +80,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_margin="8dp">
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_delete_time_slot"
+                    android:id="@+id/button_edit_time_slot"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_2"
-                    android:drawableLeft="@drawable/ic_edit"/>
+                    app:icon="@drawable/ic_edit"
+                    app:iconGravity="textStart"
+                    android:text="@string/action_2" />
             </LinearLayout>
 
         </LinearLayout>

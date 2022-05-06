@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_showProfileFragment"
             app:destination="@id/nav_showProfileFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_timeSlotDetailsFragment"
+            app:destination="@id/nav_timeSlotDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_editProfileFragment"
