@@ -2,6 +2,7 @@ package com.g30lab3.app.models
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class timeSlotRepository(application: Application) {
 
@@ -16,7 +17,7 @@ class timeSlotRepository(application: Application) {
     }
 
     /*Retrive all timeSlots in the DB*/
-    fun getAll():LiveData<List<timeSlot>>{
+    fun getAll(): MutableLiveData<List<timeSlot>> {
         return Dao.findAll()
     }
 
