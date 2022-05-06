@@ -3,10 +3,13 @@ package com.g30lab3.app.adaptors
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
+import com.g30lab3.app.timeSlotVM
 
 //List
 class TimeSlotAdapter(val data: List<timeSlot>) :
@@ -18,6 +21,8 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
         val date: TextView = v.findViewById(R.id.time_slot_date)
         val time: TextView=v.findViewById(R.id.time_slot_time)
         val location: TextView = v.findViewById(R.id.time_slot_location)
+
+        val deleteButton:Button = v.findViewById(R.id.button_delete_time_slot)
 
     }
 
@@ -33,6 +38,12 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
         holder.date.text=item.date
         holder.time.text= item.time
         holder.location.text = item.location
+
+        holder.deleteButton.setOnClickListener {
+
+        }
+
+
     }
 
     override fun getItemCount(): Int = data.size

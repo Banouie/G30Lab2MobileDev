@@ -20,6 +20,6 @@
     <string name="date">date</string>
     <string name="location">Location</string>
     <string name="action_1">See details</string>
-    <string name="action_2">Delete</string>
+    <string name="action_2">Edit</string>
 
 </resources>
