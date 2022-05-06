@@ -14,54 +14,25 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
 
     class ItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
-        val title: TextView = v.findViewById(R.id.item_slot_title)
-        val description: TextView = v.findViewById(R.id.item_slot_description)
-        val location: TextView = v.findViewById(R.id.item_slot_location)
-//Or
+        val title: TextView = v.findViewById(R.id.time_slot_title)
+        val date: TextView = v.findViewById(R.id.time_slot_date)
+        val time: TextView=v.findViewById(R.id.time_slot_time)
+        val location: TextView = v.findViewById(R.id.time_slot_location)
 
-
-        /*
-        fun bind(item: timeSlot, action: (v: View) -> Unit) {
-            title.text = item.title
-            description.text = item.description
-            location.text = item.location
-
-            itemView.setOnClickListener(
-                action
-            )
-        }
-
-        fun unbind() {
-//            delete.setonclickListenner(null)
-        }
-         */
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val vl = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false);
+        val vl = LayoutInflater.from(parent.context).inflate(R.layout.time_slot_layout, parent, false);
         return ItemViewHolder(vl);
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-////
-//        holder.bind(data[position]){
-//            data.removeAt(position)
-//            notifyItemRemoved(position)
-//        }
-
-
-        /*
-        holder.bind(item) {
-//            val pos=data.indexOf(item);
-//            if (pos!=-1)
-//            { data.remove(data[pos])
-//            notifyItemRemoved(pos)}
-        }
-         */
 
         val item = data[position]
         holder.title.text=item.title
-        holder.description.text=item.description
+        holder.date.text=item.date
+        holder.time.text= item.time
+        holder.location.text = item.location
     }
 
     override fun getItemCount(): Int = data.size

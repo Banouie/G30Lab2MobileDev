@@ -15,4 +15,11 @@
     <string name="option_gallery">From Gallery</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="time">time</string>
+    <string name="date">date</string>
+    <string name="location">Location</string>
+    <string name="action_1">See details</string>
+    <string name="action_2">Delete</string>
+
 </resources>
