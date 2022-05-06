@@ -11,7 +11,12 @@
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/stroke_color"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:drawableStart="@drawable/ic_date_time"
+                    android:drawablePadding="8dp"
                     android:text="@string/date"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"/>
@@ -49,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:drawableStart="@drawable/ic_time"
+                    android:drawablePadding="8dp"
                     android:text="@string/time"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"/>
@@ -60,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="8dp"
                     android:text="@string/location"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -70,22 +78,15 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
                 <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
-                    android:id="@+id/button_see_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/action_1" />
-
-                <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
                     android:id="@+id/button_delete_time_slot"
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_2" />
+                    android:text="@string/action_2"
+                    android:drawableLeft="@drawable/ic_delete"/>
             </LinearLayout>
 
         </LinearLayout>
