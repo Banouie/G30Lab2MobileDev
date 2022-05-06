@@ -11,7 +11,7 @@ import androidx.room.Query
 interface timeSlotDao {
 
     @Query("SELECT * from timeSlots")
-    fun findAll() : MutableLiveData<List<timeSlot>>
+    fun findAll() : LiveData<List<timeSlot>>
 
     @Query("SELECT count() from timeSlots")
     fun count(): LiveData<Int>

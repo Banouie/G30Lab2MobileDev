@@ -17,7 +17,7 @@ class timeSlotRepository(application: Application) {
     }
 
     /*Retrive all timeSlots in the DB*/
-    fun getAll(): MutableLiveData<List<timeSlot>> {
+    fun getAll(): LiveData<List<timeSlot>> {
         return Dao.findAll()
     }
 

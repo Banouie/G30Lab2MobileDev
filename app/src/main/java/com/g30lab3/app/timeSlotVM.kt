@@ -14,7 +14,7 @@ class timeSlotVM(application: Application): AndroidViewModel(application) {
     val repo = timeSlotRepository(application)
 
     // get a LiveData representation of all timeSlot in the DB to be observed from Views in application UI
-    val all: MutableLiveData<List<timeSlot>> = repo.getAll()
+    val all: LiveData<List<timeSlot>> = repo.getAll()
 
     /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
