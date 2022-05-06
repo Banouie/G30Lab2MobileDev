@@ -11,27 +11,30 @@ import com.g30lab3.app.models.timeSlot
 //List
 class TimeSlotAdapter(val data: List<timeSlot>) :
     RecyclerView.Adapter<TimeSlotAdapter.ItemViewHolder>() {
+
     class ItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+
         val title: TextView = v.findViewById(R.id.item_slot_title)
-        val datetimeSlot: TextView = v.findViewById(R.id.item_slot_datetime)
         val description: TextView = v.findViewById(R.id.item_slot_description)
         val location: TextView = v.findViewById(R.id.item_slot_location)
 //Or
 
 
-        fun bind(item: timeSlot, action: (v:View) -> Unit) {
+        /*
+        fun bind(item: timeSlot, action: (v: View) -> Unit) {
             title.text = item.title
             description.text = item.description
-            datetimeSlot.text = item.date
             location.text = item.location
 
             itemView.setOnClickListener(
                 action
             )
         }
+
         fun unbind() {
 //            delete.setonclickListenner(null)
         }
+         */
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -45,13 +48,20 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
 //            data.removeAt(position)
 //            notifyItemRemoved(position)
 //        }
-        val item=data[position]
-        holder.bind(item){
+
+
+        /*
+        holder.bind(item) {
 //            val pos=data.indexOf(item);
 //            if (pos!=-1)
 //            { data.remove(data[pos])
 //            notifyItemRemoved(pos)}
         }
+         */
+
+        val item = data[position]
+        holder.title.text=item.title
+        holder.description.text=item.description
     }
 
     override fun getItemCount(): Int = data.size
