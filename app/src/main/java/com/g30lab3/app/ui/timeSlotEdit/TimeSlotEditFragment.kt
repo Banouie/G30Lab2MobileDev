@@ -78,6 +78,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 timeSelector.setText(toShowTimeSlot.time)
                 durationSelector.editText?.setText(toShowTimeSlot.duration.toString())
                 locationSelector.editText?.setText(toShowTimeSlot.location)
+                //change the text of the button from "create" to "update"
+                saveTimeSlotButton.setText("Update Time Slot")
             }
         }
 
