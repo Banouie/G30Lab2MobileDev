@@ -35,10 +35,10 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             var to_show_timeSlot: timeSlot = result[0]
             title.text = to_show_timeSlot.title
             //HtmlCompat.fromHtml just format the string in order to obtain the names of the fields of the time slot in bold
-            description.text = HtmlCompat.fromHtml("<b>Description</b>: "+ to_show_timeSlot.description,HtmlCompat.FROM_HTML_MODE_LEGACY)
-            location.text = HtmlCompat.fromHtml("<b>Location</b>: " + to_show_timeSlot.location,HtmlCompat.FROM_HTML_MODE_LEGACY)
-            duration.text = HtmlCompat.fromHtml("<b>Duration</b> (in number of time slots): " + to_show_timeSlot.duration.toString(),HtmlCompat.FROM_HTML_MODE_LEGACY)
-            dateTime.text=HtmlCompat.fromHtml("<b>Date</b>: " + to_show_timeSlot.date + " - <b>Starting time</b>: " + to_show_timeSlot.time,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            description.text = HtmlCompat.fromHtml("<b>Description</b>:<br> "+ to_show_timeSlot.description,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            location.text = HtmlCompat.fromHtml("<b>Location</b>:<br> " + to_show_timeSlot.location,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            duration.text = HtmlCompat.fromHtml("<b>Duration (in number of time slots)</b>: " + to_show_timeSlot.duration.toString(),HtmlCompat.FROM_HTML_MODE_LEGACY)
+            dateTime.text=HtmlCompat.fromHtml("<b>Date</b>: " + to_show_timeSlot.date + "<br><b>Time</b>: " + to_show_timeSlot.time,HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
