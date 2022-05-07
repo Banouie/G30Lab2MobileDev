@@ -42,7 +42,6 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             dateTime.text=to_show_timeSlot.date + " - " + to_show_timeSlot.time
         }
 
-        //TODO implement the back pression to come back to the app home
         requireActivity().onBackPressedDispatcher.addCallback {
             findNavController().navigate(R.id.action_nav_timeSlotDetailsFragment_to_nav_home)
         }
