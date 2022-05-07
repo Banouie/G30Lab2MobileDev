@@ -2,10 +2,11 @@ package com.g30lab3.app.models
 
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
+
 
 @Dao
 interface timeSlotDao {
@@ -24,4 +25,7 @@ interface timeSlotDao {
 
     @Query("SELECT * FROM timeSlots WHERE id=:id")
     fun getUsingId(id:Int): LiveData<timeSlot>
+
+    @Update
+    fun update(timeSlot: timeSlot)
 }

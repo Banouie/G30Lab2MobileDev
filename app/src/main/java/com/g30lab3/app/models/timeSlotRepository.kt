@@ -27,6 +27,10 @@ class timeSlotRepository(application: Application) {
         Dao.deleteAll()
     }
 
+    /*Update an existing timeSlot, the update is based on the primary key (id) of the passed timeSlot */
+    fun update(timeSlot: timeSlot){
+        Dao.update(timeSlot)
+    }
 
 
 }

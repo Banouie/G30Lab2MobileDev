@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.models.timeSlot
@@ -41,6 +43,9 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         }
 
         //TODO implement the back pression to come back to the app home
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigate(R.id.action_nav_timeSlotDetailsFragment_to_nav_home)
+        }
 
 
     }

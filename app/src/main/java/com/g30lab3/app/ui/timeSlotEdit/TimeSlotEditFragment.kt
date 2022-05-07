@@ -1,5 +1,6 @@
 package com.g30lab3.app.ui.timeSlotEdit
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -9,6 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
@@ -30,7 +33,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     lateinit var dateSelector: EditText
     lateinit var timeSelector: EditText
     lateinit var durationSelector: TextInputLayout
-    lateinit var locationSelector:TextInputLayout
+    lateinit var locationSelector: TextInputLayout
 
     lateinit var saveTimeSlotButton: Button
 
@@ -41,7 +44,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
-    var newTimeSlot: timeSlot = timeSlot(0,title,description, date, time, duration, location)
+    var newTimeSlot: timeSlot = timeSlot(0, title, description, date, time, duration, location)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
     val vm by viewModels<timeSlotVM>()
@@ -54,26 +57,45 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         dateSelector = view.findViewById(R.id.edit_date)
         timeSelector = view.findViewById(R.id.edit_time)
         durationSelector = view.findViewById(R.id.edit_duration_Field)
-        locationSelector= view.findViewById(R.id.edit_location_Field)
+        locationSelector = view.findViewById(R.id.edit_location_Field)
 
         saveTimeSlotButton = view.findViewById(R.id.create_timeSlot)
 
+        //if we come in this fragment after the user pressed the edit button of a timeSlot in the Home
+        //we have to edit the selected timeSlot, so we set the edit fields to its values
+        if (arguments?.get("time_slot_ID") != null) {
+            vm.all.observe(requireActivity()) {
+                //get from the list of timeSLot the correct one selected in the home fragment from the user:
+                var result: List<timeSlot> =
+                    it.filter { timeSlot -> timeSlot.id == arguments?.get("time_slot_ID") }
+                var toShowTimeSlot: timeSlot = result[0]
+                //copy the timeSlot to edit in the timeSlot that will be added to the DB:
+                newTimeSlot.copy(toShowTimeSlot)
+                //set the edit fields of the fragment correcty:
+                titleSelector.editText?.setText(toShowTimeSlot.title)
+                descriptionSelector.editText?.setText(toShowTimeSlot.description)
+                dateSelector.setText(toShowTimeSlot.date)
+                timeSelector.setText(toShowTimeSlot.time)
+                durationSelector.editText?.setText(toShowTimeSlot.duration.toString())
+                locationSelector.editText?.setText(toShowTimeSlot.location)
+            }
+        }
 
         //Set the title of the timeSlot using the one digitized from the user
         titleSelector.editText?.doOnTextChanged { text, start, before, count ->
-            newTimeSlot.title=text.toString()
+            newTimeSlot.title = text.toString()
         }
         // ...the same for description...
         descriptionSelector.editText?.doOnTextChanged { text, start, before, count ->
-            newTimeSlot.description=text.toString()
+            newTimeSlot.description = text.toString()
         }
         // ...the same for duration...
         durationSelector.editText?.doOnTextChanged { text, start, before, count ->
-            newTimeSlot.duration=text.toString().toInt()
+            newTimeSlot.duration = text.toString().toInt()
         }
         // ...and finally for location
         locationSelector.editText?.doOnTextChanged { text, start, before, count ->
-            newTimeSlot.location=text.toString()
+            newTimeSlot.location = text.toString()
         }
 
         // *** TIME picker relative code ***
@@ -91,7 +113,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         timePicker.addOnPositiveButtonClickListener {
             time = timePicker.hour.toString() + " : " + timePicker.minute.toString()
             timeSelector.setText(time)
-            newTimeSlot.time=time
+            newTimeSlot.time = time
         }
 
         // *** DATE picker relative code ***
@@ -110,7 +132,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             val format = SimpleDateFormat("dd-MM-yyyy")
             date = format.format(utc.time)
             dateSelector.setText(date)
-            newTimeSlot.date=date
+            newTimeSlot.date = date
         }
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
@@ -135,3 +157,5 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     }
 
 }
+
+

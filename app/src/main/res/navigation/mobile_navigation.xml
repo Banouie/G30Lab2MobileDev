@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_timeSlotDetailsFragment"
             app:destination="@id/nav_timeSlotDetailsFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_timeSlotEditFragment"
+            app:destination="@id/nav_timeSlotEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_editProfileFragment"
@@ -42,7 +45,11 @@
         android:id="@+id/nav_timeSlotDetailsFragment"
         android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
         android:label="fragment_time_slot_details"
-        tools:layout="@layout/fragment_time_slot_details" />
+        tools:layout="@layout/fragment_time_slot_details" >
+        <action
+            android:id="@+id/action_nav_timeSlotDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_timeSlotEditFragment"
