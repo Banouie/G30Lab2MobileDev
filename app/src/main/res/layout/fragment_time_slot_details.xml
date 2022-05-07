@@ -12,122 +12,85 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_conversion_absoluteHeight="537dp"
-            tools:layout_conversion_absoluteWidth="411dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="195dp">
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/adv_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="16dp"
                 android:text="Title of the advertisement"
-                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="#673AB7"
-                android:hint="prova"
+                app:layout_constraintBottom_toTopOf="@+id/adv_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_conversion_absoluteHeight="179dp"
-                tools:layout_conversion_absoluteWidth="411dp" />
-
-            <ImageView
-                android:id="@+id/ic_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:src="@drawable/ic_info"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/adv_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adv_title"
-                tools:layout_conversion_absoluteHeight="24dp"
-                tools:layout_conversion_absoluteWidth="24dp" />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/adv_description"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:text="Description of the adv"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/ic_info"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/ic_info"
-                app:layout_constraintTop_toBottomOf="@+id/ic_info"
-                tools:layout_conversion_absoluteHeight="19dp"
-                tools:layout_conversion_absoluteWidth="137dp" />
-
-            <ImageView
-                android:id="@+id/ic_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_duration"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:layout_constraintBottom_toTopOf="@+id/adv_date_time"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ic_date_time"
-                app:layout_constraintTop_toTopOf="@+id/ic_date_time"
-                tools:layout_conversion_absoluteHeight="24dp"
-                tools:layout_conversion_absoluteWidth="24dp" />
-
-            <TextView
-                android:id="@+id/adv_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Duration"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/ic_duration"
-                app:layout_constraintStart_toStartOf="@+id/ic_duration"
-                app:layout_constraintTop_toBottomOf="@+id/ic_duration"
-                tools:layout_conversion_absoluteHeight="22dp"
-                tools:layout_conversion_absoluteWidth="74dp" />
-
-            <ImageView
-                android:id="@+id/ic_date_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:src="@drawable/ic_date_time"
-                app:layout_constraintEnd_toStartOf="@+id/ic_duration"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adv_location" />
+                app:layout_constraintTop_toBottomOf="@+id/adv_title" />
 
             <TextView
                 android:id="@+id/adv_date_time"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:text="Date and Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/ic_date_time"
-                app:layout_constraintStart_toStartOf="@+id/ic_date_time"
-                app:layout_constraintTop_toBottomOf="@+id/ic_date_time" />
-
-            <TextView
-                android:id="@+id/adv_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/ic_location"
-                app:layout_constraintStart_toStartOf="@+id/ic_location"
-                app:layout_constraintTop_toBottomOf="@+id/ic_location" />
-
-            <ImageView
-                android:id="@+id/ic_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:src="@drawable/ic_location"
+                app:drawableStartCompat="@drawable/ic_date_time"
+                app:layout_constraintBottom_toTopOf="@+id/adv_duration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adv_description" />
+
+            <TextView
+                android:id="@+id/adv_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="Duration"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:drawableStartCompat="@drawable/ic_duration"
+                app:layout_constraintBottom_toTopOf="@+id/adv_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adv_date_time" />
+
+            <TextView
+                android:id="@+id/adv_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="Location"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:drawableStartCompat="@drawable/ic_location"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adv_duration" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
