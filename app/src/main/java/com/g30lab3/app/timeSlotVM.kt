@@ -8,7 +8,7 @@ import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.models.timeSlotRepository
 import kotlin.concurrent.thread
 
-class timeSlotVM(application: Application): AndroidViewModel(application) {
+class timeSlotVM(application: Application) : AndroidViewModel(application) {
 
     //obtain timeSlot repository instance
     val repo = timeSlotRepository(application)
@@ -18,15 +18,19 @@ class timeSlotVM(application: Application): AndroidViewModel(application) {
 
     /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
-    //Add a timeSlot to DB
+    //Add a timeSlot to DB if doesn't exist already, update it otherwise
     fun add(timeSlot: timeSlot) {
         thread {
-            repo.add(timeSlot)
+            if (all.value?.contains(timeSlot)==true) {
+                repo.update(timeSlot)
+            } else {
+                repo.add(timeSlot)
+            }
         }
     }
 
     //delete all the timeSlots in the DB
-    fun clear(){
+    fun clear() {
         thread {
             repo.clear()
         }
