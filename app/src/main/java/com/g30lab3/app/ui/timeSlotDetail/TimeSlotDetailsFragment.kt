@@ -2,16 +2,14 @@ package com.g30lab3.app.ui.timeSlotDetail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
-import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.timeSlotVM
 
@@ -36,10 +34,11 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 it.filter { timeSlot -> timeSlot.id == arguments?.get("time_slot_ID") }
             var to_show_timeSlot: timeSlot = result[0]
             title.text = to_show_timeSlot.title
-            description.text = to_show_timeSlot.description
-            location.text = to_show_timeSlot.location
-            duration.text = to_show_timeSlot.duration.toString()
-            dateTime.text=to_show_timeSlot.date + " - " + to_show_timeSlot.time
+            //HtmlCompat.fromHtml just format the string in order to obtain the names of the fields of the time slot in bold
+            description.text = HtmlCompat.fromHtml("<b>Description</b>: "+ to_show_timeSlot.description,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            location.text = HtmlCompat.fromHtml("<b>Location</b>: " + to_show_timeSlot.location,HtmlCompat.FROM_HTML_MODE_LEGACY)
+            duration.text = HtmlCompat.fromHtml("<b>Duration</b> (in number of time slots): " + to_show_timeSlot.duration.toString(),HtmlCompat.FROM_HTML_MODE_LEGACY)
+            dateTime.text=HtmlCompat.fromHtml("<b>Date</b>: " + to_show_timeSlot.date + " - <b>Starting time</b>: " + to_show_timeSlot.time,HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
