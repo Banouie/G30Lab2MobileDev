@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ui.home.HomeFragment">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_add_button"
         android:layout_width="wrap_content"
@@ -16,7 +17,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_plus"
-        app:tint="@color/white"/>
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/empty_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableTop="@drawable/ic_bad"
+        android:gravity="center"
+        android:text="@string/empty_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv"
+        app:layout_constraintEnd_toEndOf="@+id/rv"
+        app:layout_constraintStart_toStartOf="@+id/rv"
+        app:layout_constraintTop_toTopOf="@+id/rv">
+
+    </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
