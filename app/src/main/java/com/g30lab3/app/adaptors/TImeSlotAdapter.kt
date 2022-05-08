@@ -48,7 +48,6 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
         var bundle = bundleOf("time_slot_ID" to item.id)
 
         holder.editButton.setOnClickListener {
-            //TODO edit the selected timeslot using navigation and sending throughout it the id of the selected TS
             //pass the ID of the selected time slot to the timeSlotEdit fragment in order to allow it to show the details of the correct Time Slot
             holder.view.findNavController().navigate(R.id.action_nav_home_to_nav_timeSlotEditFragment,bundle)
         }
