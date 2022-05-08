@@ -26,5 +26,6 @@
     <string name="action_1">See details</string>
     <string name="action_2">Edit</string>
     <string name="empty_message">No time slots available</string>
+    <string name="profile">My profile</string>
 
 </resources>
