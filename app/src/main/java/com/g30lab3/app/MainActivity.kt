@@ -38,10 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_timeSlotEditFragment,
                 R.id.nav_showProfileFragment,
-                R.id.nav_timeSlotDetailsFragment,
-                R.id.nav_timeSlotEditFragment
             ), drawerLayout
         )
 
@@ -50,11 +47,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -62,19 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
-        println("")
-        when (item.itemId) {
-            R.id.nav_home -> {
-                Toast.makeText(this, "Publication", Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_editProfileFragment -> {
-                Toast.makeText(this, "Publisssssscation", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        TODO("Not yet implemented")
     }
 
 

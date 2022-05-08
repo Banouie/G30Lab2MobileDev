@@ -93,7 +93,11 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         }
         // ...the same for duration...
         durationSelector.editText?.doOnTextChanged { text, start, before, count ->
-            newTimeSlot.duration = text.toString().toInt()
+            try {
+                newTimeSlot.duration = text.toString().toInt()
+            }catch(ex:NumberFormatException ){
+                newTimeSlot.duration = 0
+            }
         }
         // ...and finally for location
         locationSelector.editText?.doOnTextChanged { text, start, before, count ->
