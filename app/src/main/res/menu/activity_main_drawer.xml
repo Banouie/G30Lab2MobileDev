@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
@@ -12,30 +11,5 @@
             android:id="@+id/nav_showProfileFragment"
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:title="Show Profile" />
-
-        <item
-            android:id="@+id/nav_showTimesSlots"
-            android:icon="@drawable/ic_view"
-            android:title="Time Slots" />
-
-
-        <item
-            android:id="@+id/nav_timeSlotDetailsFragment"
-            android:icon="@drawable/ic_baseline_edit_calendar_24"
-            android:title="Time Slot Detail" />
-
-
-        <item
-            android:id="@+id/nav_timeSlotEditFragment"
-            android:icon="@drawable/ic_baseline_edit_calendar_24"
-            android:title="TimeSlot Edit" />
-
-        <!--
-        <item
-            android:id="@+id/nav_timeSlotDetailsFragment"
-            android:icon="@drawable/ic_new_ads"
-            android:title="@string/menu_slideshow" />
-            -->
-
     </group>
 </menu>
