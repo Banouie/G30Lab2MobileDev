@@ -1,20 +1,21 @@
 package com.g30lab3.app
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import com.g30lab3.app.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,6 +45,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
+        //set the image of the user and the name in the drawer
+        val hView = binding.navView.getHeaderView(0)
+        var ProfileImage: ImageView = hView.findViewById(R.id.drawer_profile_img)
+        var UserName: TextView = hView.findViewById(R.id.drawer_name)
+        //set User name in drawer
+        val prefs = getSharedPreferences("Profile", AppCompatActivity.MODE_PRIVATE)
+        UserName.setText(prefs.getString("FULL_NAME", ""))
+        //set Profile picture in drawer
+        try {
+            //if already exists a profile Image set it
+            openFileInput("profilePic.jpg").use {
+                ProfileImage.setImageBitmap(BitmapFactory.decodeStream(it))
+            }
+        } catch (e: FileNotFoundException) {
+            //no profile image, set default one
+        }
+
 
     }
 

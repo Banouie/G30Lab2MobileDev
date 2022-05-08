@@ -13,7 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/drawer_profile_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="80dp"
@@ -26,14 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:id="@+id/show_full_name"
+        android:id="@+id/drawer_name"
         android:hint="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-    <TextView
-        android:textAlignment="center"
-        android:id="@+id/show_mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/nav_header_subtitle" />
 </LinearLayout>

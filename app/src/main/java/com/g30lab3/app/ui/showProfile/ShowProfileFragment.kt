@@ -43,10 +43,11 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
+        //TODO check if those two lines are useful ot not
         val sharedPref: SharedPreferences =
             this.requireActivity().getSharedPreferences("Profile", MODE_PRIVATE)
-        //check if exist a profile configuration:
 
+        //check if exist a profile configuration:
         val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
         val fullName = prefs.getString("FULL_NAME", "Full Name")
 

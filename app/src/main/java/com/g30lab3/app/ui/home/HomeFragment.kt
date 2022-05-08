@@ -1,8 +1,11 @@
 package com.g30lab3.app.ui.home
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
@@ -13,6 +16,7 @@ import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.timeSlotVM
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.FileNotFoundException
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -43,6 +47,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_nav_home_to_nav_timeSlotEditFragment)
         }
+
+
 
 
     }
