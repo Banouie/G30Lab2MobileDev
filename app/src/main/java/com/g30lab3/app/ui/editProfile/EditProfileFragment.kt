@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.io.FileNotFoundException
 
@@ -31,11 +33,21 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     lateinit var editDescription: EditText
     lateinit var editSkills :  EditText
 
+    lateinit var drawer_img:ImageView
+    lateinit var drawer_name:TextView
+
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_PICK_IMAGE = 2
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //variables to interact with the drawer from this fragment
+        val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        drawer_img= headerView.findViewById(R.id.drawer_profile_img)
+        drawer_name= headerView.findViewById(R.id.drawer_name)
+        // ***
 
         editName = view.findViewById(R.id.edit_full_name)
         editNickName = view.findViewById(R.id.edit_nickname)
@@ -69,6 +81,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
                             editor.putString("SKILLS", editSkills.text.toString()).apply()
                             Snackbar.make(view,"Profile info saved",Snackbar.LENGTH_LONG).setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.purple_500)).show()
+                            drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
                             findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
                         }
                         setNegativeButton("No"){_, _ ->
@@ -85,7 +98,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         try {
             //if already exists a profile Image set it
             requireContext().openFileInput("profilePic.jpg").use {
-                profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
+                val img:Bitmap = BitmapFactory.decodeStream(it)
+                profilePicImageView.setImageBitmap(img)
             }
         }catch(e: FileNotFoundException){
             //no profileImage, set default image
@@ -139,6 +153,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             }
             //display image in ImageView
             imageView?.setImageBitmap(imageBitmap)
+            drawer_img.setImageBitmap(imageBitmap)//update also the image in the navigation drawer
         }
         if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_PICK_IMAGE) {
             //get the URI of the image from gallery
@@ -152,6 +167,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
                 }
                 imageView?.setImageURI(imageUri)
+                drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
             }
         }
     }
