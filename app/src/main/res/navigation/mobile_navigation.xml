@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/nav_editProfileFragment"
         android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
             android:id="@+id/action_nav_editProfileFragment_to_nav_showProfileFragment"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/nav_showProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
-        android:label="fragment_show_profile"
+        android:label="@string/show_profile"
         tools:layout="@layout/fragment_show_profile" >
         <action
             android:id="@+id/action_nav_showProfileFragment_to_nav_editProfileFragment"
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/nav_timeSlotDetailsFragment"
         android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
-        android:label="fragment_time_slot_details"
+        android:label="@string/show_timeSlot"
         tools:layout="@layout/fragment_time_slot_details" >
         <action
             android:id="@+id/action_nav_timeSlotDetailsFragment_to_nav_home"
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/nav_timeSlotEditFragment"
         android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
-        android:label="fragment_time_slot_edit"
+        android:label="@string/edit_timeSLot"
         tools:layout="@layout/fragment_time_slot_edit" >
         <action
             android:id="@+id/action_nav_timeSlotEditFragment_to_nav_home"
