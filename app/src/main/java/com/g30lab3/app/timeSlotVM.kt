@@ -14,7 +14,9 @@ import com.g30lab3.app.models.timeSlotRepository
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlin.concurrent.thread
 
 class timeSlotVM(application: Application) : AndroidViewModel(application) {
@@ -24,8 +26,32 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
     //obtain timeSlot repository instance
     val repo = timeSlotRepository(application)
 
-    // get a LiveData representation of all timeSlot in the DB to be observed from Views in application UI
-    val all: LiveData<List<timeSlot>> = repo.getAll()
+    private val _all = MutableLiveData<List<timeSlot>>()
+    val all: LiveData<List<timeSlot>> = _all
+    private val listner: ListenerRegistration
+
+    init {
+        listner = FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+            .addSnapshotListener { value, error ->
+                if (value != null) {
+                    _all.value = if (error != null) emptyList() else value.mapNotNull { d -> d.toTimeSlot()
+                    }
+                }
+            }
+    }
+
+    //convert the retrived data from Firebase to a timeSlot object class
+    fun DocumentSnapshot.toTimeSlot() : timeSlot?{
+        return timeSlot(
+            id= 0,
+            title = get("title") as String,
+            description = get("description") as String,
+            date = get("date") as String,
+            location = get("location") as String,
+            duration = (get("duration") as Long).toInt(),
+            time = get("time") as String
+        )
+    }
 
     /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
@@ -34,11 +60,5 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
         return db.collection("TimeSlotAdvCollection").document().set(timeSlot)
     }
 
-    //delete all the timeSlots in the DB
-    fun clear() {
-        thread {
-            repo.clear()
-        }
-    }
 
 }
