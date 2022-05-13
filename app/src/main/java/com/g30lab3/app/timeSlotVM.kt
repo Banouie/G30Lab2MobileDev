@@ -19,13 +19,13 @@ import kotlin.concurrent.thread
 
 class timeSlotVM(application: Application) : AndroidViewModel(application) {
 
+    val db = FirebaseFirestore.getInstance()
+
     //obtain timeSlot repository instance
     val repo = timeSlotRepository(application)
 
     // get a LiveData representation of all timeSlot in the DB to be observed from Views in application UI
     val all: LiveData<List<timeSlot>> = repo.getAll()
-
-    val db = FirebaseFirestore.getInstance()
 
     /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 

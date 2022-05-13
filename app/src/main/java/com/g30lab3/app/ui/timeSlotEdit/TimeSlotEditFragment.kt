@@ -33,6 +33,18 @@ import java.util.concurrent.TimeUnit
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
+    //function used to show a snackbar after creating a timeSlot
+    private fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(
+                ContextCompat.getColor(
+                    context,
+                    if (goodNews) R.color.purple_500 else R.color.red
+                )
+            )
+            .show()
+    }
+
 
     lateinit var titleSelector: TextInputLayout
     lateinit var descriptionSelector: TextInputLayout
@@ -151,17 +163,25 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         requireActivity().onBackPressedDispatcher.addCallback {
             vm.add(newTimeSlot)
                 .addOnSuccessListener {
-                    createSnackBar("Saved",view,requireContext())
+                    createSnackBar("Saved", view, requireContext(), true)
                     findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())
-                    createSnackBar("Something went wrong",view,requireContext())
+                    createSnackBar("Something went wrong", view, requireContext(), false)
                 }
         }
         // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
         saveTimeSlotButton.setOnClickListener {
-
+            vm.add(newTimeSlot)
+                .addOnSuccessListener {
+                    createSnackBar("Saved", view, requireContext(), true)
+                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+                }
+                .addOnFailureListener {
+                    Log.d("FirebaseError", it.toString())
+                    createSnackBar("Something went wrong", view, requireContext(), false)
+                }
         }
 
 
@@ -169,10 +189,6 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
 }
 
-private fun createSnackBar(message:String, view:View, context:Context){
-    Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-        .setBackgroundTint(ContextCompat.getColor(context, R.color.purple_500))
-        .show()
-}
+
 
 
