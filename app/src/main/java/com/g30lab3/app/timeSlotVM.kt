@@ -46,8 +46,13 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
 
     //Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc)
     fun add(timeSlot: timeSlot): Task<Void> {
-        //TODO if else statement for adding a new timeslot or updating an existing one
-        return db.collection("TimeSlotAdvCollection").document().set(timeSlot)
+        if (all.value?.contains(timeSlot) == true) {
+            //we need to update an already existing timeSlot
+            //TODO update an existing timeSlot here
+            //return db.collection("TimeSlotAdvCollection").document(timeSlot.id).update()
+        } else {
+            return db.collection("TimeSlotAdvCollection").document().set(timeSlot)
+        }
     }
 
 
