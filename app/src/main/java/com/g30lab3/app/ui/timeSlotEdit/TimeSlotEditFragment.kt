@@ -1,7 +1,9 @@
 package com.g30lab3.app.ui.timeSlotEdit
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,10 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.timeSlotVM
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -23,6 +28,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
@@ -95,7 +101,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         durationSelector.editText?.doOnTextChanged { text, start, before, count ->
             try {
                 newTimeSlot.duration = text.toString().toInt()
-            }catch(ex:NumberFormatException ){
+            } catch (ex: NumberFormatException) {
                 newTimeSlot.duration = 0
             }
         }
@@ -144,24 +150,29 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
         requireActivity().onBackPressedDispatcher.addCallback {
             vm.add(newTimeSlot)
-            Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                .show()
-            findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+                .addOnSuccessListener {
+                    createSnackBar("Saved",view,requireContext())
+                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+                }
+                .addOnFailureListener {
+                    Log.d("FirebaseError", it.toString())
+                    createSnackBar("Something went wrong",view,requireContext())
+                }
         }
-
         // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
         saveTimeSlotButton.setOnClickListener {
-            vm.add(newTimeSlot)
-            Snackbar.make(view, "Time slot saved!", Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                .show()
-            findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+
         }
 
 
     }
 
+}
+
+private fun createSnackBar(message:String, view:View, context:Context){
+    Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        .setBackgroundTint(ContextCompat.getColor(context, R.color.purple_500))
+        .show()
 }
 
 

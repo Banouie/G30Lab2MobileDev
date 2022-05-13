@@ -1,11 +1,20 @@
 package com.g30lab3.app
 
 import android.app.Application
+import android.util.Log
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.models.timeSlotRepository
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.concurrent.thread
 
 class timeSlotVM(application: Application) : AndroidViewModel(application) {
@@ -16,17 +25,13 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
     // get a LiveData representation of all timeSlot in the DB to be observed from Views in application UI
     val all: LiveData<List<timeSlot>> = repo.getAll()
 
+    val db = FirebaseFirestore.getInstance()
+
     /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
-    //Add a timeSlot to DB if doesn't exist already, update it otherwise
-    fun add(timeSlot: timeSlot) {
-        thread {
-            if (all.value?.contains(timeSlot)==true) {
-                repo.update(timeSlot)
-            } else {
-                repo.add(timeSlot)
-            }
-        }
+    //Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc)
+    fun add(timeSlot: timeSlot): Task<Void> {
+        return db.collection("TimeSlotAdvCollection").document().set(timeSlot)
     }
 
     //delete all the timeSlots in the DB
