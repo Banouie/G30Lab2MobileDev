@@ -4,10 +4,10 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "timeSlots")
+
 class timeSlot {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+
+    var id: String = ""
     var title: String = ""
     var description: String = ""
     var date: String = ""
@@ -17,7 +17,7 @@ class timeSlot {
 
     //secondary constructor
     constructor(
-        id: Int,
+        id: String,
         title: String,
         description: String,
         date: String,

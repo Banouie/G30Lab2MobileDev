@@ -62,7 +62,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
-    var newTimeSlot: timeSlot = timeSlot(0, title, description, date, time, duration, location)
+    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
     val vm by viewModels<timeSlotVM>()
@@ -97,7 +97,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 durationSelector.editText?.setText(toShowTimeSlot.duration.toString())
                 locationSelector.editText?.setText(toShowTimeSlot.location)
                 //change the text of the button from "create" to "update"
-                saveTimeSlotButton.setText("Update Time Slot")
+                saveTimeSlotButton.text = "Update Time Slot"
             }
         }
 
