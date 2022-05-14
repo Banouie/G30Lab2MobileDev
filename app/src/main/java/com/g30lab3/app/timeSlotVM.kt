@@ -48,8 +48,7 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
     fun add(timeSlot: timeSlot): Task<Void> {
         if (all.value?.contains(timeSlot) == true) {
             //we need to update an already existing timeSlot
-            //TODO update an existing timeSlot here
-            //return db.collection("TimeSlotAdvCollection").document(timeSlot.id).update()
+            return db.collection("TimeSlotAdvCollection").document(timeSlot.id).set(timeSlot)
         } else {
             return db.collection("TimeSlotAdvCollection").document().set(timeSlot)
         }
