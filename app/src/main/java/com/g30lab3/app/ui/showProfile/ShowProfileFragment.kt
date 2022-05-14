@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
+import com.g30lab3.app.ui.editProfile.createTagChip
+import com.google.android.material.chip.ChipGroup
 
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,7 +32,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     lateinit var mailTextView: TextView
     lateinit var locationTextView: TextView
     lateinit var profilePicImageView: ImageView
-    lateinit var skillsTextView: TextView
+    lateinit var skillsChipGroup: ChipGroup
     lateinit var descriptionTextView: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,24 +42,28 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         mailTextView = view.findViewById(R.id.show_mail)
         locationTextView = view.findViewById(R.id.show_location)
         descriptionTextView = view.findViewById(R.id.show_description)
-        skillsTextView = view.findViewById(R.id.show_skills)
+        skillsChipGroup = view.findViewById(R.id.show_skills)
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
-        //TODO check if those two lines are useful ot not
-        val sharedPref: SharedPreferences =
-            this.requireActivity().getSharedPreferences("Profile", MODE_PRIVATE)
-
         //check if exist a profile configuration:
         val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
-        val fullName = prefs.getString("FULL_NAME", "Full Name")
-
-        fullNameTextView.setText(fullName)
+        fullNameTextView.setText(prefs.getString("FULL_NAME", "Full Name"))
         nickNameTextView.setText(prefs.getString("NICKNAME", "nickname"))
         mailTextView.setText(prefs.getString("EMAIL", "email@address"))
         locationTextView.setText(prefs.getString("LOCATION", "location"))
         descriptionTextView.setText(prefs.getString("DESCRIPTION", "description"))
-        skillsTextView.setText(prefs.getString("SKILLS", "Skill1, skill2"))
+
+        //show the skills
+        var skills:MutableSet<String>? = prefs.getStringSet("SKILLS", mutableSetOf())
+        Log.d("Skills from SharedPref:",skills.toString())
+        if (skills != null) {
+            for (skill in skills){
+                skillsChipGroup.addView(createTagChip(requireContext(),skill,null,null))
+            }
+        }
+        //end of show the skills
+
 
         val fab: View = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener { view ->
@@ -84,41 +91,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             })
 
 
-/*
-    private var _binding: FragmentShowProfileBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(ShowProfileViewModel::class.java)
-
-        _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-
-/*
-        val textView: TextView = binding.showProfileTitle
-        galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
- */
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
- */
 
     }
 }

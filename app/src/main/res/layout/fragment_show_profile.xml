@@ -70,78 +70,88 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_person"
                     android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
                     android:text="Full Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     app:layout_constraintBottom_toTopOf="@+id/show_nickname"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/show_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="3dp"
                     android:drawableStart="@drawable/ic_smile"
                     android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
                     android:text="Nickname"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    app:layout_constraintBottom_toTopOf="@+id/show_mail"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show_full_name" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/show_mail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_mail"
-                    android:drawablePadding="16dp"
-                    android:text="email@address"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    app:layout_constraintBottom_toTopOf="@+id/show_location"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/show_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_location"
-                    android:drawablePadding="16dp"
-                    android:text="Location"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    app:layout_constraintBottom_toTopOf="@+id/show_skills"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show_mail" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/show_skills"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:drawableStart="@drawable/ic_skills"
-                    android:drawablePadding="16dp"
-                    android:text="Skill1, skill2"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     app:layout_constraintBottom_toTopOf="@+id/show_description"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show_location" />
+                    app:layout_constraintTop_toBottomOf="@+id/show_full_name" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/show_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:drawableStart="@drawable/ic_coffe"
                     android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
                     android:text="Desription"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    app:layout_constraintBottom_toTopOf="@+id/show_full_name"
+                    app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
+                    app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableStart="@drawable/ic_skills"
+                    android:drawablePadding="16dp"
+                    android:text="Skills:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    app:layout_constraintBottom_toTopOf="@+id/show_skills"
+                    app:layout_constraintTop_toBottomOf="@+id/show_description" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/show_skills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/show_mail"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView2">
+                    <!-- Chips can be declared here, or added dynamically. -->
+                </com.google.android.material.chip.ChipGroup>
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/show_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_mail"
+                    android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
+                    android:text="email@address"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    app:layout_constraintBottom_toTopOf="@+id/show_location"
                     app:layout_constraintTop_toBottomOf="@+id/show_skills" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/show_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
+                    android:text="Location"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/show_mail" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>

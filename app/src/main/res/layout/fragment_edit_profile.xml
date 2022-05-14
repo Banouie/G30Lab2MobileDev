@@ -129,16 +129,29 @@
                     tools:ignore="SpeakableTextPresentCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/show_skills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:visibility="gone">
+
+                <!-- Chips can be declared here, or added dynamically. -->
+
+            </com.google.android.material.chip.ChipGroup>
+
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/skills_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your skills, use keywords"
-                app:helperText="Show us what you can do"
+                android:hint="Skills"
                 android:paddingTop="16dp"
-                app:startIconDrawable="@drawable/ic_skills"
-                app:endIconMode="clear_text">
+                app:endIconDrawable="@drawable/ic_plus"
+                app:endIconMode="custom"
+                app:helperText="Insert a new skill"
+                app:startIconDrawable="@drawable/ic_skills">
 
                 <EditText
                     android:id="@+id/edit_skills"
