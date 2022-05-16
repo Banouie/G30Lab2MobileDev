@@ -1,9 +1,5 @@
 package com.g30lab3.app.models
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
 
 class timeSlot {
 
@@ -14,6 +10,7 @@ class timeSlot {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
+    var author: String = ""
 
     //secondary constructor
     constructor(
@@ -23,7 +20,8 @@ class timeSlot {
         date: String,
         time: String,
         duration: Int,
-        location: String
+        location: String,
+        author: String
     ) {
         this.id = id
         this.title = title
@@ -32,6 +30,7 @@ class timeSlot {
         this.time = time
         this.duration = duration
         this.location = location
+        this.author = author
     }
 
     fun copy(origin: timeSlot) {
@@ -42,6 +41,7 @@ class timeSlot {
         this.time = origin.time
         this.duration = origin.duration
         this.location = origin.location
+        this.author = origin.author
     }
 
     override fun equals(other: Any?): Boolean {

@@ -34,10 +34,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        // Say hello to the logged user
-        Snackbar.make(view, "Hello ${user?.displayName}", Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
-            .show()
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
 

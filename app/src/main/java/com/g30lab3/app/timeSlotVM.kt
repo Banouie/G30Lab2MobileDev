@@ -30,7 +30,7 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
     }
 
     //convert the retrived data from Firebase to a timeSlot object class
-    fun DocumentSnapshot.toTimeSlot(): timeSlot? {
+    fun DocumentSnapshot.toTimeSlot(): timeSlot {
         return timeSlot(
             id = id, //the id of the timeSlot kotlin object will be the ID of the document created from Firebase previously
             title = get("title") as String,
@@ -38,7 +38,9 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
             date = get("date") as String,
             location = get("location") as String,
             duration = (get("duration") as Long).toInt(),
+            author = if (get("author")!=null) get("author") as String else "unknown",
             time = get("time") as String
+
         )
     }
 

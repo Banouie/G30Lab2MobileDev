@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -94,8 +96,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         Log.d("FIREBASESIGNIN", "signInWithCredential:success")
                                         val user = auth.currentUser
                                         if(user!=null){
-                                            //Log.d("USERINFO",user.uid)
-                                            findNavController().navigate(R.id.action_loginFragment_to_nav_home)
+                                            //Log.d("USERINFO",user.uid
+                                            var bundle = bundleOf("sayHello" to true)
+                                            findNavController().navigate(R.id.action_loginFragment_to_nav_home,bundle)
                                             //updateUI(user)
                                         }
 
@@ -121,3 +124,4 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
 }
+

@@ -13,6 +13,8 @@ import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.timeSlotVM
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 //List
 class TimeSlotAdapter(val data: List<timeSlot>) :
@@ -39,6 +41,13 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
 
         //get the current time slot
         val item = data[position]
+
+        //get info about the current logged in user
+        var currentUser = Firebase.auth.currentUser
+        //if the current user is not the owner of a timeSlot he can't edit it
+        if(currentUser?.uid != item.author) holder.editButton.visibility = View.GONE
+
+
         //set the holder fields correctly using the info of the current time slot
         holder.title.text=item.title
         holder.date.text=item.date

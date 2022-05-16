@@ -16,11 +16,14 @@ import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.timeSlotVM
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
     val vm by viewModels<timeSlotVM>()
+
 
     //crate the menu in this fragment for edit timeSlot option
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -26,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -55,6 +57,9 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
     lateinit var saveTimeSlotButton: Button
 
+    //get the user logged in info for author field in the textview
+    var userID = Firebase.auth.currentUser?.uid
+
     //variables used to create the Time Slot
     var title: String = ""
     var description: String = ""
@@ -62,7 +67,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
-    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location)
+    var author:String = userID.toString()
+    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
     val vm by viewModels<timeSlotVM>()
