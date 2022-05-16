@@ -1,31 +1,32 @@
 package com.g30lab3.app.ui.showProfile
 
-import android.content.Context.MODE_PRIVATE
-import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
-import com.g30lab3.app.ui.editProfile.createTagChip
+import com.g30lab3.app.UserVM
+import com.g30lab3.app.models.user
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.FileNotFoundException
 
 
 class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
+    //val userVM by viewModels<UserVM>()
+    var currentUser = Firebase.auth.currentUser
+    lateinit var toShowUser:user
 
     lateinit var fullNameTextView: TextView
     lateinit var nickNameTextView: TextView
@@ -37,6 +38,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         fullNameTextView = view.findViewById(R.id.show_full_name)
         nickNameTextView = view.findViewById(R.id.show_nickname)
         mailTextView = view.findViewById(R.id.show_mail)
@@ -46,13 +49,29 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
-        //check if exist a profile configuration:
+        FirebaseFirestore.getInstance().collection("Users").document(currentUser?.uid!!).get().addOnSuccessListener {
+            Log.d("ProfileDownload","Profile info downloaded")
+            toShowUser = it.toUser()
+            fullNameTextView.text = toShowUser.full_name
+            nickNameTextView.text= toShowUser.nickname
+            mailTextView.text = toShowUser.mail
+            locationTextView.text = toShowUser.location
+            descriptionTextView.text = toShowUser.description
+        }.addOnFailureListener{
+            Log.d("ProfileDownload","Error")
+        }
+
+
+        //USING SHARED PREFS
+        /*
         val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
         fullNameTextView.setText(prefs.getString("FULL_NAME", "Full Name"))
         nickNameTextView.setText(prefs.getString("NICKNAME", "nickname"))
         mailTextView.setText(prefs.getString("EMAIL", "email@address"))
         locationTextView.setText(prefs.getString("LOCATION", "location"))
         descriptionTextView.setText(prefs.getString("DESCRIPTION", "description"))
+
+
 
         //show the skills
         var skills:MutableSet<String>? = prefs.getStringSet("SKILLS", mutableSetOf())
@@ -63,6 +82,9 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             }
         }
         //end of show the skills
+
+
+         */
 
 
         val fab: View = view.findViewById(R.id.floating_action_button)
@@ -94,4 +116,16 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
 
     }
+}
+//convert the retrived data from Firebase to a user object class
+fun DocumentSnapshot.toUser(): user {
+    return user(
+        id = get("id") as String,
+        full_name = get("full_name") as String,
+        nickname = get("nickname") as String,
+        description = get("description") as String,
+        skills = get("skills") as MutableList<String>,
+        location = get("location") as String,
+        mail = get("mail") as String
+    )
 }

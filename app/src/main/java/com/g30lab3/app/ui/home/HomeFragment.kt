@@ -27,7 +27,6 @@ import java.io.FileNotFoundException
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     val vm by viewModels<timeSlotVM>()
-
     var user = Firebase.auth.currentUser
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

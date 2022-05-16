@@ -97,8 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         val user = auth.currentUser
                                         if(user!=null){
                                             //Log.d("USERINFO",user.uid
-                                            var bundle = bundleOf("sayHello" to true)
-                                            findNavController().navigate(R.id.action_loginFragment_to_nav_home,bundle)
+                                            findNavController().navigate(R.id.action_loginFragment_to_nav_home)
                                             //updateUI(user)
                                         }
 

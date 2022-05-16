@@ -19,15 +19,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
+import com.g30lab3.app.UserVM
+import com.g30lab3.app.models.user
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 
+//function used to show a snackbar after creating a timeSlot
+private fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
+    Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        .setBackgroundTint(
+            ContextCompat.getColor(
+                context,
+                if (goodNews) R.color.purple_500 else R.color.red
+            )
+        )
+        .show()
+}
 
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     lateinit var editName: EditText
@@ -42,6 +59,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_PICK_IMAGE = 2
+
+    val db = FirebaseFirestore.getInstance()
+    var curr_user = Firebase.auth.currentUser
+    val user_vm by viewModels<UserVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,8 +116,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
         // Start managing the skills field:
         //if there are saved skills retrive them, if not set the skillsSet to empty set
-        var oldSkillsSet:MutableSet<String>? = showInfo.getStringSet("SKILLS", mutableSetOf()) //skills retrived from sharedPrefs
-        var skillsSet: MutableSet<String>? = mutableSetOf() //the skill set that will be edited in order to save changes with sharedpref.setStringSet
+        var oldSkillsSet: MutableSet<String>? =
+            showInfo.getStringSet("SKILLS", mutableSetOf()) //skills retrived from sharedPrefs
+        var skillsSet: MutableSet<String>? =
+            mutableSetOf() //the skill set that will be edited in order to save changes with sharedpref.setStringSet
         if (oldSkillsSet != null) {
             skillsSet?.addAll(oldSkillsSet)//copy the skills retrived from shared prefs in the editable set
         }
@@ -130,6 +153,29 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                         setTitle("Save changes?")
                         setMessage("Exiting this screen any changes will be saved")
                         setPositiveButton("Yes") { _, _ ->
+                            //TODO save the user profile info on Firebase:
+                            //skills need to be a list in order to be serializable with firebase
+                            user_vm.upload(
+                                user(
+                                    curr_user?.uid!!,
+                                    editName.text.toString(),
+                                    editNickName.text.toString(),
+                                    editDescription.text.toString(),
+                                    skillsSet!!.toMutableList(),
+                                    editLocation.text.toString(),
+                                    editEmail.text.toString()
+                                )
+                            )
+                                .addOnSuccessListener {
+                                    Log.d("UPLOAD", "OK")
+                                    createSnackBar("Profile info saved",view,requireContext(),true)
+                                    drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
+                                    findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
+                                }.addOnFailureListener {
+                                    Log.d("UPLOAD", "ERROR")
+                                    createSnackBar("Error!",view,requireContext(),false)
+                                }
+                            /*
                             val editor =
                                 requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
                                     .edit()
@@ -139,15 +185,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             editor.putString("EMAIL", editEmail.text.toString()).apply()
                             editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
                             editor.putStringSet("SKILLS", skillsSet).apply()
-                            Snackbar.make(view, "Profile info saved", Snackbar.LENGTH_LONG)
-                                .setBackgroundTint(
-                                    ContextCompat.getColor(
-                                        requireContext(),
-                                        R.color.purple_500
-                                    )
-                                ).show()
-                            drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
-                            findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
+                            */
+
                         }
                         setNegativeButton("No") { _, _ ->
                             //do nothing
