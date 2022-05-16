@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
@@ -16,6 +17,10 @@ import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.timeSlotVM
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 
 
@@ -23,8 +28,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     val vm by viewModels<timeSlotVM>()
 
+    var user = Firebase.auth.currentUser
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        // Say hello to the logged user
+        Snackbar.make(view, "Hello ${user?.displayName}", Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.purple_500))
+            .show()
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
 
@@ -38,7 +51,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
             if (it.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
-            }else{
+            } else {
                 emptyMessage.visibility = View.GONE
             }
         }
@@ -47,8 +60,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_nav_home_to_nav_timeSlotEditFragment)
         }
-
-
 
 
     }

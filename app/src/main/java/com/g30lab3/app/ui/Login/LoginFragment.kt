@@ -94,7 +94,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         Log.d("FIREBASESIGNIN", "signInWithCredential:success")
                                         val user = auth.currentUser
                                         if(user!=null){
-                                            Log.d("USERINFO",user.uid)
+                                            //Log.d("USERINFO",user.uid)
                                             findNavController().navigate(R.id.action_loginFragment_to_nav_home)
                                             //updateUI(user)
                                         }
