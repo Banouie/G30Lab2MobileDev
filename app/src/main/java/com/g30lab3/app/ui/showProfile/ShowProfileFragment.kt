@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
 import com.g30lab3.app.models.user
+import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -26,7 +27,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     //val userVM by viewModels<UserVM>()
     var currentUser = Firebase.auth.currentUser
-    lateinit var toShowUser:user
+    lateinit var toShowUser: user
+    var skills: MutableSet<String> = mutableSetOf()
 
     lateinit var fullNameTextView: TextView
     lateinit var nickNameTextView: TextView
@@ -49,17 +51,24 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         profilePicImageView = view.findViewById(R.id.imageView)
 
 
-        FirebaseFirestore.getInstance().collection("Users").document(currentUser?.uid!!).get().addOnSuccessListener {
-            Log.d("ProfileDownload","Profile info downloaded")
-            toShowUser = it.toUser()
-            fullNameTextView.text = toShowUser.full_name
-            nickNameTextView.text= toShowUser.nickname
-            mailTextView.text = toShowUser.mail
-            locationTextView.text = toShowUser.location
-            descriptionTextView.text = toShowUser.description
-        }.addOnFailureListener{
-            Log.d("ProfileDownload","Error")
-        }
+        FirebaseFirestore.getInstance().collection("Users").document(currentUser?.uid!!).get()
+            .addOnSuccessListener {
+                Log.d("ProfileDownload", "Profile info downloaded")
+                toShowUser = it.toUser()
+                fullNameTextView.text = toShowUser.full_name
+                nickNameTextView.text = toShowUser.nickname
+                mailTextView.text = toShowUser.mail
+                locationTextView.text = toShowUser.location
+                descriptionTextView.text = toShowUser.description
+                skills = toShowUser.skills.toMutableSet()
+                //show the skills
+                for (skill in skills) {
+                    skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+                }
+                Log.d("Skills", skills.toString())
+            }.addOnFailureListener {
+                Log.d("ProfileDownload", "Error")
+            }
 
 
         //USING SHARED PREFS
@@ -113,10 +122,9 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             })
 
 
-
-
     }
 }
+
 //convert the retrived data from Firebase to a user object class
 fun DocumentSnapshot.toUser(): user {
     return user(
