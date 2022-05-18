@@ -11,7 +11,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
-class timeSlotVM(application: Application) : AndroidViewModel(application) {
+class TimeSlotVM(application: Application) : AndroidViewModel(application) {
 
     val db = FirebaseFirestore.getInstance()
 

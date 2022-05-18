@@ -170,7 +170,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             )
                                 .addOnSuccessListener {
                                     Log.d("UPLOAD", "OK")
-                                    skillsVM.add(skillsSet)
+                                    skillsVM.add(skillsSet) //upload the declared new skills to Firebase DB
                                     createSnackBar("Profile info saved",view,requireContext(),true)
                                     drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
                                     findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)

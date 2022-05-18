@@ -1,12 +1,8 @@
 package com.g30lab3.app.ui.home
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
@@ -15,18 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
-import com.g30lab3.app.timeSlotVM
+import com.g30lab3.app.TimeSlotVM
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.io.FileNotFoundException
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    val vm by viewModels<timeSlotVM>()
+    val vm by viewModels<TimeSlotVM>()
     var user = Firebase.auth.currentUser
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

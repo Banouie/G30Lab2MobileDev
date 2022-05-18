@@ -36,7 +36,7 @@ class SkillsVM(application: Application) : AndroidViewModel(application) {
         }
     }
 }
-
+//useful to store in Firebase the skill, simple Kotlin strings are not serializable!
 data class Skill(
     var name: String
 )

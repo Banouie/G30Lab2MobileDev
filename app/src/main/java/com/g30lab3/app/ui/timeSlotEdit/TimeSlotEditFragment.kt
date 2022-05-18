@@ -1,6 +1,5 @@
 package com.g30lab3.app.ui.timeSlotEdit
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,15 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
-import com.g30lab3.app.timeSlotVM
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
+import com.g30lab3.app.TimeSlotVM
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -30,7 +24,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
@@ -72,7 +65,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
-    val vm by viewModels<timeSlotVM>()
+    val vm by viewModels<TimeSlotVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
