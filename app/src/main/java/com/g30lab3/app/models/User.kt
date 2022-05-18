@@ -1,13 +1,13 @@
 package com.g30lab3.app.models
 
-class user {
-    var id:String = ""
-    var full_name:String = ""
-    var nickname: String = ""
-    var description:String = ""
-    var skills: MutableList<String> = mutableListOf()
-    var location: String = ""
-    var mail:String = ""
+class User {
+    var id: String
+    var full_name: String
+    var nickname: String
+    var description: String
+    var skills: MutableList<String>
+    var location: String
+    var mail: String
 
     constructor(
         id: String,

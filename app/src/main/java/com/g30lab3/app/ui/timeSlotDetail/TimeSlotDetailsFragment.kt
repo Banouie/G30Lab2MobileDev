@@ -16,11 +16,15 @@ import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.TimeSlotVM
+import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
     val vm by viewModels<TimeSlotVM>()
+    lateinit var to_show_timeSlot: timeSlot
 
 
     //crate the menu in this fragment for edit timeSlot option
@@ -35,11 +39,18 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_editTimeSlot -> {
-                // navigate to edit timeSlot
+                if(to_show_timeSlot.author==Firebase.auth.currentUser?.uid){
+                // navigate to edit timeSlot if the current logged in user is the author of the timeSlot
                 var id = arguments?.get("time_slot_ID") //get the ID of the current timeSlot
                 var bundle = bundleOf("time_slot_ID" to id)//create the bundle with the ID
                 findNavController().navigate(R.id.action_nav_timeSlotDetailsFragment_to_nav_timeSlotEditFragment,bundle)//pass it to the edit Time Slot fragment and navigate
                 true
+                }else{
+                    createSnackBar("You are not the owner",requireView(),requireContext(),false)
+                    true
+                }
+
+
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -55,13 +66,12 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         var location: TextView = view.findViewById(R.id.adv_location)
         var duration: TextView = view.findViewById(R.id.adv_duration)
 
-
         vm.all.observe(requireActivity()) {
 
             //get from the list of timeSLot the correct one selected in the home fragment from the user, its ID is passed to this fragment in the arguments variable
             var result: List<timeSlot> =
                 it.filter { timeSlot -> timeSlot.id == arguments?.get("time_slot_ID") }
-            var to_show_timeSlot: timeSlot = result[0]
+            to_show_timeSlot = result[0]
 
             //Show the details of the selected timeSlot in the various textViews
             title.text = to_show_timeSlot.title

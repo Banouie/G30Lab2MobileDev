@@ -24,21 +24,21 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
-
+/** Function used to show a snackbar*/
+fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
+    Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        .setBackgroundTint(
+            ContextCompat.getColor(
+                context,
+                if (goodNews) R.color.purple_500 else R.color.red
+            )
+        )
+        .show()
+}
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
-    //function used to show a snackbar after creating a timeSlot
-    private fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(
-                ContextCompat.getColor(
-                    context,
-                    if (goodNews) R.color.purple_500 else R.color.red
-                )
-            )
-            .show()
-    }
+
 
 
     lateinit var titleSelector: TextInputLayout
@@ -50,9 +50,6 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
     lateinit var saveTimeSlotButton: Button
 
-    //get the user logged in info for author field in the textview
-    var userID = Firebase.auth.currentUser?.uid
-
     //variables used to create the Time Slot
     var title: String = ""
     var description: String = ""
@@ -60,8 +57,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
-    var author:String = userID.toString()
-    //TODO remove the id field, it was useful with ROOM DB, not necessary with Firebase
+    var author:String = Firebase.auth.currentUser?.uid.toString() //set the timeSlot author with the logged user unique ID for the author field
+    //TODO remove the "id" field, it was useful with ROOM DB, not necessary with Firebase
     var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed

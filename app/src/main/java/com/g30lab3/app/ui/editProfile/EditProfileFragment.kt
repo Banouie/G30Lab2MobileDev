@@ -24,18 +24,17 @@ import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.SkillsVM
 import com.g30lab3.app.UserVM
-import com.g30lab3.app.models.user
+import com.g30lab3.app.models.User
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
 
-//function used to show a snackbar after creating a timeSlot
+/**function used to show a Snackbar after creating a timeSlot */
 private fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
         .setBackgroundTint(
@@ -54,6 +53,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     lateinit var editLocation: EditText
     lateinit var editDescription: EditText
     lateinit var editSkills: EditText
+    lateinit var skillsSet: MutableSet<String>
 
     lateinit var drawer_img: ImageView
     lateinit var drawer_name: TextView
@@ -61,10 +61,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_PICK_IMAGE = 2
 
-    val db = FirebaseFirestore.getInstance()
-    var curr_user = Firebase.auth.currentUser
-    val user_vm by viewModels<UserVM>()
-    val skillsVM by viewModels<SkillsVM>()
+
+    val userVM by viewModels<UserVM>()     // -> to show user info
+    val skillsVM by viewModels<SkillsVM>() // -> to save inserted skills
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,16 +82,51 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         editDescription = view.findViewById(R.id.edit_description)
         editSkills = view.findViewById(R.id.edit_skills)
 
-        // SharedPreference created to fill all the fields in the edit profile fragment
-        val showInfo = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
-        editName.setText(showInfo.getString("FULL_NAME", ""))
-        editLocation.setText(showInfo.getString("LOCATION", ""))
-        editNickName.setText(showInfo.getString("NICKNAME", ""))
-        editEmail.setText(showInfo.getString("EMAIL", ""))
-        editDescription.setText(showInfo.getString("DESCRIPTION", ""))
+        userVM.loggedUser.observe(requireActivity()) {
+            if (it != null) {
+                //show the profile information in the layout:
+                editName.setText(it.full_name)
+                editNickName.setText(it.nickname)
+                editLocation.setText(it.location)
+                editEmail.setText(it.mail)
+                editDescription.setText(it.description)
+                skillsSet = it.skills.toMutableSet()
+                val skillsEditor: TextInputLayout = view.findViewById(R.id.skills_input)
+                val chipGroup: ChipGroup = view.findViewById(R.id.show_skills)
+                if (skillsSet.isNotEmpty()) {
+                    //show the skills in a chipGroup
+                    for (skill in skillsSet) {
+                        chipGroup.addView(
+                            createTagChip(
+                                requireContext(),
+                                skill,
+                                skillsSet,
+                                chipGroup
+                            )
+                        )
+                    }
+                    chipGroup.visibility = View.VISIBLE
+                }
+                //the "x" icon of each skill-chip in the chipGroup will erase that skill from the set
+                skillsEditor.setEndIconOnClickListener {
+                    val newSkill: String = editSkills.text.toString()
+                    skillsSet.add(newSkill)
+                    chipGroup.addView(
+                        createTagChip(
+                            requireContext(),
+                            newSkill,
+                            skillsSet,
+                            chipGroup
+                        )
+                    )
+                    editSkills.setText("")
+                    if (skillsSet.isNotEmpty()) chipGroup.visibility = View.VISIBLE
+                }
+            }
+        }
 
 
-        //show the correct profile Image
+        //[Start] show the correct profile Image
         val profilePicImageView = view.findViewById<ImageView>(R.id.imageView_edit)
         try {
             //if already exists a profile Image set it
@@ -103,8 +137,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         } catch (e: FileNotFoundException) {
             //no profileImage, set default image
         }
+        //[End]
 
-        //create the popup menu for the edit profile image button
+        //[Start] create the popup menu for the edit profile image button
         val photoButton: ImageButton = view.findViewById(R.id.cameraButton)
         photoButton.setOnClickListener {
             val popupMenu: PopupMenu = PopupMenu(requireContext(), photoButton)
@@ -115,35 +150,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             popupMenu.show()
 
         }
-
-        // Start managing the skills field:
-        //if there are saved skills retrive them, if not set the skillsSet to empty set
-        var oldSkillsSet: MutableSet<String>? =
-            showInfo.getStringSet("SKILLS", mutableSetOf()) //skills retrived from sharedPrefs
-        var skillsSet: MutableSet<String>? =
-            mutableSetOf() //the skill set that will be edited in order to save changes with sharedpref.setStringSet
-        if (oldSkillsSet != null) {
-            skillsSet?.addAll(oldSkillsSet)//copy the skills retrived from shared prefs in the editable set
-        }
-        val skillsEditor: TextInputLayout = view.findViewById(R.id.skills_input)
-        val chipGroup: ChipGroup = view.findViewById(R.id.show_skills)
-        if (skillsSet?.isNotEmpty() == true) {
-            //if there are shared skills preferences create a chipset group with retrived skills from shared preferences
-            for (skill in skillsSet) {
-                chipGroup.addView(createTagChip(requireContext(), skill, skillsSet, chipGroup))
-            }
-            chipGroup.visibility = View.VISIBLE
-        }
-
-        skillsEditor.setEndIconOnClickListener {
-            // Respond to end icon presses
-            val newSkill: String = editSkills.text.toString()
-            skillsSet?.add(newSkill)
-            chipGroup.addView(createTagChip(requireContext(), newSkill, skillsSet, chipGroup))
-            editSkills.setText("")
-            if (skillsSet?.isNotEmpty() == true) chipGroup.visibility = View.VISIBLE
-        }
-        // End managing skills field
+        //[End]
 
 
         // Handle back button to navigate to ShowProfile and saving with shared preferences updated profile date
@@ -155,15 +162,13 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                         setTitle("Save changes?")
                         setMessage("Exiting this screen any changes will be saved")
                         setPositiveButton("Yes") { _, _ ->
-                            //TODO save the user profile info on Firebase:
-                            //skills need to be a list in order to be serializable with firebase
-                            user_vm.upload(
-                                user(
-                                    curr_user?.uid!!,
+                            userVM.upload(
+                                User(
+                                    Firebase.auth.currentUser?.uid!!,
                                     editName.text.toString(),
                                     editNickName.text.toString(),
                                     editDescription.text.toString(),
-                                    skillsSet!!.toMutableList(),
+                                    skillsSet!!.toMutableList(), //skills need to be a list in order to be serializable with firebase
                                     editLocation.text.toString(),
                                     editEmail.text.toString()
                                 )
@@ -171,27 +176,18 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                                 .addOnSuccessListener {
                                     Log.d("UPLOAD", "OK")
                                     skillsVM.add(skillsSet) //upload the declared new skills to Firebase DB
-                                    createSnackBar("Profile info saved",view,requireContext(),true)
-                                    drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
+                                    createSnackBar(
+                                        "Profile info saved",
+                                        view,
+                                        requireContext(),
+                                        true
+                                    )
+                                    drawer_name.text = editName.text.toString()//set the name of the user also in the lateral navigation drawer
                                     findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
                                 }.addOnFailureListener {
                                     Log.d("UPLOAD", "ERROR")
-                                    createSnackBar("Error!",view,requireContext(),false)
+                                    createSnackBar("Error!", view, requireContext(), false)
                                 }
-
-
-                            /*
-                            val editor =
-                                requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
-                                    .edit()
-                            editor.putString("FULL_NAME", editName.text.toString()).apply()
-                            editor.putString("NICKNAME", editNickName.text.toString()).apply()
-                            editor.putString("LOCATION", editLocation.text.toString()).apply()
-                            editor.putString("EMAIL", editEmail.text.toString()).apply()
-                            editor.putString("DESCRIPTION", editDescription.text.toString()).apply()
-                            editor.putStringSet("SKILLS", skillsSet).apply()
-                            */
-
                         }
                         setNegativeButton("No") { _, _ ->
                             //do nothing
@@ -258,8 +254,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     }
 }
 
-//this function create a chip in a chip group, if receives also a chipgroup will enable for the created chip the erase button
-// used with an erase button in EditProfileFragment, without in ShowProfileFragment
+/**This function create a chip in a chip group, if receives also a chipgroup will enable for the created chip the erase button
+ * used with an erase button in EditProfileFragment, without in ShowProfileFragment */
 fun createTagChip(
     context: Context,
     chipName: String,

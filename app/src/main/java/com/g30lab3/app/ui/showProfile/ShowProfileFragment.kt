@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
-import com.g30lab3.app.models.user
+import com.g30lab3.app.models.User
 import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.ktx.auth
@@ -25,9 +25,7 @@ import java.io.FileNotFoundException
 
 class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
-    //val userVM by viewModels<UserVM>()
-    var currentUser = Firebase.auth.currentUser
-    lateinit var toShowUser: user
+    val userVM by viewModels<UserVM>()
     var skills: MutableSet<String> = mutableSetOf()
 
     lateinit var fullNameTextView: TextView
@@ -50,51 +48,21 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         skillsChipGroup = view.findViewById(R.id.show_skills)
         profilePicImageView = view.findViewById(R.id.imageView)
 
-
-        FirebaseFirestore.getInstance().collection("Users").document(currentUser?.uid!!).get()
-            .addOnSuccessListener {
-                Log.d("ProfileDownload", "Profile info downloaded")
-                toShowUser = it.toUser()
-                fullNameTextView.text = toShowUser.full_name
-                nickNameTextView.text = toShowUser.nickname
-                mailTextView.text = toShowUser.mail
-                locationTextView.text = toShowUser.location
-                descriptionTextView.text = toShowUser.description
-                skills = toShowUser.skills.toMutableSet()
-                //show the skills
+        userVM.loggedUser.observe(requireActivity()){
+            if(it!=null){
+                Log.d("PPP", "Profile info downloaded")
+                fullNameTextView.text = it.full_name
+                nickNameTextView.text = it.nickname
+                mailTextView.text = it.mail
+                locationTextView.text = it.location
+                descriptionTextView.text = it.description
+                skills = it.skills.toMutableSet()
+                //show the skills in chipGroup
                 for (skill in skills) {
                     skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
                 }
-                Log.d("Skills", skills.toString())
-            }.addOnFailureListener {
-                Log.d("ProfileDownload", "Error")
-            }
-
-
-        //USING SHARED PREFS
-        /*
-        val prefs = requireContext().getSharedPreferences("Profile", MODE_PRIVATE)
-        fullNameTextView.setText(prefs.getString("FULL_NAME", "Full Name"))
-        nickNameTextView.setText(prefs.getString("NICKNAME", "nickname"))
-        mailTextView.setText(prefs.getString("EMAIL", "email@address"))
-        locationTextView.setText(prefs.getString("LOCATION", "location"))
-        descriptionTextView.setText(prefs.getString("DESCRIPTION", "description"))
-
-
-
-        //show the skills
-        var skills:MutableSet<String>? = prefs.getStringSet("SKILLS", mutableSetOf())
-        Log.d("Skills from SharedPref:",skills.toString())
-        if (skills != null) {
-            for (skill in skills){
-                skillsChipGroup.addView(createTagChip(requireContext(),skill,null,null))
             }
         }
-        //end of show the skills
-
-
-         */
-
 
         val fab: View = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener { view ->
@@ -125,15 +93,4 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     }
 }
 
-//convert the retrived data from Firebase to a user object class
-fun DocumentSnapshot.toUser(): user {
-    return user(
-        id = get("id") as String,
-        full_name = get("full_name") as String,
-        nickname = get("nickname") as String,
-        description = get("description") as String,
-        skills = get("skills") as MutableList<String>,
-        location = get("location") as String,
-        mail = get("mail") as String
-    )
-}
+
