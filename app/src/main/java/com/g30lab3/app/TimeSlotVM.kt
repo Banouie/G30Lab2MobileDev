@@ -30,24 +30,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
             }
     }
 
-    //convert the retrived data from Firebase to a timeSlot object class
-    fun DocumentSnapshot.toTimeSlot(): timeSlot {
-        return timeSlot(
-            id = id, //the id of the timeSlot kotlin object will be the ID of the document created from Firebase previously
-            title = get("title") as String,
-            description = get("description") as String,
-            date = get("date") as String,
-            location = get("location") as String,
-            duration = (get("duration") as Long).toInt(),
-            author = if (get("author") != null) get("author") as String else "unknown",
-            time = get("time") as String
-
-        )
-    }
-
-    /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
-
-    //Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc)
+    /**Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc) */
     fun add(timeSlot: timeSlot): Task<Void> {
         if (all.value?.contains(timeSlot) == true) {
             //we need to update an already existing timeSlot
@@ -57,5 +40,25 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        listner.remove()
+    }
 
+
+}
+
+//convert the retrieved data from Firebase to a timeSlot kotlin object class
+fun DocumentSnapshot.toTimeSlot(): timeSlot {
+    return timeSlot(
+        id = id, //the id of the timeSlot kotlin object will be the ID of the document created from Firebase previously
+        title = get("title") as String,
+        description = get("description") as String,
+        date = get("date") as String,
+        location = get("location") as String,
+        duration = (get("duration") as Long).toInt(),
+        author = if (get("author") != null) get("author") as String else "unknown",
+        time = get("time") as String
+
+    )
 }

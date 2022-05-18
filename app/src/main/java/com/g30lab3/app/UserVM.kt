@@ -13,9 +13,10 @@ class UserVM(application: Application) : AndroidViewModel(application) {
 
     val db = FirebaseFirestore.getInstance()
 
-    /*** FUNCTIONS TO INTERACT WITH DB FROM THE APPLICATION ***/
 
 
+
+    /** Save the user profile into Firestore DB, returns the Task in order to specify callbacks where is called **/
     fun upload(user: user): Task<Void> {
         return db.collection("Users").document(user.id).set(user)
     }

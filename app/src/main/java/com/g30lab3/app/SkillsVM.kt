@@ -27,13 +27,18 @@ class SkillsVM(application: Application) : AndroidViewModel(application) {
     /** Function called in EditProfile, save on Firebase in the proper collection the skills inserted from a user.
      * IF the user declare a skill that already exists, it will NOT be added */
     fun add(newSkills: MutableSet<String>) {
-        var x = newSkills.minus(_firebaseSkills.value)//obtain the skills that don't already exist
+        val x = newSkills.minus(_firebaseSkills.value)//obtain the skills that don't already exist
         for (skill in x) {
             FirebaseFirestore.getInstance().collection("Skills").document(skill.toString())
                 .set(Skill(skill.toString())).addOnSuccessListener {
                     Log.d("Skill upload","${skill.toString()} correctly uploaded")
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        listener.remove()
     }
 }
 //useful to store in Firebase the skill, simple Kotlin strings are not serializable!
