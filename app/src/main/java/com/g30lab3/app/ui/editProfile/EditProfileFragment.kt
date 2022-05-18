@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
+import com.g30lab3.app.SkillsVM
 import com.g30lab3.app.UserVM
 import com.g30lab3.app.models.user
 import com.google.android.material.chip.Chip
@@ -63,6 +64,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     val db = FirebaseFirestore.getInstance()
     var curr_user = Firebase.auth.currentUser
     val user_vm by viewModels<UserVM>()
+    val skillsVM by viewModels<SkillsVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -168,6 +170,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             )
                                 .addOnSuccessListener {
                                     Log.d("UPLOAD", "OK")
+                                    skillsVM.add(skillsSet)
                                     createSnackBar("Profile info saved",view,requireContext(),true)
                                     drawer_name.setText(editName.text.toString())//set the saved name of the user also in the navigation drawer
                                     findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
@@ -175,6 +178,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                                     Log.d("UPLOAD", "ERROR")
                                     createSnackBar("Error!",view,requireContext(),false)
                                 }
+
+
                             /*
                             val editor =
                                 requireContext().getSharedPreferences("Profile", MODE_PRIVATE)

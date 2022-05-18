@@ -1,6 +1,7 @@
 package com.g30lab3.app
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,10 +20,10 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
     private val listner: ListenerRegistration
 
     init {
-        listner = FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
-            .addSnapshotListener { value, error ->
+        val collectionRef = db.collection("TimeSlotAdvCollection")
+        listner = collectionRef.addSnapshotListener { value, error ->
                 if (value != null) {
-                    _all.value = if (error != null) emptyList() else value.mapNotNull { d ->
+                    _all.value = if (error != null || value.isEmpty) emptyList() else value.mapNotNull { d ->
                         d.toTimeSlot()
                     }
                 }
@@ -38,7 +39,7 @@ class timeSlotVM(application: Application) : AndroidViewModel(application) {
             date = get("date") as String,
             location = get("location") as String,
             duration = (get("duration") as Long).toInt(),
-            author = if (get("author")!=null) get("author") as String else "unknown",
+            author = if (get("author") != null) get("author") as String else "unknown",
             time = get("time") as String
 
         )

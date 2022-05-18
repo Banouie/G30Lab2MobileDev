@@ -68,6 +68,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var duration: Int = 0
     var location: String = ""
     var author:String = userID.toString()
+    //TODO remove the id field, it was useful with ROOM DB, not necessary with Firebase
     var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
