@@ -41,16 +41,6 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getFromSkill(skill:String):MutableLiveData<MutableList<timeSlot>> {
-        var x = MutableLiveData<MutableList<timeSlot>>()
-        db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).get().addOnSuccessListener {
-            for (element in it.documents){
-                x.value?.add(element.toTimeSlot())
-            }
-        }
-        return x
-
-    }
 
     override fun onCleared() {
         super.onCleared()
