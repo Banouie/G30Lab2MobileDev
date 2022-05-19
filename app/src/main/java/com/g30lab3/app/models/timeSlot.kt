@@ -11,6 +11,7 @@ class timeSlot {
     var duration: Int = 0
     var location: String = ""
     var author: String = ""
+    var skill: String = ""
 
     //secondary constructor
     constructor(
@@ -21,7 +22,8 @@ class timeSlot {
         time: String,
         duration: Int,
         location: String,
-        author: String
+        author: String,
+        skill: String
     ) {
         this.id = id
         this.title = title
@@ -31,6 +33,7 @@ class timeSlot {
         this.duration = duration
         this.location = location
         this.author = author
+        this.skill = skill
     }
 
     fun copy(origin: timeSlot) {
@@ -42,6 +45,7 @@ class timeSlot {
         this.duration = origin.duration
         this.location = origin.location
         this.author = origin.author
+        this.skill = origin.skill
     }
 
     override fun equals(other: Any?): Boolean {
@@ -59,5 +63,5 @@ class timeSlot {
     }
 
     override fun toString() =
-        "{TimeSLot $id -> Title: $title, Description: $description, Date: $date, Time: $time, Duration: $duration, Location: $location\n }"
+        "{TimeSLot $id -> Title: $title, Description: $description, Date: $date, Time: $time, Duration: $duration, Location: $location, Skill: $skill\n }"
 }

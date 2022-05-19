@@ -62,7 +62,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
-    val vm by viewModels<TimeSlotVM>()
+    val timeSlotVM by viewModels<TimeSlotVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,7 +79,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         //if we come in this fragment after the user pressed the edit button of a timeSlot in the Home
         //we have to edit the selected timeSlot, so we set the edit fields to its values
         if (arguments?.get("time_slot_ID") != null) {
-            vm.all.observe(requireActivity()) {
+            timeSlotVM.all.observe(requireActivity()) {
                 //get from the list of timeSLot the correct one selected in the home fragment from the user:
                 var result: List<timeSlot> =
                     it.filter { timeSlot -> timeSlot.id == arguments?.get("time_slot_ID") }
@@ -158,7 +158,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
         requireActivity().onBackPressedDispatcher.addCallback {
-            vm.add(newTimeSlot)
+            timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
                     findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
@@ -170,7 +170,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         }
         // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
         saveTimeSlotButton.setOnClickListener {
-            vm.add(newTimeSlot)
+            timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
                     findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
