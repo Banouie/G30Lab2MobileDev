@@ -33,20 +33,18 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection").whereEqualTo("skill", arguments?.get("skill") as String).get().addOnSuccessListener {elements->
-            for (element in elements){
-                list.add(element.toTimeSlot())
-            }
+        vm.getFromSkill(arguments?.get("skill") as String).observe(requireActivity()) {
             // Data bind the recycler view
-            recyclerView.adapter = TimeSlotAdapter(list)
-
+            recyclerView.adapter = TimeSlotAdapter(it)
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
-            if (list.isEmpty()) {
+            if (it.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
             } else {
                 emptyMessage.visibility = View.GONE
             }
         }
+
+
 
 
         /* Without query

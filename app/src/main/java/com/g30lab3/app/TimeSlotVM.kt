@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.timeSlot
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.*
 
 class TimeSlotVM(application: Application) : AndroidViewModel(application) {
 
@@ -17,6 +15,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
 
     private val _all = MutableLiveData<List<timeSlot>>()
     val all: LiveData<List<timeSlot>> = _all
+    val filtered: MutableLiveData<List<timeSlot>> = MutableLiveData()
     private val listner: ListenerRegistration
 
     init {
@@ -41,6 +40,21 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getFromSkill(skill: String): LiveData<List<timeSlot>> {
+        db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w("ListErr", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+                var filteredList: MutableList<timeSlot> = mutableListOf()
+                for (element in value!!) {
+                    filteredList.add(element.toTimeSlot())
+                }
+                filtered.value=filteredList
+            }
+        return filtered
+    }
 
     override fun onCleared() {
         super.onCleared()
