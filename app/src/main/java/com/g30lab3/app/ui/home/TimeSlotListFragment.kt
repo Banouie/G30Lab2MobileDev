@@ -30,12 +30,16 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         vm.all.observe(requireActivity()) {
-
+            var list = it
+            if(!arguments?.isEmpty!!){
+                var selected = arguments?.get("selected_skill") as String
+                list = it.filter { t -> t.skill==selected }
+            }
             // Data bind the recycler view
-            recyclerView.adapter = TimeSlotAdapter(it)
+            recyclerView.adapter = TimeSlotAdapter(list)
 
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
-            if (it.isEmpty()) {
+            if (list.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
             } else {
                 emptyMessage.visibility = View.GONE

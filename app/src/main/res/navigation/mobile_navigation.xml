@@ -50,11 +50,11 @@
         android:label="@string/show_timeSlot"
         tools:layout="@layout/fragment_time_slot_details" >
         <action
-            android:id="@+id/action_nav_timeSlotDetailsFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
             android:id="@+id/action_nav_timeSlotDetailsFragment_to_nav_timeSlotEditFragment"
             app:destination="@id/nav_timeSlotEditFragment" />
+        <action
+            android:id="@+id/action_nav_timeSlotDetailsFragment_to_skillsListFragment"
+            app:destination="@id/skillsListFragment" />
     </fragment>
 
     <fragment
@@ -63,16 +63,13 @@
         android:label="@string/edit_timeSLot"
         tools:layout="@layout/fragment_time_slot_edit" >
         <action
-            android:id="@+id/action_nav_timeSlotEditFragment_to_nav_home"
-            app:destination="@id/nav_home" />
+            android:id="@+id/action_nav_timeSlotEditFragment_to_skillsListFragment"
+            app:destination="@id/skillsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.g30lab3.app.ui.Login.LoginFragment"
         android:label="LoginFragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_nav_home"
-            app:destination="@id/nav_home" />
         <action
             android:id="@+id/action_loginFragment_to_skillsListFragment"
             app:destination="@id/skillsListFragment" />
@@ -84,6 +81,9 @@
         <action
             android:id="@+id/action_skillsListFragment_to_nav_home"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_skillsListFragment_to_nav_timeSlotEditFragment"
+            app:destination="@id/nav_timeSlotEditFragment" />
     </fragment>
 
 </navigation>

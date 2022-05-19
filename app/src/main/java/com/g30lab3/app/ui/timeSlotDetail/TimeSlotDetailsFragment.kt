@@ -99,10 +99,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             )
         }
 
-        //manage the back button pressure
-        requireActivity().onBackPressedDispatcher.addCallback {
-            findNavController().navigate(R.id.action_nav_timeSlotDetailsFragment_to_nav_home)
-        }
+
 
 
 

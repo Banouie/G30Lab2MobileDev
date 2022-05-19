@@ -181,7 +181,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())
@@ -193,7 +193,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_nav_home)
+                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())
