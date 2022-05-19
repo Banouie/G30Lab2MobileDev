@@ -17,15 +17,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
 
     val vm by viewModels<TimeSlotVM>()
     var user = Firebase.auth.currentUser
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
 

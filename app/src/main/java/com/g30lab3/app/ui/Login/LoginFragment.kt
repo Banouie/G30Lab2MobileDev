@@ -97,7 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         val user = auth.currentUser
                                         if(user!=null){
                                             //Log.d("USERINFO",user.uid
-                                            findNavController().navigate(R.id.action_loginFragment_to_nav_home)
+                                            findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
                                             //updateUI(user)
                                         }
 

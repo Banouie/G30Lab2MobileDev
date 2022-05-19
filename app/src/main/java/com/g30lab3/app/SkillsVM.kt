@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.g30lab3.app.models.timeSlot
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -19,7 +21,7 @@ class SkillsVM(application: Application) : AndroidViewModel(application) {
             .addSnapshotListener { value, error ->
                 if (value != null) {
                     _firebaseSkills.value =
-                        if (error != null) emptyList() else value.mapNotNull { d -> d.toString() }
+                        if (error != null) emptyList() else value.mapNotNull { d -> d.toSkill().name }
                 }
             }
     }
@@ -45,3 +47,9 @@ class SkillsVM(application: Application) : AndroidViewModel(application) {
 data class Skill(
     var name: String
 )
+//convert the retrieved data from Firebase to a timeSlot kotlin object class
+fun DocumentSnapshot.toSkill(): Skill {
+    return Skill(
+        name = get("name") as String
+    )
+}
