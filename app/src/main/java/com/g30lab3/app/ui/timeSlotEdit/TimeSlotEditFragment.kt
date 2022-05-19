@@ -114,6 +114,10 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         descriptionSelector.editText?.doOnTextChanged { text, start, before, count ->
             newTimeSlot.description = text.toString()
         }
+        // ...the same for the skill...
+        skillSelector.editText?.doOnTextChanged { text, start, before, count ->
+            newTimeSlot.skill = text.toString()
+        }
         // ...the same for duration...
         durationSelector.editText?.doOnTextChanged { text, start, before, count ->
             try {
@@ -164,12 +168,11 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             newTimeSlot.date = date
         }
 
-        // *** Skill selection relative code ***
+        // *** Skill selection dropdown initialization code ***
         userVM.loggedUser.observe(requireActivity()) {
             val items = it.skills
             val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, items)
             (skillSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-            //TODO put the selected skill in the timeSlot variable
         }
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
