@@ -40,21 +40,38 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getFromSkill(skill: String): LiveData<List<timeSlot>> {
-        db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w("ListErr", "Listen failed.", error)
-                    return@addSnapshotListener
+    fun getFromSkill(skill: String, order: Boolean, orderField: String): LiveData<List<timeSlot>> {
+        if (!order) {
+            db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w("ListErr", "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+                    var filteredList: MutableList<timeSlot> = mutableListOf()
+                    for (element in value!!) {
+                        filteredList.add(element.toTimeSlot())
+                    }
+                    filtered.value = filteredList
                 }
-                var filteredList: MutableList<timeSlot> = mutableListOf()
-                for (element in value!!) {
-                    filteredList.add(element.toTimeSlot())
+            return filtered
+        }else{
+            db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).orderBy(orderField)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w("ListErr", "Listen failed.", error)
+                        return@addSnapshotListener
+                    }
+                    var filteredList: MutableList<timeSlot> = mutableListOf()
+                    for (element in value!!) {
+                        filteredList.add(element.toTimeSlot())
+                    }
+                    filtered.value = filteredList
                 }
-                filtered.value=filteredList
-            }
-        return filtered
+            return filtered
+        }
     }
+
 
     override fun onCleared() {
         super.onCleared()
