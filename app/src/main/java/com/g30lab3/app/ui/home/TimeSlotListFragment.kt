@@ -1,6 +1,7 @@
 package com.g30lab3.app.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -29,28 +30,28 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var order: Boolean = false
-        var orderby: String = ""
+        var order = false
+        var orderby = ""
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //[Start]manage the order by field
         var orderSelector: TextInputLayout = view.findViewById(R.id.order_field)
-        val orderArguments = listOf("A-Z", "Time", "None")
+        val orderArguments = listOf("Title(A-Z)", "Date", "Do not order")
         val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, orderArguments)
         (orderSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
         orderSelector.editText?.doOnTextChanged { text, _, _, _ ->
-            when (text) {
-                "None" -> {
+            when (text.toString()) {
+                "Do not order" -> {
                     order = false
                 }
                 "Time" -> {
                     order = true
                     orderby = "date"
                 }
-                "A-Z" -> {
+                "Title(A-Z)" -> {
                     order = true
                     orderby = "title"
                 }

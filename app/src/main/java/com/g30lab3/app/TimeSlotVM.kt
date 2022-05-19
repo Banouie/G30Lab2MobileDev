@@ -57,7 +57,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                 }
             //return filtered
         }else{
-            db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).orderBy(orderField)
+            db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).orderBy(orderField,Query.Direction.ASCENDING)
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w("ListErr", "Listen failed.", error)
