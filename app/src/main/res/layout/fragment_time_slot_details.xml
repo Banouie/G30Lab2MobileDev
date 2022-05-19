@@ -99,10 +99,39 @@
                 android:text="Location"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:drawableStartCompat="@drawable/ic_location"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adv_duration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/adv_location"
+                tools:layout_editor_absoluteX="16dp">
+
+                <TextView
+                    android:id="@+id/adv_author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="2"
+                    android:drawablePadding="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:text="Author"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:drawableStartCompat="@drawable/ic_person_outlined" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/go_to_profile_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableRight="@drawable/ic_go"
+                    android:gravity="center"
+                    android:text="Go to profile" />
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
