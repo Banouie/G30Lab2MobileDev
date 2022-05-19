@@ -66,7 +66,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
         val fab: View = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_nav_showProfileFragment_to_nav_editProfileFragment)
+            findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
         }
 
         //set Profile picture
@@ -84,10 +84,12 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().navigate(R.id.action_nav_showProfileFragment_to_nav_home)
+                    findNavController().navigate(R.id.action_showProfileFragment_to_skillsListFragment)
                 }
 
             })
+
+
 
 
     }

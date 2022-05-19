@@ -41,9 +41,6 @@ fun createSnackBar(message: String, view: View, context: Context, goodNews: Bool
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
-
-
-
     lateinit var titleSelector: TextInputLayout
     lateinit var descriptionSelector: TextInputLayout
     lateinit var skillSelector: TextInputLayout
@@ -181,7 +178,9 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
+                    if(findNavController().currentDestination?.id == R.id.timeSlotEditFragment) {
+                        findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
+                    }
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())
@@ -193,7 +192,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
+                    findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())

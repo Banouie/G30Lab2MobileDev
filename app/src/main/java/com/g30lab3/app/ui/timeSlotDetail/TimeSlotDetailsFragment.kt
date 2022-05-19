@@ -43,7 +43,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 // navigate to edit timeSlot if the current logged in user is the author of the timeSlot
                 var id = arguments?.get("time_slot_ID") //get the ID of the current timeSlot
                 var bundle = bundleOf("time_slot_ID" to id)//create the bundle with the ID
-                findNavController().navigate(R.id.action_nav_timeSlotDetailsFragment_to_nav_timeSlotEditFragment,bundle)//pass it to the edit Time Slot fragment and navigate
+                findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_timeSlotEditFragment,bundle)//pass it to the edit Time Slot fragment and navigate
                 true
                 }else{
                     createSnackBar("You are not the owner",requireView(),requireContext(),false)
@@ -99,7 +99,10 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             )
         }
 
-
+        //manage the back button pressure
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment)
+        }
 
 
 

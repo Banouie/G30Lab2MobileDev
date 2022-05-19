@@ -4,68 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/loginFragment">
-
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.g30lab3.app.ui.home.TimeSlotListFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_time_slot_list" >
-        <action
-            android:id="@+id/action_nav_home_to_nav_showProfileFragment"
-            app:destination="@id/nav_showProfileFragment" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_timeSlotDetailsFragment"
-            app:destination="@id/nav_timeSlotDetailsFragment" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_timeSlotEditFragment"
-            app:destination="@id/nav_timeSlotEditFragment" />
-        <action
-            android:id="@+id/action_nav_home_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_editProfileFragment"
-        android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
-        android:label="@string/edit_profile"
-        tools:layout="@layout/fragment_edit_profile" >
-        <action
-            android:id="@+id/action_nav_editProfileFragment_to_nav_showProfileFragment"
-            app:destination="@id/nav_showProfileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_showProfileFragment"
-        android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
-        android:label="@string/show_profile"
-        tools:layout="@layout/fragment_show_profile" >
-        <action
-            android:id="@+id/action_nav_showProfileFragment_to_nav_editProfileFragment"
-            app:destination="@id/nav_editProfileFragment" />
-        <action
-            android:id="@+id/action_nav_showProfileFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_timeSlotDetailsFragment"
-        android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
-        android:label="@string/show_timeSlot"
-        tools:layout="@layout/fragment_time_slot_details" >
-        <action
-            android:id="@+id/action_nav_timeSlotDetailsFragment_to_nav_timeSlotEditFragment"
-            app:destination="@id/nav_timeSlotEditFragment" />
-        <action
-            android:id="@+id/action_nav_timeSlotDetailsFragment_to_skillsListFragment"
-            app:destination="@id/skillsListFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_timeSlotEditFragment"
-        android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
-        android:label="@string/edit_timeSLot"
-        tools:layout="@layout/fragment_time_slot_edit" >
-        <action
-            android:id="@+id/action_nav_timeSlotEditFragment_to_skillsListFragment"
-            app:destination="@id/skillsListFragment" />
-    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.g30lab3.app.ui.Login.LoginFragment"
@@ -79,11 +17,59 @@
         android:name="com.g30lab3.app.ui.home.SkillsListFragment"
         android:label="SkillsListFragment" >
         <action
-            android:id="@+id/action_skillsListFragment_to_nav_home"
-            app:destination="@id/nav_home" />
+            android:id="@+id/action_skillsListFragment_to_timeSlotListFragment"
+            app:destination="@id/timeSlotListFragment" />
         <action
-            android:id="@+id/action_skillsListFragment_to_nav_timeSlotEditFragment"
-            app:destination="@id/nav_timeSlotEditFragment" />
+            android:id="@+id/action_skillsListFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/timeSlotListFragment"
+        android:name="com.g30lab3.app.ui.home.TimeSlotListFragment"
+        android:label="TimeSlotListFragment" >
+        <action
+            android:id="@+id/action_timeSlotListFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
+        <action
+            android:id="@+id/action_timeSlotListFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeSlotDetailsFragment"
+        android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
+        android:label="TimeSlotDetailsFragment" >
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotListFragment"
+            app:destination="@id/timeSlotListFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotEditFragment"
+            app:destination="@id/timeSlotEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeSlotEditFragment"
+        android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
+        android:label="TimeSlotEditFragment" >
+        <action
+            android:id="@+id/action_timeSlotEditFragment_to_skillsListFragment"
+            app:destination="@id/skillsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showProfileFragment"
+        android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
+        android:label="ShowProfileFragment" >
+        <action
+            android:id="@+id/action_showProfileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_showProfileFragment_to_skillsListFragment"
+            app:destination="@id/skillsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
+        android:label="EditProfileFragment" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_showProfileFragment"
+            app:destination="@id/showProfileFragment" />
+    </fragment>
 </navigation>

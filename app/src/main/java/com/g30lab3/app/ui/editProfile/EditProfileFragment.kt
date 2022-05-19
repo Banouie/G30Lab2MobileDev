@@ -183,7 +183,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                                         true
                                     )
                                     drawer_name.text = editName.text.toString()//set the name of the user also in the lateral navigation drawer
-                                    findNavController().navigate(R.id.action_nav_editProfileFragment_to_nav_showProfileFragment)
+                                    findNavController().navigate(R.id.action_editProfileFragment_to_showProfileFragment)
                                 }.addOnFailureListener {
                                     Log.d("UPLOAD", "ERROR")
                                     createSnackBar("Error!", view, requireContext(), false)
