@@ -51,7 +51,6 @@
             android:hint="Description"
             app:endIconMode="clear_text"
             app:helperText="Describe the activity that you offer"
-
             app:helperTextEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +62,30 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_skill_Field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_description_Field"
+            app:startIconDrawable="@drawable/ic_skills"
+            app:helperText="Select one of your skills">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Skill"
+                android:inputType="none"
+                tools:ignore="SpeakableTextPresentCheck"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -80,7 +103,7 @@
             app:helperText="When do you want to do it?"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_description_Field"
+            app:layout_constraintTop_toBottomOf="@+id/edit_skill_Field"
             app:startIconDrawable="@drawable/ic_date_time">
 
             <EditText

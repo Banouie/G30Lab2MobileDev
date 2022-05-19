@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.addCallback
@@ -15,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.TimeSlotVM
+import com.g30lab3.app.UserVM
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -43,6 +46,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
 
     lateinit var titleSelector: TextInputLayout
     lateinit var descriptionSelector: TextInputLayout
+    lateinit var skillSelector: TextInputLayout
     lateinit var dateSelector: EditText
     lateinit var timeSelector: EditText
     lateinit var durationSelector: TextInputLayout
@@ -58,17 +62,21 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var duration: Int = 0
     var location: String = ""
     var author:String = Firebase.auth.currentUser?.uid.toString() //set the timeSlot author with the logged user unique ID for the author field
+    var skill:String = ""
     //TODO remove the "id" field, it was useful with ROOM DB, not necessary with Firebase
-    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author)
+    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author,skill)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
     val timeSlotVM by viewModels<TimeSlotVM>()
+    // variable of viewModel to grant access to the logged in user information, specifically the skills declared in its profile
+    val userVM by viewModels<UserVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         titleSelector = view.findViewById(R.id.edit_title_Field)
         descriptionSelector = view.findViewById(R.id.edit_description_Field)
+        skillSelector = view.findViewById(R.id.edit_skill_Field)
         dateSelector = view.findViewById(R.id.edit_date)
         timeSelector = view.findViewById(R.id.edit_time)
         durationSelector = view.findViewById(R.id.edit_duration_Field)
@@ -154,6 +162,14 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             date = format.format(utc.time)
             dateSelector.setText(date)
             newTimeSlot.date = date
+        }
+
+        // *** Skill selection relative code ***
+        userVM.loggedUser.observe(requireActivity()) {
+            val items = it.skills
+            val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, items)
+            (skillSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+            //TODO put the selected skill in the timeSlot variable
         }
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home

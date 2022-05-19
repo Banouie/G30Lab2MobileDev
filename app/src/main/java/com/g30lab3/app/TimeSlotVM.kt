@@ -22,12 +22,13 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
     init {
         val collectionRef = db.collection("TimeSlotAdvCollection")
         listner = collectionRef.addSnapshotListener { value, error ->
-                if (value != null) {
-                    _all.value = if (error != null || value.isEmpty) emptyList() else value.mapNotNull { d ->
+            if (value != null) {
+                _all.value =
+                    if (error != null || value.isEmpty) emptyList() else value.mapNotNull { d ->
                         d.toTimeSlot()
                     }
-                }
             }
+        }
     }
 
     /**Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc) */
@@ -58,7 +59,8 @@ fun DocumentSnapshot.toTimeSlot(): timeSlot {
         location = get("location") as String,
         duration = (get("duration") as Long).toInt(),
         author = if (get("author") != null) get("author") as String else "unknown",
-        time = get("time") as String
-
+        time = get("time") as String,
+        //TODO Just for debug, improve the skill line!
+        skill = if (get("skill") != null) get("skill") as String else ""
     )
 }
