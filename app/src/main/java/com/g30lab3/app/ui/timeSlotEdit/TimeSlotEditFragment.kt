@@ -97,6 +97,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 //set the edit fields of the fragment correcty:
                 titleSelector.editText?.setText(toShowTimeSlot.title)
                 descriptionSelector.editText?.setText(toShowTimeSlot.description)
+                skillSelector.helperText = "If you don't select another skill the previous one will be maintained"
                 dateSelector.setText(toShowTimeSlot.date)
                 timeSelector.setText(toShowTimeSlot.time)
                 durationSelector.editText?.setText(toShowTimeSlot.duration.toString())

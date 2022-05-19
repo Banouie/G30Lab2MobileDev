@@ -62,6 +62,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
         var title: TextView = view.findViewById(R.id.adv_title)
         var description: TextView = view.findViewById(R.id.adv_description)
+        var skill : TextView = view.findViewById(R.id.adv_skill)
         var dateTime: TextView = view.findViewById(R.id.adv_date_time)
         var location: TextView = view.findViewById(R.id.adv_location)
         var duration: TextView = view.findViewById(R.id.adv_duration)
@@ -78,6 +79,10 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             //HtmlCompat.fromHtml just format the string in order to obtain the names of the fields of the time slot in bold
             description.text = HtmlCompat.fromHtml(
                 "<b>Description</b>:<br> " + to_show_timeSlot.description,
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            skill.text = HtmlCompat.fromHtml(
+                "<b>Skill</b>:<br> " + to_show_timeSlot.skill,
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
             location.text = HtmlCompat.fromHtml(

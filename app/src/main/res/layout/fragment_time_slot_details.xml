@@ -41,10 +41,23 @@
                 android:text="Description of the adv"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:drawableStartCompat="@drawable/ic_info"
-                app:layout_constraintBottom_toTopOf="@+id/adv_date_time"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adv_title" />
+
+            <TextView
+                android:id="@+id/adv_skill"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="Skill"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:drawableStartCompat="@drawable/ic_skills"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adv_description" />
 
             <TextView
                 android:id="@+id/adv_date_time"
@@ -59,7 +72,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/adv_duration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adv_description" />
+                app:layout_constraintTop_toBottomOf="@+id/adv_skill" />
 
             <TextView
                 android:id="@+id/adv_duration"
