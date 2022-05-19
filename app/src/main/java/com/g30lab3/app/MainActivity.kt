@@ -1,20 +1,27 @@
 package com.g30lab3.app
 
+import android.content.DialogInterface
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.g30lab3.app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.FileNotFoundException
@@ -41,7 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_showProfileFragment,
+                R.id.nav_showProfileFragment
             ), drawerLayout
         )
 
@@ -65,6 +72,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } catch (e: FileNotFoundException) {
             //no profile image, set default one
         }
+
+        //[Start] Button for logout
+        val btnLogout = findViewById<Button>(R.id.button_logout)
+
+        btnLogout.setOnClickListener{
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle("Exit App")
+            alertDialogBuilder.setMessage("Are you sure you want to log out?")
+            alertDialogBuilder.setPositiveButton("Yes") { _: DialogInterface, i: Int ->
+                Firebase.auth.signOut()
+                Snackbar.make(findViewById<View>(android.R.id.content).rootView,"Logged out",Snackbar.LENGTH_LONG).show()
+                //TODO navigate to the login fragment
+            }
+            alertDialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, i: Int -> }
+            var alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
+        //[End]
 
 
 
