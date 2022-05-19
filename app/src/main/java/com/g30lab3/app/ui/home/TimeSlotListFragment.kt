@@ -13,8 +13,10 @@ import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.models.timeSlot
+import com.g30lab3.app.toTimeSlot
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -27,9 +29,27 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         super.onViewCreated(view, savedInstanceState)
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
-        lateinit var list : List<timeSlot>
+        var list : MutableList<timeSlot> = mutableListOf()
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection").whereEqualTo("skill", arguments?.get("skill") as String).get().addOnSuccessListener {elements->
+            for (element in elements){
+                list.add(element.toTimeSlot())
+            }
+            // Data bind the recycler view
+            recyclerView.adapter = TimeSlotAdapter(list)
+
+            //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
+            if (list.isEmpty()) {
+                emptyMessage.visibility = View.VISIBLE
+            } else {
+                emptyMessage.visibility = View.GONE
+            }
+        }
+
+
+        /* Without query
         vm.all.observe(requireActivity()) {
             list = it.filter { t -> t.skill==arguments?.get("selected_skill") }
             // Data bind the recycler view
@@ -42,6 +62,8 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
                 emptyMessage.visibility = View.GONE
             }
         }
+
+         */
 
         var addButton: FloatingActionButton = view.findViewById(R.id.floating_add_button)
         addButton.setOnClickListener {

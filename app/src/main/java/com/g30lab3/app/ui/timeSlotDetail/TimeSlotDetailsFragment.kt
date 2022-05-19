@@ -1,12 +1,14 @@
 package com.g30lab3.app.ui.timeSlotDetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
@@ -99,10 +101,15 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             )
         }
 
-        //manage the back button pressure
-        requireActivity().onBackPressedDispatcher.addCallback {
-            findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment)
-        }
+        //manage the back button pressure to go back in the list of timeSlots, we need to pass in a bundle
+        // the actual skill to retrieve timeSlots there
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment, bundleOf("skill" to to_show_timeSlot.skill))
+                }
+            })
 
 
 
