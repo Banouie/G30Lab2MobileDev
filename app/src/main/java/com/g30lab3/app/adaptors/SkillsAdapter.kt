@@ -33,7 +33,7 @@ class SkillsAdapter(val data: List<String>) :
         var bundle = bundleOf("selected_skill" to item)
         //send the bundle to the fragment that shows the related timeSlot for the selected skill
         holder.card.setOnClickListener {
-            holder.view.findNavController().navigate(R.id.action_skillsListFragment_to_nav_home,bundle)
+            holder.view.findNavController().navigate(R.id.action_skillsListFragment_to_timeSlotListFragment,bundle)
         }
     }
 

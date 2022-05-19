@@ -56,12 +56,12 @@ class TimeSlotAdapter(val data: List<timeSlot>) :
 
         holder.editButton.setOnClickListener {
             //pass the ID of the selected time slot to the timeSlotEdit fragment in order to allow it to show the details of the correct Time Slot
-            holder.view.findNavController().navigate(R.id.action_nav_home_to_nav_timeSlotEditFragment,bundle)
+            holder.view.findNavController().navigate(R.id.action_timeSlotListFragment_to_timeSlotEditFragment,bundle)
         }
 
         holder.card.setOnClickListener {
             //if the user clicks on the time slot a navigation to the fragment details of the time slot has to happen
-            holder.view.findNavController().navigate(R.id.action_nav_home_to_nav_timeSlotDetailsFragment,bundle)
+            holder.view.findNavController().navigate(R.id.action_timeSlotListFragment_to_timeSlotDetailsFragment,bundle)
         }
 
 

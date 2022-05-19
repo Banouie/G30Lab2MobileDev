@@ -36,7 +36,7 @@ class SkillsListFragment : Fragment(R.layout.fragment_skills_list) {
 
         var addButton: FloatingActionButton = view.findViewById(R.id.floating_add_button_in_skillList)
         addButton.setOnClickListener {
-            findNavController().navigate(R.id.action_skillsListFragment_to_nav_timeSlotEditFragment)
+            findNavController().navigate(R.id.action_skillsListFragment_to_timeSlotEditFragment)
         }
 
     }

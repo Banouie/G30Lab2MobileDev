@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -27,6 +28,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+
 /** Function used to show a snackbar*/
 fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
@@ -40,9 +42,6 @@ fun createSnackBar(message: String, view: View, context: Context, goodNews: Bool
 }
 
 class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
-
-
-
 
     lateinit var titleSelector: TextInputLayout
     lateinit var descriptionSelector: TextInputLayout
@@ -61,13 +60,17 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     var time: String = ""
     var duration: Int = 0
     var location: String = ""
-    var author:String = Firebase.auth.currentUser?.uid.toString() //set the timeSlot author with the logged user unique ID for the author field
-    var skill:String = ""
+    var author: String =
+        Firebase.auth.currentUser?.uid.toString() //set the timeSlot author with the logged user unique ID for the author field
+    var skill: String = ""
+
     //TODO remove the "id" field, it was useful with ROOM DB, not necessary with Firebase
-    var newTimeSlot: timeSlot = timeSlot("", title, description, date, time, duration, location,author,skill)
+    var newTimeSlot: timeSlot =
+        timeSlot("", title, description, date, time, duration, location, author, skill)
 
     // variable of viewModel to grant access to the DB, used to add the created time slot to it after back button pressed or save button pressed
     val timeSlotVM by viewModels<TimeSlotVM>()
+
     // variable of viewModel to grant access to the logged in user information, specifically the skills declared in its profile
     val userVM by viewModels<UserVM>()
 
@@ -97,7 +100,8 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 //set the edit fields of the fragment correcty:
                 titleSelector.editText?.setText(toShowTimeSlot.title)
                 descriptionSelector.editText?.setText(toShowTimeSlot.description)
-                skillSelector.helperText = "If you don't select another skill the previous one will be maintained"
+                skillSelector.helperText =
+                    "If you don't select another skill the previous one will be maintained"
                 dateSelector.setText(toShowTimeSlot.date)
                 timeSelector.setText(toShowTimeSlot.time)
                 durationSelector.editText?.setText(toShowTimeSlot.duration.toString())
@@ -177,23 +181,29 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         }
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
-        requireActivity().onBackPressedDispatcher.addCallback {
-            timeSlotVM.add(newTimeSlot)
-                .addOnSuccessListener {
-                    createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    timeSlotVM.add(newTimeSlot)
+                        .addOnSuccessListener {
+                            createSnackBar("Saved", view, requireContext(), true)
+                            if (findNavController().currentDestination?.id == R.id.timeSlotEditFragment) {
+                                findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.d("FirebaseError", it.toString())
+                            createSnackBar("Something went wrong", view, requireContext(), false)
+                        }
                 }
-                .addOnFailureListener {
-                    Log.d("FirebaseError", it.toString())
-                    createSnackBar("Something went wrong", view, requireContext(), false)
-                }
-        }
+            })
         // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
         saveTimeSlotButton.setOnClickListener {
             timeSlotVM.add(newTimeSlot)
                 .addOnSuccessListener {
                     createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_nav_timeSlotEditFragment_to_skillsListFragment)
+                    findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
                 }
                 .addOnFailureListener {
                     Log.d("FirebaseError", it.toString())
