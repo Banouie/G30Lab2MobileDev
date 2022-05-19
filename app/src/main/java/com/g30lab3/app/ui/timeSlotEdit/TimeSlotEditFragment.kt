@@ -22,6 +22,7 @@ import com.g30lab3.app.UserVM
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.ktx.auth
@@ -51,7 +52,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
     lateinit var durationSelector: TextInputLayout
     lateinit var locationSelector: TextInputLayout
 
-    lateinit var saveTimeSlotButton: Button
+    lateinit var infoTimeSlot: MaterialTextView
 
     //variables used to create the Time Slot
     var title: String = ""
@@ -85,7 +86,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         durationSelector = view.findViewById(R.id.edit_duration_Field)
         locationSelector = view.findViewById(R.id.edit_location_Field)
 
-        saveTimeSlotButton = view.findViewById(R.id.create_timeSlot)
+        infoTimeSlot = view.findViewById(R.id.time_slot_info)
 
         //if we come in this fragment after the user pressed the edit button of a timeSlot in the Home
         //we have to edit the selected timeSlot, so we set the edit fields to its values
@@ -107,7 +108,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                 durationSelector.editText?.setText(toShowTimeSlot.duration.toString())
                 locationSelector.editText?.setText(toShowTimeSlot.location)
                 //change the text of the button from "create" to "update"
-                saveTimeSlotButton.text = "Update Time Slot"
+                infoTimeSlot.text = "Press back to update Time Slot"
             }
         }
 
@@ -198,18 +199,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                         }
                 }
             })
-        // Manage the SAVE BUTTON pressed event doing the same stuff done in the back button pressed case
-        saveTimeSlotButton.setOnClickListener {
-            timeSlotVM.add(newTimeSlot)
-                .addOnSuccessListener {
-                    createSnackBar("Saved", view, requireContext(), true)
-                    findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
-                }
-                .addOnFailureListener {
-                    Log.d("FirebaseError", it.toString())
-                    createSnackBar("Something went wrong", view, requireContext(), false)
-                }
-        }
+
 
 
     }

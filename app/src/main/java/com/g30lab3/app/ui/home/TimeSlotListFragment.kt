@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.TimeSlotVM
+import com.g30lab3.app.models.timeSlot
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -26,16 +27,16 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         super.onViewCreated(view, savedInstanceState)
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
-
+        lateinit var list : List<timeSlot>
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         vm.all.observe(requireActivity()) {
-
+            list = it.filter { t -> t.skill==arguments?.get("selected_skill") }
             // Data bind the recycler view
-            recyclerView.adapter = TimeSlotAdapter(it.filter { t -> t.skill==arguments?.get("selected_skill") })
+            recyclerView.adapter = TimeSlotAdapter(list)
 
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
-            if (it.isEmpty()) {
+            if (list.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
             } else {
                 emptyMessage.visibility = View.GONE
