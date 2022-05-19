@@ -1,9 +1,11 @@
 package com.g30lab3.app.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
@@ -13,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.TimeSlotVM
-import com.g30lab3.app.models.timeSlot
-import com.g30lab3.app.toTimeSlot
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -29,11 +29,38 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var order: Boolean = false
+        var orderby: String = ""
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        vm.getFromSkill(arguments?.get("skill") as String,true,"title").observe(requireActivity()) {
+        //[Start]manage the order by field
+        var orderSelector: TextInputLayout = view.findViewById(R.id.order_field)
+        val orderArguments = listOf("A-Z", "Time", "None")
+        val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, orderArguments)
+        (orderSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+
+        orderSelector.editText?.doOnTextChanged { text, _, _, _ ->
+            when (text) {
+                "None" -> {
+                    order = false
+                }
+                "Time" -> {
+                    order = true
+                    orderby = "date"
+                }
+                "A-Z" -> {
+                    order = true
+                    orderby = "title"
+                }
+            }
+            vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
+        }
+        //[End]
+        //[Start] RecyclerView
+        vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
+        vm.filtered.observe(requireActivity()) {
             // Data bind the recycler view
             recyclerView.adapter = TimeSlotAdapter(it)
 
@@ -44,8 +71,14 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
                 emptyMessage.visibility = View.GONE
             }
         }
+        /*
+        vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
+            .observe(requireActivity()) {
 
+            }
 
+         */
+        //[End] RecyclerView
 
 
         /* Without query

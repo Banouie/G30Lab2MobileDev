@@ -40,7 +40,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getFromSkill(skill: String, order: Boolean, orderField: String): LiveData<List<timeSlot>> {
+    fun getFromSkill(skill: String, order: Boolean, orderField: String) {
         if (!order) {
             db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill)
                 .addSnapshotListener { value, error ->
@@ -55,7 +55,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     }
                     filtered.value = filteredList
                 }
-            return filtered
+            //return filtered
         }else{
             db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).orderBy(orderField)
                 .addSnapshotListener { value, error ->
@@ -70,7 +70,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     }
                     filtered.value = filteredList
                 }
-            return filtered
+            //return filtered
         }
     }
 
