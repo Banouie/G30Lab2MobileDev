@@ -46,6 +46,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w("ListErr", "Listen failed.", error)
+                        filtered.value = mutableListOf()
                         return@addSnapshotListener
                     }
                     var filteredList: MutableList<timeSlot> = mutableListOf()
@@ -60,6 +61,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                 .addSnapshotListener { value, error ->
                     if (error != null) {
                         Log.w("ListErr", "Listen failed.", error)
+                        filtered.value = mutableListOf()
                         return@addSnapshotListener
                     }
                     var filteredList: MutableList<timeSlot> = mutableListOf()

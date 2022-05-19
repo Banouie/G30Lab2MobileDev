@@ -1,6 +1,7 @@
 package com.g30lab3.app.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -29,13 +30,13 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         super.onViewCreated(view, savedInstanceState)
 
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
-        var list : MutableList<timeSlot> = mutableListOf()
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         vm.getFromSkill(arguments?.get("skill") as String,true,"title").observe(requireActivity()) {
             // Data bind the recycler view
             recyclerView.adapter = TimeSlotAdapter(it)
+
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
             if (it.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
