@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.g30lab3.app.ui.Login.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="Login" >
         <action
             android:id="@+id/action_loginFragment_to_skillsListFragment"
             app:destination="@id/skillsListFragment" />
@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/skillsListFragment"
         android:name="com.g30lab3.app.ui.home.SkillsListFragment"
-        android:label="SkillsListFragment" >
+        android:label="Available Skills" >
         <action
             android:id="@+id/action_skillsListFragment_to_timeSlotListFragment"
             app:destination="@id/timeSlotListFragment" />
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/timeSlotListFragment"
         android:name="com.g30lab3.app.ui.home.TimeSlotListFragment"
-        android:label="TimeSlotListFragment" >
+        android:label="Time Slots" >
         <action
             android:id="@+id/action_timeSlotListFragment_to_timeSlotDetailsFragment"
             app:destination="@id/timeSlotDetailsFragment" />
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/timeSlotDetailsFragment"
         android:name="com.g30lab3.app.ui.timeSlotDetail.TimeSlotDetailsFragment"
-        android:label="TimeSlotDetailsFragment" >
+        android:label="Time Slot Details" >
         <action
             android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotListFragment"
             app:destination="@id/timeSlotListFragment" />
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/timeSlotEditFragment"
         android:name="com.g30lab3.app.ui.timeSlotEdit.TimeSlotEditFragment"
-        android:label="TimeSlotEditFragment" >
+        android:label="Edit Time Slot" >
         <action
             android:id="@+id/action_timeSlotEditFragment_to_skillsListFragment"
             app:destination="@id/skillsListFragment" />
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/showProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
-        android:label="ShowProfileFragment" >
+        android:label="Profile info" >
         <action
             android:id="@+id/action_showProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -67,7 +67,7 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.g30lab3.app.ui.editProfile.EditProfileFragment"
-        android:label="EditProfileFragment" >
+        android:label="Edit Profile" >
         <action
             android:id="@+id/action_editProfileFragment_to_showProfileFragment"
             app:destination="@id/showProfileFragment" />

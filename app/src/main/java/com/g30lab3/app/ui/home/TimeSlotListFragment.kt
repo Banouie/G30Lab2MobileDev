@@ -36,12 +36,13 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        //[Start]manage the order by field
+        //[Start] Manage the order by field
         var orderSelector: TextInputLayout = view.findViewById(R.id.order_field)
         val orderArguments = listOf("Title(A-Z)", "Date", "Do not order")
         val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, orderArguments)
         (orderSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-
+        // when the selection of the "order by" field change, this function will correctly set the values of "order" and "orderby" to call the "getFromSkill" function in order to
+        // update/refresh the list of timeSlot and have it ordered
         orderSelector.editText?.doOnTextChanged { text, _, _, _ ->
             when (text.toString()) {
                 "Do not order" -> {
@@ -59,12 +60,13 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
             vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
         }
         //[End]
+
         //[Start] RecyclerView
-        vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
+        vm.getFromSkill(arguments?.get("skill") as String, order, orderby)//initialization of the list to show it in RecyclerView
+
         vm.filtered.observe(requireActivity()) {
             // Data bind the recycler view
             recyclerView.adapter = TimeSlotAdapter(it)
-
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
             if (it.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
@@ -72,32 +74,8 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
                 emptyMessage.visibility = View.GONE
             }
         }
-        /*
-        vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
-            .observe(requireActivity()) {
 
-            }
-
-         */
-        //[End] RecyclerView
-
-
-        /* Without query
-        vm.all.observe(requireActivity()) {
-            list = it.filter { t -> t.skill==arguments?.get("selected_skill") }
-            // Data bind the recycler view
-            recyclerView.adapter = TimeSlotAdapter(list)
-
-            //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
-            if (list.isEmpty()) {
-                emptyMessage.visibility = View.VISIBLE
-            } else {
-                emptyMessage.visibility = View.GONE
-            }
-        }
-
-         */
-
+        // Manage floating action button to create a new timeSlot
         var addButton: FloatingActionButton = view.findViewById(R.id.floating_add_button)
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_timeSlotListFragment_to_timeSlotEditFragment)

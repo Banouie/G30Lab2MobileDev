@@ -40,6 +40,9 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
+    /**Function that update the value of the "filtered" variable of this ViewModel, which is a List of timeSlots. The list will contain all the timeslots with the passed skill associated.
+     * If the argument "order" is true this function will order the result of the query respect to the timeslots field passed with the"orderField" argument*/
     fun getFromSkill(skill: String, order: Boolean, orderField: String) {
         if (!order) {
             db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill)
@@ -55,7 +58,6 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     }
                     filtered.value = filteredList
                 }
-            //return filtered
         }else{
             db.collection("TimeSlotAdvCollection").whereEqualTo("skill", skill).orderBy(orderField,Query.Direction.ASCENDING)
                 .addSnapshotListener { value, error ->
@@ -70,7 +72,6 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     }
                     filtered.value = filteredList
                 }
-            //return filtered
         }
     }
 
