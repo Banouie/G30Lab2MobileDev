@@ -9,23 +9,53 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.R
+import com.g30lab3.app.UserVM
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
+
+    /**Function that properly set the image in the drawer and the name of the user after login success*/
+    private fun updateDrawer(){
+        val userVM by viewModels<UserVM>()
+        val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        val drawerProfileImage: ImageView = headerView.findViewById(R.id.drawer_profile_img)
+        val drawerUserName: TextView = headerView.findViewById(R.id.drawer_name)
+        //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
+        //set the image of the user and the name in the drawer
+        userVM.loggedUser.observe(requireActivity()){
+            val imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + it.id)
+            Glide
+                .with(requireActivity())
+                .load(imageRef)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .circleCrop()
+                .into(drawerProfileImage)
+            drawerUserName.text = it.full_name
+        }
+    }
 
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
@@ -97,9 +127,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         Log.d("FIREBASESIGNIN", "signInWithCredential:success")
                                         val user = auth.currentUser
                                         if(user!=null){
-                                            //Log.d("USERINFO",user.uid
+                                            updateDrawer()
                                             findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
-                                            //updateUI(user)
+
                                         }
 
                                     } else {
@@ -123,4 +153,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
 }
+
 

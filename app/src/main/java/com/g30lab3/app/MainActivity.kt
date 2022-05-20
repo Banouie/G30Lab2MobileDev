@@ -1,7 +1,6 @@
 package com.g30lab3.app
 
 import android.content.DialogInterface
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -26,17 +25,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.FileNotFoundException
-
-
-
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
-    val userVm by viewModels<UserVM>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,22 +56,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
-        //set the image of the user and the name in the drawer
-        userVm.loggedUser.observe(this){
-            val hView = binding.navView.getHeaderView(0)
-            var drawerProfileImage: ImageView = hView.findViewById(R.id.drawer_profile_img)
-            var drawerUserName: TextView = hView.findViewById(R.id.drawer_name)
-            var imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + it.id)
-            Glide
-                .with(this)
-                .load(imageRef)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .circleCrop()
-                .into(drawerProfileImage)
-            drawerUserName.text = it.full_name
-        }
+
+
+
 
 
         //[Start] Button for logout
@@ -97,7 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         //[End]
 
-        FirebaseFirestoreSettings.Builder().isPersistenceEnabled = false
+        //FirebaseFirestoreSettings.Builder().isPersistenceEnabled = false
 
 
 
