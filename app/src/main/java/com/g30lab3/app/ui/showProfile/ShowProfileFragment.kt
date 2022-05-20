@@ -120,8 +120,13 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         }
 
         //set Profile picture from firebase
-        Glide.with(this).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
-
+        Glide
+            .with(this)
+            .load(imageRef)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .placeholder(R.drawable.ic_download)
+            .into(profilePicImageView)
 
 
         //Handle back button pressed, go to Home Screen

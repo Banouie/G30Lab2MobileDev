@@ -255,8 +255,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             var inputStream = FileInputStream(context?.filesDir.toString() + "/profilePic.jpg")
             imageRef.putStream(inputStream)
                 .addOnSuccessListener {
-                    imageView?.setImageBitmap(imageBitmap)
-                    drawer_img.setImageBitmap(imageBitmap)//update also the image in the navigation drawer
+                    Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).into(profilePicImageView)
                     createSnackBar("Image saved", requireView(), requireContext(), true)
                 }.addOnFailureListener {
                     createSnackBar("Error saving image", requireView(), requireContext(), false)
@@ -273,10 +272,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     .addOnFailureListener {
                         createSnackBar("Error saving image", requireView(), requireContext(), false)
                     }.addOnSuccessListener {
+                        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).into(profilePicImageView)
                         createSnackBar("Image saved", requireView(), requireContext(), true)
-                        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
-                        //imageView?.setImageURI(imageUri)
-                        //drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
                     }
 
             }
