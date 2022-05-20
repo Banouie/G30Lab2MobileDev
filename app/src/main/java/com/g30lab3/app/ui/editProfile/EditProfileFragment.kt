@@ -36,6 +36,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 
 
@@ -227,9 +228,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         return true
     }
 
-
+    //TODO use a viewmodel.observer for refresh the image in imageview
     //Handle the photo selected from gallery or from camera and show as profile picture
-    //Adapted from previous lab
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -243,15 +243,20 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             //get the image captured from the camera
             val imageBitmap: Bitmap = data?.extras?.get("data") as Bitmap
-
-            //save bitmap image as jpg
+            //save bitmap image as jpg (create the file)
             requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use { f ->
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, f)
             }
-            //TODO retrieve the image file and upload it on storage
-            //display image in ImageView
-            imageView?.setImageBitmap(imageBitmap)
-            drawer_img.setImageBitmap(imageBitmap)//update also the image in the navigation drawer
+            //retrieve the file (using an Input Stream) and upload it on Firebase
+            var inputStream = FileInputStream(context?.filesDir.toString()+ "/profilePic.jpg")
+            imageRef.putStream(inputStream)
+                .addOnSuccessListener {
+                    imageView?.setImageBitmap(imageBitmap)
+                    drawer_img.setImageBitmap(imageBitmap)//update also the image in the navigation drawer
+                    createSnackBar("Image saved", requireView(), requireContext(), true)
+                }.addOnFailureListener {
+                    createSnackBar("Error saving image", requireView(), requireContext(), false)
+                }
         }
         if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_PICK_IMAGE) {
             //get the URI of the image from gallery
@@ -259,18 +264,15 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             //check if is not null since the createSource method above need a non null URI
             if (imageUri != null) {
                 val source = ImageDecoder.createSource(requireActivity().contentResolver, imageUri)
-                val imageBitmap: Bitmap = ImageDecoder.decodeBitmap(source)
-                //save the image in app internal storage
-                requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use {
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-                }
-                imageRef.putFile(imageUri).addOnFailureListener {
-                    Log.d("UPIMG", it.message.toString())
-                }.addOnSuccessListener {
-                    createSnackBar("Image saved",requireView(),requireContext(),true)
-                    imageView?.setImageURI(imageUri)
-                    drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
-                }
+                //save the image in Firebase storage
+                imageRef.putFile(imageUri)
+                    .addOnFailureListener {
+                        createSnackBar("Error saving image", requireView(), requireContext(), false)
+                    }.addOnSuccessListener {
+                        createSnackBar("Image saved", requireView(), requireContext(), true)
+                        imageView?.setImageURI(imageUri)
+                        drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
+                    }
 
             }
         }
