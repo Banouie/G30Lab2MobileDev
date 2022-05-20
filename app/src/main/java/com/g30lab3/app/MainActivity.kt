@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,12 +17,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.io.FileNotFoundException
 
 
@@ -32,8 +36,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
+    val userVm by viewModels<UserVM>()
 
-    //test
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,21 +63,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
         //set the image of the user and the name in the drawer
-        val hView = binding.navView.getHeaderView(0)
-        var ProfileImage: ImageView = hView.findViewById(R.id.drawer_profile_img)
-        var UserName: TextView = hView.findViewById(R.id.drawer_name)
-        //set User name in drawer
-        val prefs = getSharedPreferences("Profile", AppCompatActivity.MODE_PRIVATE)
-        UserName.setText(prefs.getString("FULL_NAME", ""))
-        //set Profile picture in drawer
-        try {
-            //if already exists a profile Image set it
-            openFileInput("profilePic.jpg").use {
-                ProfileImage.setImageBitmap(BitmapFactory.decodeStream(it))
-            }
-        } catch (e: FileNotFoundException) {
-            //no profile image, set default one
+        userVm.loggedUser.observe(this){
+            val hView = binding.navView.getHeaderView(0)
+            var drawerProfileImage: ImageView = hView.findViewById(R.id.drawer_profile_img)
+            var drawerUserName: TextView = hView.findViewById(R.id.drawer_name)
+            var imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + it.id)
+            Glide
+                .with(this)
+                .load(imageRef)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .circleCrop()
+                .into(drawerProfileImage)
+            drawerUserName.text = it.full_name
         }
+
 
         //[Start] Button for logout
         val btnLogout = findViewById<Button>(R.id.button_logout)

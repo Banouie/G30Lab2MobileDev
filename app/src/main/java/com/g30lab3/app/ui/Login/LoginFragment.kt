@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -103,7 +104,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Log.w("FIREBASESIGNIN", "signInWithCredential:failure", task.exception)
                                         //updateUI(null)
                                     }
 
