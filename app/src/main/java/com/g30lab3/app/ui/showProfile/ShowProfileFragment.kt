@@ -1,7 +1,5 @@
 package com.g30lab3.app.ui.showProfile
 
-import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,19 +9,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+
+
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
-import com.g30lab3.app.models.User
+
 import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.File
-
-import java.io.FileNotFoundException
 
 
 class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
@@ -122,13 +119,16 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         }
 
         //[START] set Profile picture
-        val localFile =
-            File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
+        Glide.with(requireContext()).load(imageRef).into(profilePicImageView);
+        /*
+        val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
         imageRef.getFile(localFile).addOnSuccessListener {
             profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
         }.addOnFailureListener {
             //Show the default image
         }
+
+         */
         //[END]
 
 
@@ -144,5 +144,6 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     }
 }
+
 
 
