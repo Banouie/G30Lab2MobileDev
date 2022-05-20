@@ -1,6 +1,8 @@
 package com.g30lab3.app
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +21,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.databinding.ActivityMainBinding
+import com.g30lab3.app.ui.Login.LoginFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
@@ -57,10 +60,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setupWithNavController(navController)
 
 
-
-
-
-
         //[Start] Button for logout
         val btnLogout = findViewById<Button>(R.id.button_logout)
 
@@ -71,7 +70,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             alertDialogBuilder.setPositiveButton("Yes") { _: DialogInterface, i: Int ->
                 Firebase.auth.signOut()
                 Snackbar.make(findViewById<View>(android.R.id.content).rootView,"Logged out",Snackbar.LENGTH_LONG).show()
-                //TODO navigate to the login fragment
+                //return to login fragment restarting the main activity:
+                finish();
+                startActivity(intent);
             }
             alertDialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, i: Int -> }
             var alertDialog = alertDialogBuilder.create()
