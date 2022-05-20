@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.R
 import com.g30lab3.app.SkillsVM
 import com.g30lab3.app.UserVM
@@ -61,6 +63,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     lateinit var editDescription: EditText
     lateinit var editSkills: EditText
     lateinit var skillsSet: MutableSet<String>
+    lateinit var profilePicImageView: ImageView
 
     lateinit var drawer_img: ImageView
     lateinit var drawer_name: TextView
@@ -70,6 +73,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
+
     //set the image Reference
     var imageRef = storageRef.child("ProfileImages/" + Firebase.auth.uid)
 
@@ -87,6 +91,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         drawer_name = headerView.findViewById(R.id.drawer_name)
         // ***
 
+        profilePicImageView = view.findViewById<ImageView>(R.id.imageView_edit)
         editName = view.findViewById(R.id.edit_full_name)
         editNickName = view.findViewById(R.id.edit_nickname)
         editLocation = view.findViewById(R.id.edit_location)
@@ -139,11 +144,16 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
 
         //[Start] show the correct profile Image if exists on FirebaseStorage
+
+        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
+        /*
         val profilePicImageView = view.findViewById<ImageView>(R.id.imageView_edit)
         val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
         imageRef.getFile(localFile).addOnSuccessListener{
             profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
         }
+
+         */
         //[End]
 
         //[Start] create the popup menu for the edit profile image button
@@ -264,8 +274,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                         createSnackBar("Error saving image", requireView(), requireContext(), false)
                     }.addOnSuccessListener {
                         createSnackBar("Image saved", requireView(), requireContext(), true)
-                        imageView?.setImageURI(imageUri)
-                        drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
+                        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
+                        //imageView?.setImageURI(imageUri)
+                        //drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
                     }
 
             }

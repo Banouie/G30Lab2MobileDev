@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 
 import com.g30lab3.app.R
@@ -118,18 +119,9 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
         }
 
-        //[START] set Profile picture
-        Glide.with(requireContext()).load(imageRef).into(profilePicImageView);
-        /*
-        val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
-        imageRef.getFile(localFile).addOnSuccessListener {
-            profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
-        }.addOnFailureListener {
-            //Show the default image
-        }
+        //set Profile picture from firebase
+        Glide.with(this).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
 
-         */
-        //[END]
 
 
         //Handle back button pressed, go to Home Screen
