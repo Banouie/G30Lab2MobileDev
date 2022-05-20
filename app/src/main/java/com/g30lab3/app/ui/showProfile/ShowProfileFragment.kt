@@ -42,7 +42,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
     //set the image Reference
-    var imageRef = storageRef.child("ProfileImages/" + Firebase.auth.uid)
+    var imageRef = storageRef.child("ProfileImages/" + Firebase.auth.uid) //each user, if has edited its profile, has a profile image named as its UID in the folder "ProfileImages" on Firebase Storage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

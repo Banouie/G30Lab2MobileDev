@@ -14,6 +14,11 @@ import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
 import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
 
 
 import java.io.FileNotFoundException
@@ -32,6 +37,11 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
     lateinit var skillsChipGroup: ChipGroup
     lateinit var descriptionTextView: TextView
 
+    //Firebase storage to manage images
+    var storageRef = FirebaseStorage.getInstance().reference
+    //set the image Reference
+    lateinit var imageRef :StorageReference //reference to the author profile pic, initialized below
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,7 +57,11 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
         // if the arguments IS NOT NULL means that we want to show info of a timeSlot author
         arguments?.let{
-            userVM.getUserInfo(arguments?.get("uid") as String).observe(requireActivity()) {
+            var authorID = arguments?.get("uid") as String
+            //set correctly the image reference to the author profile picture
+            imageRef = storageRef.child("ProfileImages/$authorID")
+            // show the author information:
+            userVM.getUserInfo(authorID).observe(requireActivity()) {
                 if (it != null) {
                     fullNameTextView.text = it.full_name
                     nickNameTextView.text = it.nickname
@@ -66,27 +80,14 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
             }
         }
 
-        //set Profile picture
-        try {
-            //if already exists a profile Image set it
-            requireActivity().openFileInput("profilePic.jpg").use {
-                profilePicImageView.setImageBitmap(BitmapFactory.decodeStream(it))
-            }
-        } catch (e: FileNotFoundException) {
-            //no profileImage, set default image
+        //set author Profile picture
+        val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
+        imageRef.getFile(localFile).addOnSuccessListener{
+            profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
+        }.addOnFailureListener{
+            //Show the default image
+            Log.d("IMG","Image doesn't exists")
         }
-
-        /*
-        //Handle back button pressed, go to Home Screen
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigate(R.id.action_showProfileFragment_to_skillsListFragment)
-                }
-
-            })
-         */
 
 
 
