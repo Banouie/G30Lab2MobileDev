@@ -70,7 +70,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     var storageRef = FirebaseStorage.getInstance().reference
 
 
-
     val userVM by viewModels<UserVM>()     // -> to show user info
     val skillsVM by viewModels<SkillsVM>() // -> to save inserted skills
 
@@ -191,7 +190,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                                         requireContext(),
                                         true
                                     )
-                                    drawer_name.text = editName.text.toString()//set the name of the user also in the lateral navigation drawer
+                                    drawer_name.text =
+                                        editName.text.toString()//set the name of the user also in the lateral navigation drawer
                                     findNavController().navigate(R.id.action_editProfileFragment_to_showProfileFragment)
                                 }.addOnFailureListener {
                                     Log.d("UPLOAD", "ERROR")
@@ -235,21 +235,20 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         super.onActivityResult(requestCode, resultCode, data)
         val imageView = view?.findViewById<ImageView>(R.id.imageView_edit)
 
+        //set the image Reference
+        var imageRef: StorageReference?
+        imageRef =
+            storageRef.child("ProfileImages/" + Firebase.auth.uid)
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             //get the image captured from the camera
             val imageBitmap: Bitmap = data?.extras?.get("data") as Bitmap
-            userVM.loggedUser.observe(requireActivity()){
-                //save bitmap image as jpg
-                requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use {f->
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, f)
-                }
-                //retrieve the image file and upload it on storage
-                var imageFile:Bitmap
-                requireContext().openFileInput("profilePic.jpg").use{ f->
-                    var imageRef:StorageReference? = storageRef.child("ProfileImages/"+ it.id)
-                    imageRef?.putStream(f)
-                }
+
+            //save bitmap image as jpg
+            requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use { f ->
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, f)
             }
+            //TODO retrieve the image file and upload it on storage
             //display image in ImageView
             imageView?.setImageBitmap(imageBitmap)
             drawer_img.setImageBitmap(imageBitmap)//update also the image in the navigation drawer
@@ -265,8 +264,14 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use {
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
                 }
-                imageView?.setImageURI(imageUri)
-                drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
+                imageRef.putFile(imageUri).addOnFailureListener {
+                    Log.d("UPIMG", it.message.toString())
+                }.addOnSuccessListener {
+                    createSnackBar("Image saved",requireView(),requireContext(),true)
+                    imageView?.setImageURI(imageUri)
+                    drawer_img.setImageURI(imageUri)//update also the image in the navigation drawer
+                }
+
             }
         }
     }
