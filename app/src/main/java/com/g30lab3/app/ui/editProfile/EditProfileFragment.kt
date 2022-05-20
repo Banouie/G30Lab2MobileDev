@@ -36,6 +36,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 
@@ -69,6 +70,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
+    //set the image Reference
+    var imageRef = storageRef.child("ProfileImages/" + Firebase.auth.uid)
 
 
     val userVM by viewModels<UserVM>()     // -> to show user info
@@ -135,16 +138,11 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         }
 
 
-        //[Start] show the correct profile Image
+        //[Start] show the correct profile Image if exists on FirebaseStorage
         val profilePicImageView = view.findViewById<ImageView>(R.id.imageView_edit)
-        try {
-            //if already exists a profile Image set it
-            requireContext().openFileInput("profilePic.jpg").use {
-                val img: Bitmap = BitmapFactory.decodeStream(it)
-                profilePicImageView.setImageBitmap(img)
-            }
-        } catch (e: FileNotFoundException) {
-            //no profileImage, set default image
+        val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
+        imageRef.getFile(localFile).addOnSuccessListener{
+            profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
         }
         //[End]
 
@@ -235,10 +233,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         super.onActivityResult(requestCode, resultCode, data)
         val imageView = view?.findViewById<ImageView>(R.id.imageView_edit)
 
-        //set the image Reference
-        var imageRef: StorageReference?
-        imageRef =
-            storageRef.child("ProfileImages/" + Firebase.auth.uid)
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             //get the image captured from the camera
@@ -248,7 +242,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, f)
             }
             //retrieve the file (using an Input Stream) and upload it on Firebase
-            var inputStream = FileInputStream(context?.filesDir.toString()+ "/profilePic.jpg")
+            var inputStream = FileInputStream(context?.filesDir.toString() + "/profilePic.jpg")
             imageRef.putStream(inputStream)
                 .addOnSuccessListener {
                     imageView?.setImageBitmap(imageBitmap)
