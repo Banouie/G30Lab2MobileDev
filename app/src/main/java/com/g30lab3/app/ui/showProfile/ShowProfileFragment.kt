@@ -41,8 +41,10 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
+
     //set the image Reference
-    var imageRef = storageRef.child("ProfileImages/" + Firebase.auth.uid) //each user, if has edited its profile, has a profile image named as its UID in the folder "ProfileImages" on Firebase Storage
+    var imageRef =
+        storageRef.child("ProfileImages/" + Firebase.auth.uid) //each user, if has edited its profile, has a profile image named as its UID in the folder "ProfileImages" on Firebase Storage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,7 +60,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         val fab: View = view.findViewById(R.id.floating_action_button)
 
         // if the arguments IS NOT NULL means that we want to show info of a timeSlot author
-        arguments?.let{
+        arguments?.let {
             userVM.getUserInfo(arguments?.get("uid") as String).observe(requireActivity()) {
                 if (it != null) {
                     Log.d("PPP", "Profile info downloaded")
@@ -69,8 +71,17 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                     descriptionTextView.text = it.description
                     skills = it.skills.toMutableSet()
                     //show the skills in chipGroup
-                    for (skill in skills) {
-                        skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+                    if (context != null) { //this check on context avoid errors
+                        for (skill in skills) {
+                            skillsChipGroup.addView(
+                                createTagChip(
+                                    requireContext(),
+                                    skill,
+                                    null,
+                                    null
+                                )
+                            )
+                        }
                     }
                     //disable the editProfileButton in this case
                     fab.isEnabled = false
@@ -79,22 +90,30 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             }
         }
         // OTHERWISE if arguments IS NULL we want to show the current logged user info
-        if(arguments==null){
-        userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
-            if (it != null) {
-                Log.d("PPP", "Profile info downloaded")
-                fullNameTextView.text = it.full_name
-                nickNameTextView.text = it.nickname
-                mailTextView.text = it.mail
-                locationTextView.text = it.location
-                descriptionTextView.text = it.description
-                skills = it.skills.toMutableSet()
-                //show the skills in chipGroup
-                for (skill in skills) {
-                    skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+        if (arguments == null) {
+            userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
+                if (it != null) {
+                    fullNameTextView.text = it.full_name
+                    nickNameTextView.text = it.nickname
+                    mailTextView.text = it.mail
+                    locationTextView.text = it.location
+                    descriptionTextView.text = it.description
+                    skills = it.skills.toMutableSet()
+                    //show the skills in chipGroup
+                    if (context != null) { //this check on context avoid errors
+                        for (skill in skills) {
+                            skillsChipGroup.addView(
+                                createTagChip(
+                                    requireContext(),
+                                    skill,
+                                    null,
+                                    null
+                                )
+                            )
+                        }
+                    }
                 }
             }
-        }
 
         }
 
@@ -103,14 +122,15 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         }
 
         //[START] set Profile picture
-        val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
-        imageRef.getFile(localFile).addOnSuccessListener{
+        val localFile =
+            File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
+        imageRef.getFile(localFile).addOnSuccessListener {
             profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             //Show the default image
-            Log.d("IMG","Image doesn't exists")
         }
         //[END]
+
 
         //Handle back button pressed, go to Home Screen
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -119,10 +139,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                 override fun handleOnBackPressed() {
                     findNavController().navigate(R.id.action_showProfileFragment_to_skillsListFragment)
                 }
-
             })
-
-
 
 
     }

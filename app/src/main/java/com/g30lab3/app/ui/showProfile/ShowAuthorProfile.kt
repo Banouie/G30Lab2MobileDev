@@ -1,7 +1,6 @@
 package com.g30lab3.app.ui.showProfile
 
 
-
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -21,8 +20,6 @@ import com.google.firebase.storage.StorageReference
 import java.io.File
 
 
-import java.io.FileNotFoundException
-
 
 class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
@@ -39,8 +36,9 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
+
     //set the image Reference
-    lateinit var imageRef :StorageReference //reference to the author profile pic, initialized below
+    lateinit var imageRef: StorageReference //reference to the author profile pic, initialized below
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +54,7 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
         val fab: View = view.findViewById(R.id.floating_action_button)
 
         // if the arguments IS NOT NULL means that we want to show info of a timeSlot author
-        arguments?.let{
+        arguments?.let {
             var authorID = arguments?.get("uid") as String
             //set correctly the image reference to the author profile picture
             imageRef = storageRef.child("ProfileImages/$authorID")
@@ -70,8 +68,17 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
                     descriptionTextView.text = it.description
                     skills = it.skills.toMutableSet()
                     //show the skills in chipGroup
-                    for (skill in skills) {
-                        skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+                    if(context!=null) { //check that avoid bugs
+                        for (skill in skills) {
+                            skillsChipGroup.addView(
+                                createTagChip(
+                                    requireContext(),
+                                    skill,
+                                    null,
+                                    null
+                                )
+                            )
+                        }
                     }
                     //disable the editProfileButton in this case
                     fab.isEnabled = false
@@ -82,13 +89,12 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
         //set author Profile picture
         val localFile = File.createTempFile("profilePic", "jpg")//we store the profile image in this temp file
-        imageRef.getFile(localFile).addOnSuccessListener{
+        imageRef.getFile(localFile).addOnSuccessListener {
             profilePicImageView.setImageBitmap(BitmapFactory.decodeFile(context?.filesDir.toString() + "/profilePic.jpg"))
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             //Show the default image
-            Log.d("IMG","Image doesn't exists")
+            Log.d("IMG", "Image doesn't exists")
         }
-
 
 
     }

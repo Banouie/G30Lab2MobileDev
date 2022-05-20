@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -80,6 +81,15 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_timeSlotListFragment_to_timeSlotEditFragment)
         }
+
+        //Handle back button pressed, go to Home Screen
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_timeSlotListFragment_to_skillsListFragment)
+                }
+            })
 
 
     }
