@@ -1,6 +1,7 @@
 package com.g30lab3.app
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.User
@@ -14,14 +15,17 @@ import com.google.firebase.ktx.Firebase
 class UserVM(application: Application) : AndroidViewModel(application) {
 
     private val db = FirebaseFirestore.getInstance()
-    private var currentUser = Firebase.auth.currentUser //get the current logged user from Firebase auth
+    private var currentUser =
+        Firebase.auth.currentUser //get the current logged user from Firebase auth
 
     private var _loggedUser = MutableLiveData<User>()
-    var loggedUser = _loggedUser
+    var loggedUser = _loggedUser //for getting info of the logged user
+    private var _retrievedUser = MutableLiveData<User>()
+    var retrievedUser = _retrievedUser // for timeslot author details
     private val listener: ListenerRegistration
 
     init {
-        listener = FirebaseFirestore.getInstance().collection("Users").document(currentUser?.uid!!)
+        listener = db.collection("Users").document(currentUser?.uid!!)
             .addSnapshotListener { value, error ->
                 if (value != null) {
                     _loggedUser.value = if (error != null) null else value.toUser()
@@ -37,6 +41,21 @@ class UserVM(application: Application) : AndroidViewModel(application) {
     /** Save the user profile into Firestore DB, returns the Task in order to specify callbacks where is called **/
     fun upload(user: User): Task<Void> {
         return db.collection("Users").document(user.id).set(user)
+    }
+
+    /**Function that returns info of a user identified by its user unique ID*/
+    fun getUserInfo(uid: String): MutableLiveData<User> {
+        db.collection("Users").document(uid)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w("UserErr", "Listener failed", error)
+                    _retrievedUser.value = User("", "", "", "", mutableListOf(), "", "")
+                    return@addSnapshotListener
+                }
+                Log.d("USER_Author", value.toString())
+                _retrievedUser.value = value?.toUser()
+            }
+        return retrievedUser
     }
 
 }
