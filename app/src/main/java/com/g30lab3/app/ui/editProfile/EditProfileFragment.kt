@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
@@ -32,7 +34,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.FileNotFoundException
+
 
 /**function used to show a Snackbar after creating a timeSlot */
 private fun createSnackBar(message: String, view: View, context: Context, goodNews: Boolean) {
@@ -60,6 +65,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_PICK_IMAGE = 2
+
+    //Firebase storage to manage images
+    var storageRef = FirebaseStorage.getInstance().reference
+
 
 
     val userVM by viewModels<UserVM>()     // -> to show user info
@@ -227,10 +236,19 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         val imageView = view?.findViewById<ImageView>(R.id.imageView_edit)
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            //get the image captured from the camera
             val imageBitmap: Bitmap = data?.extras?.get("data") as Bitmap
-            //save bitmap image as jpg
-            requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use {
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            userVM.loggedUser.observe(requireActivity()){
+                //save bitmap image as jpg
+                requireContext().openFileOutput("profilePic.jpg", MODE_PRIVATE).use {f->
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, f)
+                }
+                //retrieve the image file and upload it on storage
+                var imageFile:Bitmap
+                requireContext().openFileInput("profilePic.jpg").use{ f->
+                    var imageRef:StorageReference? = storageRef.child("ProfileImages/"+ it.id)
+                    imageRef?.putStream(f)
+                }
             }
             //display image in ImageView
             imageView?.setImageBitmap(imageBitmap)

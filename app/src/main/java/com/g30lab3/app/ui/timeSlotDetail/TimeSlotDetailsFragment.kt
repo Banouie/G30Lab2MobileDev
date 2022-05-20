@@ -118,7 +118,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
                 goToProfileBtn.setOnClickListener {
                     findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_showProfileFragment,
+                        R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment,
                         bundleOf("uid" to to_show_timeSlot.author)
                     )
                 }

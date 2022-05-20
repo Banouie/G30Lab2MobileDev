@@ -15,8 +15,7 @@ import com.google.firebase.ktx.Firebase
 class UserVM(application: Application) : AndroidViewModel(application) {
 
     private val db = FirebaseFirestore.getInstance()
-    private var currentUser =
-        Firebase.auth.currentUser //get the current logged user from Firebase auth
+    private var currentUser = Firebase.auth.currentUser //get the current logged user from Firebase auth
 
     private var _loggedUser = MutableLiveData<User>()
     var loggedUser = _loggedUser //for getting info of the logged user

@@ -1,30 +1,25 @@
 package com.g30lab3.app.ui.showProfile
 
+
+
 import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
-import com.g30lab3.app.models.User
 import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
+
 
 import java.io.FileNotFoundException
 
 
-class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
+class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
     val userVM by viewModels<UserVM>()
     var skills: MutableSet<String> = mutableSetOf()
@@ -54,7 +49,6 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         arguments?.let{
             userVM.getUserInfo(arguments?.get("uid") as String).observe(requireActivity()) {
                 if (it != null) {
-                    Log.d("PPP", "Profile info downloaded")
                     fullNameTextView.text = it.full_name
                     nickNameTextView.text = it.nickname
                     mailTextView.text = it.mail
@@ -71,30 +65,6 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                 }
             }
         }
-        // OTHERWISE if arguments IS NULL we want to show the current logged user info
-        if(arguments==null){
-        userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
-            if (it != null) {
-                Log.d("PPP", "Profile info downloaded")
-                fullNameTextView.text = it.full_name
-                nickNameTextView.text = it.nickname
-                mailTextView.text = it.mail
-                locationTextView.text = it.location
-                descriptionTextView.text = it.description
-                skills = it.skills.toMutableSet()
-                //show the skills in chipGroup
-                for (skill in skills) {
-                    skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
-                }
-            }
-        }
-
-        }
-
-
-        fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
-        }
 
         //set Profile picture
         try {
@@ -106,6 +76,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             //no profileImage, set default image
         }
 
+        /*
         //Handle back button pressed, go to Home Screen
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -115,7 +86,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                 }
 
             })
-
+         */
 
 
 

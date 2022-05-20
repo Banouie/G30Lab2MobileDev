@@ -45,8 +45,8 @@
             android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotEditFragment"
             app:destination="@id/timeSlotEditFragment" />
         <action
-            android:id="@+id/action_timeSlotDetailsFragment_to_showProfileFragment"
-            app:destination="@id/showProfileFragment" />
+            android:id="@+id/action_timeSlotDetailsFragment_to_showAuthorProfileFragment"
+            app:destination="@id/showAuthorProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"
@@ -75,4 +75,7 @@
             android:id="@+id/action_editProfileFragment_to_showProfileFragment"
             app:destination="@id/showProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/showAuthorProfileFragment"
+        android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment"/>
 </navigation>

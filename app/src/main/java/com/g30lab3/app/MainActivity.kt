@@ -26,7 +26,7 @@ import java.io.FileNotFoundException
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     //test
     override fun onCreate(savedInstanceState: Bundle?) {
