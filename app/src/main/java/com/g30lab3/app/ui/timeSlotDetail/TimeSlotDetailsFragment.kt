@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
@@ -76,6 +77,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         var location: TextView = view.findViewById(R.id.adv_location)
         var duration: TextView = view.findViewById(R.id.adv_duration)
         var author: TextView = view.findViewById(R.id.adv_author)
+        var goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
 
         vm.all.observe(requireActivity()) {
 
@@ -113,7 +115,14 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                     "<b>Author</b>: " + x.full_name,
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
-        }
+                // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
+                goToProfileBtn.setOnClickListener {
+                    findNavController().navigate(
+                        R.id.action_timeSlotDetailsFragment_to_showProfileFragment,
+                        bundleOf("uid" to to_show_timeSlot.author)
+                    )
+                }
+            }
 
 
         }

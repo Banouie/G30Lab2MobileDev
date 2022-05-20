@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_timeSlotDetailsFragment_to_timeSlotEditFragment"
             app:destination="@id/timeSlotEditFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_showProfileFragment"
+            app:destination="@id/showProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"

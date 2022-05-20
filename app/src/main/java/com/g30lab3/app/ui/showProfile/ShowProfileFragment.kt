@@ -1,6 +1,7 @@
 package com.g30lab3.app.ui.showProfile
 
 import android.graphics.BitmapFactory
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -47,24 +48,48 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         descriptionTextView = view.findViewById(R.id.show_description)
         skillsChipGroup = view.findViewById(R.id.show_skills)
         profilePicImageView = view.findViewById(R.id.imageView)
+        val fab: View = view.findViewById(R.id.floating_action_button)
 
-        userVM.loggedUser.observe(requireActivity()){
-            if(it!=null){
-                Log.d("PPP", "Profile info downloaded")
-                fullNameTextView.text = it.full_name
-                nickNameTextView.text = it.nickname
-                mailTextView.text = it.mail
-                locationTextView.text = it.location
-                descriptionTextView.text = it.description
-                skills = it.skills.toMutableSet()
-                //show the skills in chipGroup
-                for (skill in skills) {
-                    skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+        //if arguments in empty we want to show the logged user info
+        if(arguments?.isEmpty == true) {
+            userVM.loggedUser.observe(requireActivity()) {
+                if (it != null) {
+                    Log.d("PPP", "Profile info downloaded")
+                    fullNameTextView.text = it.full_name
+                    nickNameTextView.text = it.nickname
+                    mailTextView.text = it.mail
+                    locationTextView.text = it.location
+                    descriptionTextView.text = it.description
+                    skills = it.skills.toMutableSet()
+                    //show the skills in chipGroup
+                    for (skill in skills) {
+                        skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+                    }
+                }
+            }
+        }else{
+            //on the other hand, if the arguments is not empty this means that we want to show info of a timeSlot author
+            userVM.getUserInfo(arguments?.get("uid") as String).observe(requireActivity()) {
+                if (it != null) {
+                    Log.d("PPP", "Profile info downloaded")
+                    fullNameTextView.text = it.full_name
+                    nickNameTextView.text = it.nickname
+                    mailTextView.text = it.mail
+                    locationTextView.text = it.location
+                    descriptionTextView.text = it.description
+                    skills = it.skills.toMutableSet()
+                    //show the skills in chipGroup
+                    for (skill in skills) {
+                        skillsChipGroup.addView(createTagChip(requireContext(), skill, null, null))
+                    }
+                    //disable the editProfileButton in this case
+                    fab.isEnabled = false
+                    fab.visibility = View.GONE
                 }
             }
         }
 
-        val fab: View = view.findViewById(R.id.floating_action_button)
+
         fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
         }
