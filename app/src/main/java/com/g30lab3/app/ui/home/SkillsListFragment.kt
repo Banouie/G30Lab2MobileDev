@@ -2,9 +2,12 @@ package com.g30lab3.app.ui.home
 
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class SkillsListFragment : Fragment(R.layout.fragment_skills_list) {
+
     val skillsVM by viewModels<SkillsVM>()
+    private var doubleBackToExitPressedOnce = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +52,13 @@ class SkillsListFragment : Fragment(R.layout.fragment_skills_list) {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    //TODO maybe show a dialog that if confirmed makes the app terminate?
+                    if(doubleBackToExitPressedOnce){
+                        //close app
+                        requireActivity().finish()
+                    }
+                    doubleBackToExitPressedOnce =  true
+                    Toast.makeText(requireContext(), "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
                 }
             })
 
