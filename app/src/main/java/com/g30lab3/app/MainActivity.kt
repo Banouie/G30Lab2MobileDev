@@ -59,42 +59,51 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(false);
+            supportActionBar!!.setHomeButtonEnabled(false);
 
-        //[Start] Button for logout
-        val btnLogout = findViewById<Button>(R.id.button_logout)
 
-        btnLogout.setOnClickListener{
-            val alertDialogBuilder = AlertDialog.Builder(this)
-            alertDialogBuilder.setTitle("Exit App")
-            alertDialogBuilder.setMessage("Are you sure you want to log out?")
-            alertDialogBuilder.setPositiveButton("Yes") { _: DialogInterface, i: Int ->
-                Firebase.auth.signOut()
-                Snackbar.make(findViewById<View>(android.R.id.content).rootView,"Logged out",Snackbar.LENGTH_LONG).show()
-                //return to login fragment restarting the main activity:
-                finish();
-                startActivity(intent);
+            //[Start] Button for logout
+            val btnLogout = findViewById<Button>(R.id.button_logout)
+
+            btnLogout.setOnClickListener {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle("Exit App")
+                alertDialogBuilder.setMessage("Are you sure you want to log out?")
+                alertDialogBuilder.setPositiveButton("Yes") { _: DialogInterface, i: Int ->
+                    Firebase.auth.signOut()
+                    Snackbar.make(
+                        findViewById<View>(android.R.id.content).rootView,
+                        "Logged out",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    //return to login fragment restarting the main activity:
+                    finish();
+                    startActivity(intent);
+                }
+                alertDialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, i: Int -> }
+                var alertDialog = alertDialogBuilder.create()
+                alertDialog.show()
             }
-            alertDialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, i: Int -> }
-            var alertDialog = alertDialogBuilder.create()
-            alertDialog.show()
+            //[End]
+
+            //FirebaseFirestoreSettings.Builder().isPersistenceEnabled = false
+
+
         }
-        //[End]
-
-        //FirebaseFirestoreSettings.Builder().isPersistenceEnabled = false
-
-
-
     }
 
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
+        override fun onSupportNavigateUp(): Boolean {
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+            return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
-    }
+        override fun onNavigationItemSelected(item: MenuItem): Boolean {
+            TODO("Not yet implemented")
+        }
+
 
 
 }

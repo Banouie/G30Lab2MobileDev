@@ -1,5 +1,6 @@
 package com.g30lab3.app.ui.Login
 
+import android.app.ActionBar
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -11,12 +12,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -63,8 +67,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val REQ_ONE_TAP = 2
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -152,6 +158,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
     }
+
+
 }
 
 

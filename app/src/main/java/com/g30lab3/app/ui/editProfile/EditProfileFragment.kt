@@ -13,8 +13,10 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -26,6 +28,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.SkillsVM
 import com.g30lab3.app.UserVM
@@ -81,6 +84,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     val userVM by viewModels<UserVM>()     // -> to show user info
     val skillsVM by viewModels<SkillsVM>() // -> to save inserted skills
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -273,6 +277,16 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
             }
         }
+    }
+
+    //Avoid back arrow in appBar
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 }
 
