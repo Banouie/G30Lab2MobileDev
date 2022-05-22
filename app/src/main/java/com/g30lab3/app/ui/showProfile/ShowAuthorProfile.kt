@@ -96,6 +96,7 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .placeholder(R.drawable.ic_baseline_account_circle_24)
+            .circleCrop()
             .into(profilePicImageView)
 
 

@@ -149,7 +149,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
 
         // show the correct profile Image if exists on FirebaseStorage
-        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profilePicImageView)
+        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(profilePicImageView)
 
 
 
@@ -252,7 +252,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             var inputStream = FileInputStream(context?.filesDir.toString() + "/profilePic.jpg")
             imageRef.putStream(inputStream)
                 .addOnSuccessListener {
-                    Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).into(profilePicImageView)
+                    Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).circleCrop().into(profilePicImageView)
                     createSnackBar("Image saved", requireView(), requireContext(), true)
                     Glide.with(requireActivity()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(drawer_img)
                 }.addOnFailureListener {
@@ -270,7 +270,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     .addOnFailureListener {
                         createSnackBar("Error saving image", requireView(), requireContext(), false)
                     }.addOnSuccessListener {
-                        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).into(profilePicImageView)
+                        Glide.with(requireContext()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(R.drawable.ic_download).circleCrop().into(profilePicImageView)
                         createSnackBar("Image saved", requireView(), requireContext(), true)
                         Glide.with(requireActivity()).load(imageRef).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).circleCrop().into(drawer_img)
                     }

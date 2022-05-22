@@ -126,6 +126,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .placeholder(R.drawable.ic_download)
+            .circleCrop()
             .into(profilePicImageView)
 
 
