@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
@@ -37,6 +38,8 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+
+
         //[Start] Manage the order by field
         var orderSelector: TextInputLayout = view.findViewById(R.id.order_field)
         val orderArguments = listOf("Title(A-Z)", "Date", "Do not order")
@@ -66,15 +69,30 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         vm.getFromSkill(arguments?.get("skill") as String, order, orderby)//initialization of the list to show it in RecyclerView
 
         vm.filtered.observe(requireActivity()) {
+            var adapter = TimeSlotAdapter(it)
             // Data bind the recycler view
-            recyclerView.adapter = TimeSlotAdapter(it)
+            recyclerView.adapter = adapter
             //if the list of timeSlot is empty a message is shown, shouldn't appear otherwise
             if (it.isEmpty()) {
                 emptyMessage.visibility = View.VISIBLE
             } else {
                 emptyMessage.visibility = View.GONE
             }
+            //[Start] manage the search bar
+            var searchBar : SearchView = view.findViewById(R.id.search_bar)
+            searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    adapter.getFilter().filter(query)
+                    return true
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    adapter.getFilter().filter(newText);
+                    return true
+                }
+            })
+            //[end]
         }
+        //[End] RecyclerView
 
         // Manage floating action button to create a new timeSlot
         var addButton: FloatingActionButton = view.findViewById(R.id.floating_add_button)

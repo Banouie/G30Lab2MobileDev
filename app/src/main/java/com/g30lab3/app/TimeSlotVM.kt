@@ -15,7 +15,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
 
     private val _all = MutableLiveData<List<timeSlot>>()
     val all: LiveData<List<timeSlot>> = _all
-    val filtered: MutableLiveData<List<timeSlot>> = MutableLiveData()
+    val filtered: MutableLiveData<MutableList<timeSlot>> = MutableLiveData()
     private val listner: ListenerRegistration
 
     init {
