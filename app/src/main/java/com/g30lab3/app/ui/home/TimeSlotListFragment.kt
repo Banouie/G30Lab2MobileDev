@@ -2,7 +2,9 @@ package com.g30lab3.app.ui.home
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
@@ -10,11 +12,13 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.adaptors.TimeSlotAdapter
 import com.g30lab3.app.TimeSlotVM
@@ -29,6 +33,16 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
     val vm by viewModels<TimeSlotVM>()
     var user = Firebase.auth.currentUser
 
+    //set as title of the fragment the selected skill in the layout before (Skills List)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as MainActivity).supportActionBar?.title= "#${arguments?.get("skill") as String}"
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -37,7 +51,6 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
         var emptyMessage: TextView = view.findViewById(R.id.empty_message)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
 
 
         //[Start] Manage the order by field
@@ -64,6 +77,7 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
             vm.getFromSkill(arguments?.get("skill") as String, order, orderby)
         }
         //[End]
+
 
         //[Start] RecyclerView
         vm.getFromSkill(arguments?.get("skill") as String, order, orderby)//initialization of the list to show it in RecyclerView

@@ -112,7 +112,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             //obtain the author info of the author of the timeslot
             UserVM.getUserInfo(to_show_timeSlot.author).observe(requireActivity()) { x ->
                 author.text = HtmlCompat.fromHtml(
-                    "<b>Author</b>: " + x.full_name,
+                    "<b>Author</b>:<br> " + x.full_name,
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
                 // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
