@@ -59,9 +59,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //avoid back arrow in toolbar, for fragments where the arrow remains -> just call the onCreate override in fragment like the one in EditTimeSlot!
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(false);
             supportActionBar!!.setHomeButtonEnabled(false);
+        }
 
 
             //[Start] Button for logout
@@ -92,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         }
-    }
+
 
 
         override fun onSupportNavigateUp(): Boolean {
