@@ -2,8 +2,10 @@ package com.g30lab3.app.ui.home
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.SkillsVM
 import com.g30lab3.app.adaptors.SkillsAdapter
+import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -38,6 +41,15 @@ class SkillsListFragment : Fragment(R.layout.fragment_skills_list) {
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_skillsListFragment_to_timeSlotEditFragment)
         }
+
+        // Manage the BACK BUTTON: do nothing, avoid to come back to the login fragment
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    //TODO maybe show a dialog that if confirmed makes the app terminate?
+                }
+            })
 
     }
 
