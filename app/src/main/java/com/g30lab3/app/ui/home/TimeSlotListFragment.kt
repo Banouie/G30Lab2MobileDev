@@ -94,6 +94,7 @@ class TimeSlotListFragment : Fragment(R.layout.fragment_time_slot_list) {
             }
             //[Start] manage the search bar
             var searchBar : SearchView = view.findViewById(R.id.search_bar)
+            searchBar.queryHint = "Search in ${arguments?.get("skill") as String}"
             searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     adapter.getFilter().filter(query)
