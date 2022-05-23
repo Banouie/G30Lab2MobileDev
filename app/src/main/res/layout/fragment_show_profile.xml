@@ -73,6 +73,7 @@
                     android:paddingTop="16dp"
                     android:text="Full Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_nickname"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,6 +86,7 @@
                     android:paddingTop="16dp"
                     android:text="Nickname"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_description"
                     app:layout_constraintTop_toBottomOf="@+id/show_full_name" />
 
@@ -95,8 +97,9 @@
                     android:drawableStart="@drawable/ic_coffe"
                     android:drawablePadding="16dp"
                     android:paddingTop="16dp"
-                    android:text="Desription"
+                    android:text="Description"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
                     app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
 
@@ -109,6 +112,7 @@
                     android:drawablePadding="16dp"
                     android:text="Skills:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_skills"
                     app:layout_constraintTop_toBottomOf="@+id/show_description" />
 
@@ -136,6 +140,7 @@
                     android:paddingTop="16dp"
                     android:text="email@address"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_location"
                     app:layout_constraintTop_toBottomOf="@+id/show_skills" />
 
@@ -148,6 +153,7 @@
                     android:paddingTop="16dp"
                     android:text="Location"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_mail" />
 

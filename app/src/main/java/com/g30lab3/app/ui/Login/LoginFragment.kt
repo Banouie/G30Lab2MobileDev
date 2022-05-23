@@ -1,6 +1,6 @@
 package com.g30lab3.app.ui.Login
 
-import android.app.ActionBar
+
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -9,31 +9,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toolbar
-import androidx.activity.viewModels
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.UserVM
+import com.g30lab3.app.models.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
@@ -48,6 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val drawerUserName: TextView = headerView.findViewById(R.id.drawer_name)
         //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
         //set the image of the user and the name in the drawer
+
         userVM.loggedUser.observe(requireActivity()){
             val imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + it.id)
             Glide
@@ -83,7 +79,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     // Your server's client ID, not your Android client ID.
                     .setServerClientId("337309619753-jb3dupcelec6ps33ssjb4f5ns7rr6aj1.apps.googleusercontent.com")
                     // Only show accounts previously used to sign in.
-                    .setFilterByAuthorizedAccounts(true)
+                    .setFilterByAuthorizedAccounts(false)
                     .build()
             )
             .build()
@@ -131,10 +127,26 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                     if (task.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("FIREBASESIGNIN", "signInWithCredential:success")
-                                        val user = auth.currentUser
-                                        if(user!=null){
-                                            updateDrawer()
-                                            findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
+                                        val googleUser = auth.currentUser
+                                        if(googleUser!=null){
+                                            //check if the user is already registered or it's his first login, in the latter case create a user with its unique Google ID:
+                                            val usersRef = FirebaseFirestore.getInstance().collection("Users").document(Firebase.auth.currentUser?.uid!!)
+                                            usersRef.get().addOnSuccessListener {
+                                                if(it.get("id")==null){
+                                                    //First login ever: create a new User in the 'Users' collection
+                                                    val newUser = User(Firebase.auth.currentUser?.uid!!,googleUser.displayName.toString(),"Nickname","Description",
+                                                        mutableListOf(),"Location",googleUser.email.toString())
+                                                    FirebaseFirestore.getInstance().collection("Users").document(Firebase.auth.currentUser?.uid!!).set(newUser)
+                                                        .addOnSuccessListener {
+                                                        updateDrawer()
+                                                        findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
+                                                    }
+                                                }else {
+                                                    //user already registered
+                                                    updateDrawer()
+                                                    findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
+                                                }
+                                                }
 
                                         }
 
