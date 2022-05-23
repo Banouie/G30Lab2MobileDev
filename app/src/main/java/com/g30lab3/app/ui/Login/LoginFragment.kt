@@ -159,6 +159,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
 
+    //Avoid back arrow in appBar
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
 
 }
 
