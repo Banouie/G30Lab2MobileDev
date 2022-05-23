@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/stroke_color"
+        app:strokeColor="@color/design_default_color_primary"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         </LinearLayout>
 
