@@ -156,13 +156,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                                         .set(newUser)
                                                         .addOnSuccessListener {
                                                             updateDrawer()
-                                                            progressDialog.cancel()
+                                                            progressDialog.dismiss()
                                                             findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
                                                         }
                                                 } else {
                                                     //user already registered
                                                     updateDrawer()
-                                                    progressDialog.cancel()
+                                                    progressDialog.dismiss()
                                                     findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
                                                 }
                                             }
