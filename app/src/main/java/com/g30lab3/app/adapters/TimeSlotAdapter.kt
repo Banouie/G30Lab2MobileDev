@@ -1,4 +1,4 @@
-package com.g30lab3.app.adaptors
+package com.g30lab3.app.adapters
 
 import android.view.LayoutInflater
 import android.view.View

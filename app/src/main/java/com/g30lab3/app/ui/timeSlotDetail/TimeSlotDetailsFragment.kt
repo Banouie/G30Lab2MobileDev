@@ -22,6 +22,7 @@ import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.UserVM
 import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -70,14 +71,15 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var title: TextView = view.findViewById(R.id.adv_title)
-        var description: TextView = view.findViewById(R.id.adv_description)
-        var skill: TextView = view.findViewById(R.id.adv_skill)
-        var dateTime: TextView = view.findViewById(R.id.adv_date_time)
-        var location: TextView = view.findViewById(R.id.adv_location)
-        var duration: TextView = view.findViewById(R.id.adv_duration)
-        var author: TextView = view.findViewById(R.id.adv_author)
-        var goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
+        val title: TextView = view.findViewById(R.id.adv_title)
+        val description: TextView = view.findViewById(R.id.adv_description)
+        val skill: TextView = view.findViewById(R.id.adv_skill)
+        val dateTime: TextView = view.findViewById(R.id.adv_date_time)
+        val location: TextView = view.findViewById(R.id.adv_location)
+        val duration: TextView = view.findViewById(R.id.adv_duration)
+        val author: TextView = view.findViewById(R.id.adv_author)
+        val goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
+        val startChatBtn : Button = view.findViewById(R.id.request_timeSlot_btn)
 
         vm.all.observe(requireActivity()) {
 
@@ -121,6 +123,17 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                         R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment,
                         bundleOf("uid" to to_show_timeSlot.author)
                     )
+                }
+                //manage the "make an agreement" button
+                startChatBtn.setOnClickListener {
+                    //TODO start chat
+                    val loggerUserId = Firebase.auth.currentUser?.uid
+                    val authorId = to_show_timeSlot.author
+                    //create the chat for the users
+                    val chatId = "$loggerUserId/$authorId".split("/").sorted().joinToString("")
+                    Log.d("IDCHAT:" ,"$chatId")
+                    findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                        bundleOf("chatId" to chatId, "timeSlotId" to to_show_timeSlot.id))
                 }
             }
 

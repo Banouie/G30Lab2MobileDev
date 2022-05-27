@@ -17,12 +17,15 @@
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/drawable-anydpi/ic_info.xml" value="0.365" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/drawable/ic_edit.xml" value="0.398" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.32" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/drawable/round_corner.xml" value="0.183" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/drawable/roundcorner.xml" value="0.1" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/activity_login.xml" value="0.3171875" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/activity_login2.xml" value="0.1" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/app_bar_main.xml" value="0.5398550724637681" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/card_view_design.xml" value="0.5398550724637681" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/content_main.xml" value="0.3601570166830226" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_chat.xml" value="0.33" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_edit_profile.xml" value="0.3134057971014493" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_home.xml" value="0.3602058319039451" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_login.xml" value="0.42407407407407405" />
@@ -34,6 +37,7 @@
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_time_slot_edit2.xml" value="0.27203647416413373" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_time_slot_list.xml" value="0.2644927536231884" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/item_layout.xml" value="0.1" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/message_layout.xml" value="0.31567028985507245" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/nav_header_main.xml" value="0.575" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/skill_dropdown_item.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/skill_layout.xml" value="0.36" />

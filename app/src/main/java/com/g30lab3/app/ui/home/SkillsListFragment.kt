@@ -4,7 +4,6 @@ package com.g30lab3.app.ui.home
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -16,8 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
 import com.g30lab3.app.SkillsVM
-import com.g30lab3.app.adaptors.SkillsAdapter
-import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
+import com.g30lab3.app.adapters.SkillsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 

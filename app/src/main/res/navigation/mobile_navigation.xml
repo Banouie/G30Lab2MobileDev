@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation">
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/chatFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.g30lab3.app.ui.Login.LoginFragment"
@@ -49,6 +50,9 @@
         <action
             android:id="@+id/action_timeSlotDetailsFragment_to_showAuthorProfileFragment"
             app:destination="@id/showAuthorProfileFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"
@@ -80,4 +84,9 @@
     <fragment
         android:id="@+id/showAuthorProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment"/>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.g30lab3.app.ui.chat.chatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>
