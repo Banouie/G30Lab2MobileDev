@@ -31,13 +31,16 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView :RecyclerView = view.findViewById(R.id.chat)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val chatId = arguments?.get("chatId") as String
+
         val timeSlotId =  arguments?.get("timeSlotId") as String
-        chatVM.getChat(chatId)//get the chat from VM
+        val authorUserId = arguments?.get("authorUser") as String
+        val requestUserId = arguments?.get("requestUser") as String
+        val chatId = requestUserId+authorUserId+timeSlotId //obtain the unique Id for the chat
+
+        chatVM.getChat(chatId,requestUserId,authorUserId,timeSlotId)//get the chat from VM
         chatVM.currentChat.observe(requireActivity()){
             recyclerView.adapter = MessagesAdapter(it)
         }
-
 
         var sender:TextInputLayout = view.findViewById(R.id.insert_message)
         sender.setEndIconOnClickListener{
@@ -49,27 +52,6 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
             sender.editText?.text?.clear()
         }
 
-    }
-
-    //set as title of the fragment the selected skill in the layout before (Skills List)
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val usersVM by viewModels<UserVM>()
-        lateinit var otherUserId : String
-        for (id in arguments?.getString("chatId")?.split("-")!!) {
-            if (id != Firebase.auth.currentUser?.uid!!){
-                otherUserId= id
-            }
-        }
-        usersVM.getUserInfo(otherUserId).observe(requireActivity()){
-            (activity as MainActivity).supportActionBar?.title= "${it.full_name}"
-        }
-
-
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 

@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
@@ -22,7 +21,6 @@ import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.UserVM
 import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -79,7 +77,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         val duration: TextView = view.findViewById(R.id.adv_duration)
         val author: TextView = view.findViewById(R.id.adv_author)
         val goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
-        val startChatBtn : Button = view.findViewById(R.id.request_timeSlot_btn)
+        val startChatBtn: Button = view.findViewById(R.id.request_timeSlot_btn)
 
         vm.all.observe(requireActivity()) {
 
@@ -127,13 +125,17 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 //manage the "make an agreement" button
                 startChatBtn.setOnClickListener {
                     //TODO start chat
-                    val loggerUserId = Firebase.auth.currentUser?.uid
+                    val requestingUserId = Firebase.auth.currentUser?.uid
                     val authorId = to_show_timeSlot.author
                     //create the chat for the users
-                    val chatId = "$loggerUserId/$authorId".split("/").sorted().joinToString("-")
-                    Log.d("IDCHAT:" ,"$chatId")
-                    findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_chatFragment,
-                        bundleOf("chatId" to chatId, "timeSlotId" to to_show_timeSlot.id))
+                    findNavController().navigate(
+                        R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                        bundleOf(
+                            "requestUser" to requestingUserId,
+                            "timeSlotId" to to_show_timeSlot.id,
+                            "authorUser" to authorId
+                        )
+                    )
                 }
             }
 
