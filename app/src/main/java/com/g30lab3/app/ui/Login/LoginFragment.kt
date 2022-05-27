@@ -1,6 +1,7 @@
 package com.g30lab3.app.ui.Login
 
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -31,11 +32,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.delay
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     /**Function that properly set the image in the drawer and the name of the user after login success*/
-    private fun updateDrawer(){
+    private fun updateDrawer() {
         val userVM by viewModels<UserVM>()
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
@@ -44,7 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //*** UPDATE THE USER PHOTO AND NAME IN THE DRAWER
         //set the image of the user and the name in the drawer
 
-        userVM.loggedUser.observe(requireActivity()){
+        userVM.loggedUser.observe(requireActivity()) {
             val imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + it.id)
             Glide
                 .with(requireActivity())
@@ -125,28 +127,45 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             auth.signInWithCredential(firebaseCredential)
                                 .addOnCompleteListener(requireActivity()) { task ->
                                     if (task.isSuccessful) {
+                                        val progressDialog = ProgressDialog(requireContext())
+                                        progressDialog.setMessage("Setting up account")
+                                        progressDialog.show()
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("FIREBASESIGNIN", "signInWithCredential:success")
                                         val googleUser = auth.currentUser
-                                        if(googleUser!=null){
+                                        if (googleUser != null) {
                                             //check if the user is already registered or it's his first login, in the latter case create a user with its unique Google ID:
-                                            val usersRef = FirebaseFirestore.getInstance().collection("Users").document(Firebase.auth.currentUser?.uid!!)
+                                            val usersRef =
+                                                FirebaseFirestore.getInstance().collection("Users")
+                                                    .document(Firebase.auth.currentUser?.uid!!)
                                             usersRef.get().addOnSuccessListener {
-                                                if(it.get("id")==null){
+                                                if (it.get("id") == null) {
                                                     //First login ever: create a new User in the 'Users' collection
-                                                    val newUser = User(Firebase.auth.currentUser?.uid!!,googleUser.displayName.toString(),"Nickname","Description",
-                                                        mutableListOf(),"Location",googleUser.email.toString())
-                                                    FirebaseFirestore.getInstance().collection("Users").document(Firebase.auth.currentUser?.uid!!).set(newUser)
+                                                    val newUser = User(
+                                                        Firebase.auth.currentUser?.uid!!,
+                                                        googleUser.displayName.toString(),
+                                                        "Nickname",
+                                                        "Description",
+                                                        mutableListOf(),
+                                                        "Location",
+                                                        googleUser.email.toString()
+                                                    )
+                                                    FirebaseFirestore.getInstance()
+                                                        .collection("Users")
+                                                        .document(Firebase.auth.currentUser?.uid!!)
+                                                        .set(newUser)
                                                         .addOnSuccessListener {
-                                                        updateDrawer()
-                                                        findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
-                                                    }
-                                                }else {
+                                                            updateDrawer()
+                                                            progressDialog.cancel()
+                                                            findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
+                                                        }
+                                                } else {
                                                     //user already registered
                                                     updateDrawer()
+                                                    progressDialog.cancel()
                                                     findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)
                                                 }
-                                                }
+                                            }
 
                                         }
 
