@@ -15,6 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="20dp"
         app:strokeColor="@color/design_default_color_primary"
         app:strokeWidth="1dp">
 
@@ -24,12 +25,13 @@
             android:gravity="center">
             <!-- Skill name-->
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/skill_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
