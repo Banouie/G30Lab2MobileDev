@@ -130,7 +130,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                     val loggerUserId = Firebase.auth.currentUser?.uid
                     val authorId = to_show_timeSlot.author
                     //create the chat for the users
-                    val chatId = "$loggerUserId/$authorId".split("/").sorted().joinToString("")
+                    val chatId = "$loggerUserId/$authorId".split("/").sorted().joinToString("-")
                     Log.d("IDCHAT:" ,"$chatId")
                     findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_chatFragment,
                         bundleOf("chatId" to chatId, "timeSlotId" to to_show_timeSlot.id))
