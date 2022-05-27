@@ -15,9 +15,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.text.SimpleDateFormat
+import java.util.AbstractMap
 
 class MessagesAdapter(val messages: List<textMessage>) :
     RecyclerView.Adapter<MessagesAdapter.ItemViewHolder>() {
+    val dateFormat = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT,SimpleDateFormat.SHORT)
 
     class ItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val view = v
@@ -25,6 +28,8 @@ class MessagesAdapter(val messages: List<textMessage>) :
         val sentLayout: LinearLayout = v.findViewById(R.id.sent_message)
         //val leftProfileImage: ImageView = v.findViewById(R.id.income_profile_image)
         //val rightProfileImage: ImageView = v.findViewById(R.id.sender_profile_image)
+        val timeRight :TextView = v.findViewById(R.id.time_right)
+        val timeLeft :TextView = v.findViewById(R.id.time_left)
         val incomeText: TextView = v.findViewById(R.id.income_text)
         val sentText: TextView = v.findViewById(R.id.sent_text)
     }
@@ -41,6 +46,7 @@ class MessagesAdapter(val messages: List<textMessage>) :
             //it's a message sent from the current user
             holder.incomeLayout.visibility = View.GONE
             holder.sentText.text = item.text
+            holder.timeRight.text = dateFormat.format(item.time)
             //TODO update image profile or remove it if it's too complex manage images
             /*val profileImgRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + Firebase.auth.currentUser?.uid)
             Glide
@@ -52,6 +58,7 @@ class MessagesAdapter(val messages: List<textMessage>) :
             //it's an incoming message from the other user
             holder.sentLayout.visibility = View.GONE
             holder.incomeText.text = item.text
+            holder.timeLeft.text = dateFormat.format(item.time)
             //TODO update image profile or remove it if it's too complex manage images
             /*val profileImgRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + item.senderId)
             Glide

@@ -13,9 +13,10 @@
     <LinearLayout
         android:id="@+id/income_message"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner2"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,11 +32,18 @@
             android:id="@+id/income_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:text="message from other user"
             android:textColor="#696969"
-            android:textSize="16sp"
-            android:background="@drawable/round_corner2"/>
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/time_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:paddingLeft="5dp"
+            android:text="TIME"
+            android:textSize="10sp" />
 
 
     </LinearLayout>
@@ -43,7 +51,9 @@
     <LinearLayout
         android:id="@+id/sent_message"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -52,13 +62,21 @@
             android:id="@+id/sent_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/round_corner"
             android:gravity="right"
-            android:text="message from logged user"
+            android:text="message from logged"
             android:textColor="#FFFAFA"
             android:textSize="16sp" />
 
+
+        <TextView
+            android:id="@+id/time_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:paddingRight="5dp"
+            android:text="TIME"
+            android:textColor="#FFFAFA"
+            android:textSize="10sp" />
         <!--
         <ImageView
             android:id="@+id/sender_profile_image"
