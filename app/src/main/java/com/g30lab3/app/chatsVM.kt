@@ -8,33 +8,14 @@ import com.g30lab3.app.models.chatInfo
 import com.g30lab3.app.models.textMessage
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObject
-import java.util.*
-import kotlin.collections.HashMap
 
 
 class chatsVM(application: Application) : AndroidViewModel(application) {
 
     private val db = FirebaseFirestore.getInstance()
-
-    private val _allChats = MutableLiveData<List<String>>()
-    val allChats = _allChats
-    val currentChat = MutableLiveData<List<textMessage>>()
-    lateinit var listener: ListenerRegistration
-
-    init {
-        listener = db.collection("Chats")
-            .addSnapshotListener { value, error ->
-                if (value != null) {
-                    _allChats.value =
-                        if (error != null || value.isEmpty) mutableListOf() else value.mapNotNull { d ->
-                            d.toString()
-                        }
-                }
-            }
-    }
+    private val _currentChat = MutableLiveData<List<textMessage>>()
+    val currentChat = _currentChat
 
     fun getChat(chatId: String, requestUserId: String, authorUserId: String, timeSlotId: String) {
         db.collection("Chats").document(chatId).collection(chatId)
@@ -42,22 +23,22 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.d("ChatError", "Error retrieving chat $chatId")
-                    currentChat.value = listOf() //empty chat
+                    _currentChat.value = listOf() //empty chat
                     return@addSnapshotListener
                 }
                 if (value?.isEmpty == true || value == null) {
                     //The chat is new: set information about the chat in the document
                     val info = chatInfo(authorUserId,requestUserId,timeSlotId)
                     db.collection("Chats").document(chatId).set(info)
-                    currentChat.value = listOf()
+                    _currentChat.value = listOf()
                     return@addSnapshotListener
                 }
-                var list = mutableListOf<textMessage>()
-                for (message in value!!) {
+                val list = mutableListOf<textMessage>()
+                for (message in value) {
                     Log.d("AAA",message.toString())
                     list.add(message.toTextMessage())
                 }
-                currentChat.value = list
+                _currentChat.value = list
             }
     }
 
@@ -67,6 +48,8 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                 Log.d("MessageInserted", "Correctly added message to chat")
             }
     }
+
+
 }
 
 fun DocumentSnapshot.toTextMessage(): textMessage {
@@ -75,6 +58,14 @@ fun DocumentSnapshot.toTextMessage(): textMessage {
         time = getTimestamp("time")?.toDate()!!,
         senderId = get("senderId") as String,
         request = get("request") as Boolean
+    )
+}
+
+fun DocumentSnapshot.toChatInfo() : chatInfo{
+    return chatInfo(
+        authorOfTimeSlot = get("authorOfTimeSlot") as String,
+        requestingUser = get("requestingUser") as String,
+        leadingTimeSlot = get("leadingTimeSlot") as String
     )
 }
 

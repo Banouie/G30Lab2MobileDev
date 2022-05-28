@@ -2,20 +2,14 @@ package com.g30lab3.app.ui.chat
 
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
-import com.g30lab3.app.UserVM
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
 import com.g30lab3.app.models.textMessage
@@ -23,7 +17,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
 import java.util.*
 
 

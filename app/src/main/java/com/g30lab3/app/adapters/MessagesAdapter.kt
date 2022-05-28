@@ -90,11 +90,15 @@ class MessagesAdapter(val messages: List<textMessage>) :
             //variables to interact with request layout
             val incomeRequest : CardView = holder.view.findViewById(R.id.income_request)
             val sentRequest : CardView = holder.view.findViewById(R.id.request_sent)
+            val incomeRequestTime : TextView = holder.view.findViewById(R.id.time_income_request)
+            val sentRequestTime : TextView = holder.view.findViewById(R.id.time_request_sent)
             if(item.senderId== Firebase.auth.currentUser?.uid){
-                //the message has been sent from the current user
+                //the request has been sent from the current user
                 incomeRequest.visibility = View.GONE
+                sentRequestTime.text = dateFormat.format(item.time)
             }else{
                 sentRequest.visibility = View.GONE
+                incomeRequestTime.text = dateFormat.format(item.time)
             }
         }
     }

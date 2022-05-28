@@ -43,7 +43,7 @@
             android:layout_gravity="bottom|start"
             android:paddingLeft="5dp"
             android:text="TIME"
-            android:textSize="10sp" />
+            android:textSize="11sp" />
 
 
     </LinearLayout>
@@ -76,7 +76,7 @@
             android:paddingRight="5dp"
             android:text="TIME"
             android:textColor="#FFFAFA"
-            android:textSize="10sp" />
+            android:textSize="11sp" />
         <!--
         <ImageView
             android:id="@+id/sender_profile_image"
