@@ -54,6 +54,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                 }
                 var list = mutableListOf<textMessage>()
                 for (message in value!!) {
+                    Log.d("AAA",message.toString())
                     list.add(message.toTextMessage())
                 }
                 currentChat.value = list
@@ -72,7 +73,8 @@ fun DocumentSnapshot.toTextMessage(): textMessage {
     return textMessage(
         text = get("text") as String,
         time = getTimestamp("time")?.toDate()!!,
-        senderId = get("senderId") as String
+        senderId = get("senderId") as String,
+        request = get("request") as Boolean
     )
 }
 

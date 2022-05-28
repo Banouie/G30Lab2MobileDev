@@ -61,7 +61,8 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                         Log.d("BTNPRESSED", "Discard selected")
                     }
                     .setPositiveButton("Yes I'm sure") { dialog, which ->
-                        Log.d("BTNPRESSED", "Yes selected")
+                        val request = textMessage(timeSlotId,Date(),Firebase.auth.currentUser?.uid!!,true) //if is a request the text of the message will contain the timeSlot id which is requested
+                        chatVM.addMessage(chatId,request)
                     }
                     .show()
                 true
@@ -70,7 +71,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                 val messageText = sender.editText?.text.toString()
                 val senderId = Firebase.auth.currentUser?.uid!!
                 val now = Date()
-                val message = textMessage(messageText, now, senderId)
+                val message = textMessage(messageText, now, senderId,false)
                 chatVM.addMessage(chatId, message)
                 sender.editText?.text?.clear()
             }
