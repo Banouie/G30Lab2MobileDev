@@ -30,6 +30,8 @@
             android:layout_gravity="bottom|center"
             android:layout_margin="20dp"
             android:padding="20dp"
+            android:drawableEnd="@drawable/ic_logout"
+            android:drawableTint="@color/white"
             android:text="Logout" />
 
     </com.google.android.material.navigation.NavigationView>
