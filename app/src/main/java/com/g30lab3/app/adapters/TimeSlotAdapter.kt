@@ -1,6 +1,5 @@
 package com.g30lab3.app.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
+import com.g30lab3.app.UserVM
 import com.g30lab3.app.models.timeSlot
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -35,6 +35,7 @@ class TimeSlotAdapter(val data: MutableList<timeSlot>) :
         val editButton: Button = v.findViewById(R.id.button_edit_time_slot)
         val view: View = v
         val card: MaterialCardView = v.findViewById(R.id.card)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -60,7 +61,7 @@ class TimeSlotAdapter(val data: MutableList<timeSlot>) :
         holder.time.text = item.time
         holder.location.text = item.location
         //TODO set the star, must be shown only if the current user is != from author user
-        //This is a bundle containing the ID of the current Time SLot, useful in eventual navigations (see below)
+        //This is a bundle containing the ID of the current Time SLot, useful in eventual navigation (see below)
         var bundle = bundleOf("time_slot_ID" to item.id)
 
         holder.editButton.setOnClickListener {
