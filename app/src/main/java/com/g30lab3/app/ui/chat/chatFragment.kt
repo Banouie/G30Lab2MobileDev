@@ -3,12 +3,15 @@ package com.g30lab3.app.ui.chat
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
@@ -25,9 +28,6 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
 
     val chatVM by viewModels<chatsVM>()
 
-    //TODO edit chat fragment label
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.chat)
@@ -37,6 +37,8 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val authorUserId = arguments?.get("authorUser") as String
         val requestUserId = arguments?.get("requestUser") as String
         val chatId = requestUserId + authorUserId + timeSlotId //obtain the unique Id for the chat
+
+        //TODO create the pending request and the chat only if the loggedUser has credits
 
         //check if the chat with passed chatId already exists or must be initialized in ChatInfo
         chatVM.allChats.observe(requireActivity()){
@@ -97,6 +99,20 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         }
     }
 
+    //set as title of the chat fragment the interlocutor
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val authorUserId = arguments?.get("authorUser") as String
+        val requestUserId = arguments?.get("requestUser") as String
+        val id = if(requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
+        FirebaseFirestore.getInstance().collection("Users").document(id).get().addOnSuccessListener {
+            (activity as MainActivity).supportActionBar?.title= it.get("nickname") as String
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
 }
 

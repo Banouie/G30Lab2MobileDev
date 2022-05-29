@@ -2,7 +2,6 @@ package com.g30lab3.app.models
 
 import java.util.*
 
-//todo add a field for request and build a different layout in the recyclerview to accept or decline the request
 class textMessage{
     var text: String = ""
     var time: Date = Date(0)
