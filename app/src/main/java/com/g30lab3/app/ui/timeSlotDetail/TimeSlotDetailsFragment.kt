@@ -164,7 +164,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
                 //manage the "delete request" button
                 deleteRequestBtn.setOnClickListener {
-                    //delete chat info and list of messages and hide this button, also change the start request button text and icon
+                    //delete list of messages and relative PendingRequest, than hide this button, also change the start request button text and icon
                     val chatId = requestingUserId + authorId + to_show_timeSlot.id
                     chatVM.deleteChat(chatId)
                     deleteRequestBtn.visibility = View.GONE

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
 import com.google.firebase.firestore.*
+import java.util.*
 
 
 /** Each time a user shows interest in a specific timeSlot (press the button "Request this timeSlot" in the timeSlot details layout)
@@ -23,23 +24,25 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        allPendingRequestsListener = db.collection("PendingRequests").addSnapshotListener { value, error ->
-            if (error != null) {
-                Log.d("AllChatsError", "error1")
-                _allPendingRequests.value = listOf()
-                return@addSnapshotListener
+        allPendingRequestsListener =
+            db.collection("PendingRequests").addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.d("AllChatsError", "error1")
+                    _allPendingRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                if (value?.isEmpty == true || value == null) {
+                    Log.d("AllChatsEmptyOrNull", "No chat info")
+                    _allPendingRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                _allPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
             }
-            if (value?.isEmpty == true || value == null) {
-                Log.d("AllChatsEmptyOrNull", "No chat info")
-                _allPendingRequests.value = listOf()
-                return@addSnapshotListener
-            }
-            _allPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
-        }
 
     }
 
-
+    /**This function is used when a user want to request a timeslot: creates a new PendingRequest in firebase and initialize the chat between the two users with a request
+     *  from the requesting user to the author of the timeslot*/
     fun createNewPendingRequestInfo(
         chatId: String,
         requestUserId: String,
@@ -49,6 +52,8 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
         val info = PendingRequestInfo(chatId, authorUserId, requestUserId, timeSlotId)
         db.collection("PendingRequests").document(chatId).set(info).addOnSuccessListener {
             Log.d("CHAT", "Created pending request Info")
+            var startingRequest = textMessage("",Date(),requestUserId,true)
+            addMessage(chatId,startingRequest)
         }
     }
 
@@ -82,6 +87,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             }
     }
 
+    /**For the moment this function delete both chat and PendingRequest*/
     fun deleteChat(chatId: String) {
         db.collection("Chats").document(chatId).collection(chatId).get().addOnSuccessListener {
             //delete the chat (it's a collection of messages)
