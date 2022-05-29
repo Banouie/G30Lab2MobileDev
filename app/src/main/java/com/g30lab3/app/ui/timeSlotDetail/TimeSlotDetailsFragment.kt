@@ -87,7 +87,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         val startChatBtn: MaterialButton = view.findViewById(R.id.request_timeSlot_btn)
         val deleteRequestBtn: MaterialButton = view.findViewById(R.id.delete_request_timeSlot_btn)
 
-        //TODO observe all chats, if exists one with requestUser == currentLoggedUser and timeSLotId = currentTimeSlod shown modify the button for chat to delete interest
+
 
 
         vm.all.observe(requireActivity()) {
@@ -141,7 +141,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 // manage the possibility that the request from the logged user already exist for this timeslot
                 chatVM.allChats.observe(requireActivity()) { list ->
                     if (list.any { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }) {
-                        //exist already a pending request/chat created from the current logged user, so he can also delete the chat/pending request from this layout
+                        //exist already a chatInfo created from the current logged user, so he can also delete the chatInfo from this layout
                         startChatBtn.text = "Open chat"
                         startChatBtn.setIconResource(R.drawable.ic_chat)
                         deleteRequestBtn.visibility = View.VISIBLE
@@ -164,14 +164,13 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
                 //manage the "delete request" button
                 deleteRequestBtn.setOnClickListener {
-                    // TODO: delete chat info and list of messages and hide this button, also change the startrequest button text and icon
+                    //delete chat info and list of messages and hide this button, also change the start request button text and icon
                     val chatId = requestingUserId + authorId + to_show_timeSlot.id
                     chatVM.deleteChat(chatId)
                     deleteRequestBtn.visibility = View.GONE
                     startChatBtn.text = "Request this Time Slot"
                     startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
                     createSnackBar("Deleted", requireView(), requireContext(), true)
-
                 }
             }
 

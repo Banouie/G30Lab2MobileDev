@@ -2,7 +2,7 @@ package com.g30lab3.app.models
 
 import java.util.*
 
-class chatInfo{
+class PendingRequestInfo{
     var chatId: String =""
     var authorOfTimeSlot: String = ""
     var requestingUser: String = ""

@@ -41,7 +41,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         //check if the chat with passed chatId already exists or must be initialized in ChatInfo
         chatVM.allChats.observe(requireActivity()){
             if(!it.any { item -> item.chatId == chatId }){
-                chatVM.createNewChatInfo(chatId,requestUserId,authorUserId,timeSlotId)
+                chatVM.createNewPendingRequestInfo(chatId,requestUserId,authorUserId,timeSlotId)
             }
         }
         chatVM.getChat(chatId)//get the list of messages for the chat

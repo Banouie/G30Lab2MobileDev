@@ -4,50 +4,51 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.g30lab3.app.models.chatInfo
+import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.getField
 
+
+/** Each time a user shows interest in a specific timeSlot (press the button "Request this timeSlot" in the timeSlot details layout)
+ *  a PendingRequestInfo is created in Firebase. Pending requests contains the id of the associated chat*/
 
 class chatsVM(application: Application) : AndroidViewModel(application) {
 
     private val db = FirebaseFirestore.getInstance()
     private val _currentChat = MutableLiveData<List<textMessage>>()
     val currentChat = _currentChat
-    private val _allChats = MutableLiveData<List<chatInfo>>()
-    val allChats = _allChats
-    private lateinit var allChatsListener: ListenerRegistration
+    private val _allPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
+    val allChats = _allPendingRequests
+    private lateinit var allPendingRequestsListener: ListenerRegistration
 
 
     init {
-        allChatsListener = db.collection("ChatsInfo").addSnapshotListener { value, error ->
+        allPendingRequestsListener = db.collection("PendingRequests").addSnapshotListener { value, error ->
             if (error != null) {
                 Log.d("AllChatsError", "error1")
-                _allChats.value = listOf()
+                _allPendingRequests.value = listOf()
                 return@addSnapshotListener
             }
             if (value?.isEmpty == true || value == null) {
                 Log.d("AllChatsEmptyOrNull", "No chat info")
-                _allChats.value = listOf()
+                _allPendingRequests.value = listOf()
                 return@addSnapshotListener
             }
-            _allChats.value = value.mapNotNull { d -> d.toChatInfo() }
+            _allPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
         }
 
     }
 
 
-    fun createNewChatInfo(
+    fun createNewPendingRequestInfo(
         chatId: String,
         requestUserId: String,
         authorUserId: String,
         timeSlotId: String
     ) {
-        val info = chatInfo(chatId, authorUserId, requestUserId, timeSlotId)
-        db.collection("ChatsInfo").document(chatId).set(info).addOnSuccessListener {
-            Log.d("CHAT", "Created chat Info")
+        val info = PendingRequestInfo(chatId, authorUserId, requestUserId, timeSlotId)
+        db.collection("PendingRequests").document(chatId).set(info).addOnSuccessListener {
+            Log.d("CHAT", "Created pending request Info")
         }
     }
 
@@ -87,8 +88,8 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             for (message in it.documents) {
                 message.reference.delete()
             }
-            //delete the chatInfo
-            db.collection("ChatsInfo").document(chatId).delete().addOnSuccessListener {
+            //delete the Pending Request
+            db.collection("PendingRequests").document(chatId).delete().addOnSuccessListener {
                 Log.d("ChatDeletion", "OK")
             }
         }
@@ -97,7 +98,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
 
     override fun onCleared() {
         super.onCleared()
-        allChatsListener.remove()
+        allPendingRequestsListener.remove()
     }
 
 
@@ -112,8 +113,8 @@ fun DocumentSnapshot.toTextMessage(): textMessage {
     )
 }
 
-fun DocumentSnapshot.toChatInfo(): chatInfo {
-    return chatInfo(
+fun DocumentSnapshot.toPendingRequestInfo(): PendingRequestInfo {
+    return PendingRequestInfo(
         chatId = get("chatId") as String,
         authorOfTimeSlot = get("authorOfTimeSlot") as String,
         requestingUser = get("requestingUser") as String,
