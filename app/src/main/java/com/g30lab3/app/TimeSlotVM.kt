@@ -95,7 +95,6 @@ fun DocumentSnapshot.toTimeSlot(): timeSlot {
         duration = (get("duration") as Long).toInt(),
         author = if (get("author") != null) get("author") as String else "unknown",
         time = get("time") as String,
-        //TODO Just for debug, improve the skill line!
         skill = if (get("skill") != null) get("skill") as String else ""
     )
 }

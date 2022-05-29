@@ -233,7 +233,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         return true
     }
 
-    //TODO use a viewmodel.observer for refresh the image in imageview
     //Handle the photo selected from gallery or from camera and show as profile picture
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

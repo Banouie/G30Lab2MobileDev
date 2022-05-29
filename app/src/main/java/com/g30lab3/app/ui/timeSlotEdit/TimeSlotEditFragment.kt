@@ -68,7 +68,6 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         Firebase.auth.currentUser?.uid.toString() //set the timeSlot author with the logged user unique ID for the author field
     var skill: String = ""
 
-    //TODO remove the "id" field, it was useful with ROOM DB, not necessary with Firebase
     var newTimeSlot: timeSlot =
         timeSlot("", title, description, date, time, duration, location, author, skill)
 
