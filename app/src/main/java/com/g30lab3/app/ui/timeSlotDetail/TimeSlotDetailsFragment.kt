@@ -19,15 +19,22 @@ import com.g30lab3.app.R
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.UserVM
+import com.g30lab3.app.chatsVM
+import com.g30lab3.app.models.textMessage
 import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
     val vm by viewModels<TimeSlotVM>()
     val UserVM by viewModels<UserVM>()
+    val chatVM by viewModels<chatsVM>()
 
     lateinit var to_show_timeSlot: timeSlot
 
@@ -77,7 +84,11 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         val duration: TextView = view.findViewById(R.id.adv_duration)
         val author: TextView = view.findViewById(R.id.adv_author)
         val goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
-        val startChatBtn: Button = view.findViewById(R.id.request_timeSlot_btn)
+        val startChatBtn: MaterialButton = view.findViewById(R.id.request_timeSlot_btn)
+        val deleteRequestBtn: MaterialButton = view.findViewById(R.id.delete_request_timeSlot_btn)
+
+        //TODO observe all chats, if exists one with requestUser == currentLoggedUser and timeSLotId = currentTimeSlod shown modify the button for chat to delete interest
+
 
         vm.all.observe(requireActivity()) {
 
@@ -122,12 +133,25 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                         bundleOf("uid" to to_show_timeSlot.author)
                     )
                 }
+
+                //values for chats
+                val requestingUserId = Firebase.auth.currentUser?.uid
+                val authorId = to_show_timeSlot.author
+
+                // manage the possibility that the request from the logged user already exist for this timeslot
+                chatVM.allChats.observe(requireActivity()) { list ->
+                    if (list.any { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }) {
+                        //exist already a pending request/chat created from the current logged user, so he can also delete the chat/pending request from this layout
+                        startChatBtn.text = "Open chat"
+                        startChatBtn.setIconResource(R.drawable.ic_chat)
+                        deleteRequestBtn.visibility = View.VISIBLE
+                    }
+                }
+
                 //manage the "make an agreement" button
                 startChatBtn.setOnClickListener {
-                    //TODO start chat
-                    val requestingUserId = Firebase.auth.currentUser?.uid
-                    val authorId = to_show_timeSlot.author
-                    //create the chat for the users
+                    //go to chat
+                    //create the chat/pending request for the users
                     findNavController().navigate(
                         R.id.action_timeSlotDetailsFragment_to_chatFragment,
                         bundleOf(
@@ -137,10 +161,23 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                         )
                     )
                 }
+
+                //manage the "delete request" button
+                deleteRequestBtn.setOnClickListener {
+                    // TODO: delete chat info and list of messages and hide this button, also change the startrequest button text and icon
+                    val chatId = requestingUserId + authorId + to_show_timeSlot.id
+                    chatVM.deleteChat(chatId)
+                    deleteRequestBtn.visibility = View.GONE
+                    startChatBtn.text = "Request this Time Slot"
+                    startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
+                    createSnackBar("Deleted", requireView(), requireContext(), true)
+
+                }
             }
 
 
         }
+
 
         //manage the back button pressure to go back in the list of timeSlots, we need to pass in a bundle
         // the actual skill to retrieve timeSlots there
@@ -157,4 +194,5 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
 
     }
+
 }

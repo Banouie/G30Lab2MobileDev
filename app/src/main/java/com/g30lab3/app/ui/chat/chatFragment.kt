@@ -16,6 +16,7 @@ import com.g30lab3.app.models.textMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
@@ -23,6 +24,8 @@ import java.util.*
 class chatFragment : Fragment(R.layout.fragment_chat) {
 
     val chatVM by viewModels<chatsVM>()
+
+    //TODO edit chat fragment label
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,8 +38,27 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val requestUserId = arguments?.get("requestUser") as String
         val chatId = requestUserId + authorUserId + timeSlotId //obtain the unique Id for the chat
 
-        chatVM.getChat(chatId, requestUserId, authorUserId, timeSlotId)//get the chat from VM
+        //check if the chat with passed chatId already exists or must be initialized in ChatInfo
+        chatVM.allChats.observe(requireActivity()){
+            if(!it.any { item -> item.chatId == chatId }){
+                chatVM.createNewChatInfo(chatId,requestUserId,authorUserId,timeSlotId)
+            }
+        }
+        chatVM.getChat(chatId)//get the list of messages for the chat
         chatVM.currentChat.observe(requireActivity()) {
+            if (it.isEmpty() && requestUserId == Firebase.auth.currentUser?.uid && context != null) {
+                //this is a complete new chat created now from the requesting user, show him information:
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Time Slot saved in you pending requests!")
+                    .setMessage("What do you want to do?")
+                    .setNegativeButton("Chat now") { dialog, which ->
+                        // dismiss dialog, remains in chat
+                    }
+                    .setPositiveButton("See pending requests") { dialog, which ->
+                        // go to pending requests
+                    }
+                    .show()
+            }
             recyclerView.adapter = MessagesAdapter(it)
         }
 
@@ -45,33 +67,37 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
             "<b>Tap</b>: send a message, <b>long press</b>: send a request",
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
-            sender.setEndIconOnLongClickListener {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Send a request")
-                    .setMessage("Are you shure you want to request this Time Slot?")
-                    .setNegativeButton("Discard") { dialog, which ->
-                        // Respond to negative button press
-                        Log.d("BTNPRESSED", "Discard selected")
-                    }
-                    .setPositiveButton("Yes I'm sure") { dialog, which ->
-                        val request = textMessage(timeSlotId,Date(),Firebase.auth.currentUser?.uid!!,true) //if is a request the text of the message will contain the timeSlot id which is requested
-                        chatVM.addMessage(chatId,request)
-                    }
-                    .show()
-                true
-            }
-            sender.setEndIconOnClickListener {
-                val messageText = sender.editText?.text.toString()
-                val senderId = Firebase.auth.currentUser?.uid!!
-                val now = Date()
-                val message = textMessage(messageText, now, senderId,false)
-                chatVM.addMessage(chatId, message)
-                sender.editText?.text?.clear()
-            }
+        sender.setEndIconOnLongClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Send a request")
+                .setMessage("Are you shure you want to request this Time Slot?")
+                .setNegativeButton("Discard") { dialog, which ->
+                    // Respond to negative button press
+                    Log.d("BTNPRESSED", "Discard selected")
+                }
+                .setPositiveButton("Yes I'm sure") { dialog, which ->
+                    val request = textMessage(
+                        timeSlotId,
+                        Date(),
+                        Firebase.auth.currentUser?.uid!!,
+                        true
+                    ) //if is a request the text of the message will contain the timeSlot id which is requested
+                    chatVM.addMessage(chatId, request)
+                }
+                .show()
+            true
         }
-
-
+        sender.setEndIconOnClickListener {
+            val messageText = sender.editText?.text.toString()
+            val senderId = Firebase.auth.currentUser?.uid!!
+            val now = Date()
+            val message = textMessage(messageText, now, senderId, false)
+            chatVM.addMessage(chatId, message)
+            sender.editText?.text?.clear()
+        }
     }
 
 
-        //TODO edit chat fragment label
+}
+
+

@@ -30,7 +30,6 @@ class TimeSlotAdapter(val data: MutableList<timeSlot>) :
         val date: TextView = v.findViewById(R.id.time_slot_date)
         val time: TextView = v.findViewById(R.id.time_slot_time)
         val location: TextView = v.findViewById(R.id.time_slot_location)
-        val star : MaterialButton = v.findViewById(R.id.star_time_slot)
 
         val editButton: Button = v.findViewById(R.id.button_edit_time_slot)
         val view: View = v
@@ -60,7 +59,6 @@ class TimeSlotAdapter(val data: MutableList<timeSlot>) :
         holder.date.text = item.date
         holder.time.text = item.time
         holder.location.text = item.location
-        //TODO set the star, must be shown only if the current user is != from author user
         //This is a bundle containing the ID of the current Time SLot, useful in eventual navigation (see below)
         var bundle = bundleOf("time_slot_ID" to item.id)
 
@@ -70,11 +68,6 @@ class TimeSlotAdapter(val data: MutableList<timeSlot>) :
                 .navigate(R.id.action_timeSlotListFragment_to_timeSlotEditFragment, bundle)
         }
 
-        holder.star.setOnClickListener {
-            //change the icon
-            //todo change icon color considering the state and add or remove this timeslot to the "liked one" of the current user
-            holder.star.setIconResource(R.drawable.ic_star_yes)
-        }
 
         holder.card.setOnClickListener {
             //if the user clicks on the time slot a navigation to the fragment details of the time slot has to happen
