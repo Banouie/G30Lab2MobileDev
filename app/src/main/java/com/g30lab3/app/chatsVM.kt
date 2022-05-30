@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
-import com.g30lab3.app.ui.PendingRequests.PendingRequests
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase

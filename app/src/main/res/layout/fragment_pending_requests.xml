@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".ui.PendingRequests.PendingRequests">
+    android:layout_height="match_parent"
+    tools:context=".ui.PendingRequests.PendingRequestsFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
@@ -16,16 +16,19 @@
         style="@style/Widget.MaterialComponents.TabLayout.Colored">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/sent_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sent"/>
+            android:text="Sent" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/income_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Income" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/assigned_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Assigned" />
@@ -33,12 +36,13 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pending_requests_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab" />
+        app:layout_constraintTop_toBottomOf="@id/tab" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

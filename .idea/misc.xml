@@ -36,6 +36,7 @@
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_home.xml" value="0.3602058319039451" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_login.xml" value="0.42407407407407405" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_pending_requests.xml" value="0.22" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_sent_pending_request.xml" value="0.27219202898550726" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_show_profile.xml" value="0.25" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_skills_list.xml" value="0.25" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/fragment_skills_list2.xml" value="0.19583333333333333" />
@@ -48,6 +49,7 @@
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/nav_header_main.xml" value="0.575" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/pending_request_layout.xml" value="0.371875" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/request_layout.xml" value="0.33" />
+        <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/sent_pending_request_layout.xml" value="0.11730072463768115" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/skill_dropdown_item.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/skill_layout.xml" value="0.36" />
         <entry key="..\:/Users/fasd/AndroidStudioProjects/G30Lab2MobileDev/app/src/main/res/layout/text_view_home.xml" value="0.575" />
