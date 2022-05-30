@@ -13,25 +13,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Widget.MaterialComponents.TabLayout.Colored">
+        android:elevation="3dp">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/sent_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sent" />
+            android:text="Sent"
+            android:icon="@drawable/ic_arrow_up"
+            />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/income_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Income" />
+            android:text="Income"
+            android:icon="@drawable/ic_inbox"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/assigned_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Assigned" />
+            android:text="Assigned"
+            android:icon="@drawable/ic_sign"/>
 
 
     </com.google.android.material.tabs.TabLayout>
@@ -43,6 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab" />
+        app:layout_constraintTop_toBottomOf="@id/tab"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

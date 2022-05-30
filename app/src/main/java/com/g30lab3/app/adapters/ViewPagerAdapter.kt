@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.g30lab3.app.ui.PendingRequests.IncomePendingRequestsFragment
 import com.g30lab3.app.ui.PendingRequests.SentPendingRequestFragment
 import com.g30lab3.app.ui.showProfile.ShowProfileFragment
 
@@ -20,10 +21,10 @@ internal class ViewPagerAdapter(
                 SentPendingRequestFragment()
             }
             1 -> {
-                SentPendingRequestFragment()//for testing
+                IncomePendingRequestsFragment()
             }
             2 -> {
-                SentPendingRequestFragment()
+                SentPendingRequestFragment()//todo change this
             }
             else -> getItem(position)
         }

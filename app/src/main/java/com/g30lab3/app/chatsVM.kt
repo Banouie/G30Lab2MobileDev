@@ -24,8 +24,11 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
     val allChats = _allPendingRequests
     private val _loggedUserPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
     val loggedUserPendingRequests = _loggedUserPendingRequests
+    private val _loggedUserIncomeRequests = MutableLiveData<List<PendingRequestInfo>>()
+    val loggedUserIncomeRequests = _loggedUserIncomeRequests
     private lateinit var allPendingRequestsListener: ListenerRegistration
     private lateinit var loggedUserSentPendingRequestsListener: ListenerRegistration
+    private lateinit var loggedUserIncomeRequestsListener: ListenerRegistration
 
 
     init {
@@ -58,6 +61,20 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                     return@addSnapshotListener
                 }
                 _loggedUserPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
+            }
+
+        loggedUserIncomeRequestsListener = db.collection("PendingRequests")
+            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    _loggedUserIncomeRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                if (value?.isEmpty == true || value == null) {
+                    _loggedUserIncomeRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                _loggedUserIncomeRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
             }
 
     }

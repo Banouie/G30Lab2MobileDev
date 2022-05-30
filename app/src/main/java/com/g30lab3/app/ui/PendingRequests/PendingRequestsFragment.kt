@@ -2,21 +2,13 @@ package com.g30lab3.app.ui.PendingRequests
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.TimeSlotVM
-import com.g30lab3.app.adapters.PendingRequestAdapter
 import com.g30lab3.app.adapters.ViewPagerAdapter
 import com.g30lab3.app.chatsVM
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 
 /**This fragment shows all the requested time slots from the logged user, in other words the timeSlots he is interested in*/
