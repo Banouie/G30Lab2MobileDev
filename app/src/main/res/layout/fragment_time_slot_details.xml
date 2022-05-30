@@ -139,6 +139,7 @@
             android:text="Request this Time Slot"
             app:icon="@drawable/ic_bookmark_add"
             app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@+id/linearLayout"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -156,10 +157,21 @@
             app:layout_constraintEnd_toEndOf="@+id/request_timeSlot_btn"
             app:layout_constraintStart_toStartOf="@+id/request_timeSlot_btn"
             app:layout_constraintTop_toBottomOf="@+id/request_timeSlot_btn" />
-
         <!-- Linear progress indicator -->
 
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_to_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Give a review!"
+            app:layout_constraintEnd_toEndOf="@+id/delete_request_timeSlot_btn"
+            app:layout_constraintStart_toStartOf="@+id/delete_request_timeSlot_btn"
+            app:layout_constraintTop_toBottomOf="@+id/delete_request_timeSlot_btn" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
 

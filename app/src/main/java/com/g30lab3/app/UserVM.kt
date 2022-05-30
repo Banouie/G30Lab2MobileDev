@@ -79,6 +79,19 @@ class UserVM(application: Application) : AndroidViewModel(application) {
             _starredTimeSlots.value=list
         }
     }
+    //convert the retrieved data from Firebase to a kotlin User object class
+    fun DocumentSnapshot.toUser(): User {
+        return User(
+            id = get("id") as String,
+            full_name = get("full_name") as String,
+            nickname = get("nickname") as String,
+            description = get("description") as String,
+            skills = get("skills") as MutableList<String>,
+            location = get("location") as String,
+            mail = get("mail") as String
+        )
+    }
+
     /**Function that add a star to a timeSlot, save the timeSlotId in the "starred" collection of the current user*/
     fun addStarredTimeSlot(timeSlotId : String){
         db.collection("Users").document(currentUser?.uid!!).collection("starred").add(timeSlotId)
@@ -89,6 +102,8 @@ class UserVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
+
     /**Function that remove a star from a timeSlot, delete the timeSlotId from the "starred" collection of the current user*/
     fun removeStarredTimeSlot(timeSlotId : String){
         db.collection("Users").document(currentUser?.uid!!).collection("starred").document(timeSlotId).delete()
@@ -98,20 +113,4 @@ class UserVM(application: Application) : AndroidViewModel(application) {
                 Log.d("RemoveStar","Error removing timeslot from starred ones, exception: ${it.message} ")
             }
     }
-
-
-
-}
-
-//convert the retrieved data from Firebase to a kotlin User object class
-fun DocumentSnapshot.toUser(): User {
-    return User(
-        id = get("id") as String,
-        full_name = get("full_name") as String,
-        nickname = get("nickname") as String,
-        description = get("description") as String,
-        skills = get("skills") as MutableList<String>,
-        location = get("location") as String,
-        mail = get("mail") as String
-    )
 }

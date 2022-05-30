@@ -5,6 +5,14 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/chatFragment">
     <fragment
+        android:id="@+id/review_fragment"
+        android:name="com.g30lab3.app.ui.review.ReviewFragment"
+        android:label="Review" >
+        <action
+            android:id="@+id/action_ReviewFragment_to_TimeSlotDetailFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/loginFragment"
         android:name="com.g30lab3.app.ui.Login.LoginFragment"
         android:label="Login" >
@@ -53,6 +61,9 @@
         <action
             android:id="@+id/action_timeSlotDetailsFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_reviewFragment"
+            app:destination="@+id/review_fragment"/>
     </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"

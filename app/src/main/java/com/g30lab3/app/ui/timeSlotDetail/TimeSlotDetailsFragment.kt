@@ -27,6 +27,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 
@@ -86,7 +88,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
         val goToProfileBtn: Button = view.findViewById(R.id.go_to_profile_btn)
         val startChatBtn: MaterialButton = view.findViewById(R.id.request_timeSlot_btn)
         val deleteRequestBtn: MaterialButton = view.findViewById(R.id.delete_request_timeSlot_btn)
-
+        val btn_review: MaterialButton = view.findViewById(R.id.btn_to_review)
 
 
 
@@ -129,10 +131,10 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
                 goToProfileBtn.setOnClickListener {
                     findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment,
-                        bundleOf("uid" to to_show_timeSlot.author)
+                        R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment
                     )
                 }
+
 
                 //values for chats
                 val requestingUserId = Firebase.auth.currentUser?.uid
@@ -148,19 +150,40 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                     }
                 }
 
-                //manage the "make an agreement" button
-                startChatBtn.setOnClickListener {
-                    //go to chat
-                    //create the chat/pending request for the users
+                // TODO() --> George's list
+                // + added button to create review but it will be shown only after the end of timeSlot if requested
+                // + check if already exists review for specific timeSlot, if so then no review button shown
+                // + add reviews for each user for both types of reviews with stars and comments
+                btn_review.setOnClickListener{
+                    var authorID = to_show_timeSlot.author
+                    var id = arguments?.get("author_ID") //get the ID of the current timeSlot
                     findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                        R.id.action_timeSlotDetailsFragment_to_reviewFragment,
                         bundleOf(
-                            "requestUser" to requestingUserId,
-                            "timeSlotId" to to_show_timeSlot.id,
-                            "authorUser" to authorId
+                            "authorID" to authorID,
+                            "requestingID" to requestingUserId,
+                            "timeSlotId" to to_show_timeSlot.id
                         )
                     )
                 }
+
+
+                //if (to_show_timeSlot.author != Firebase.auth.currentUser?.uid) {
+                //        startChatBtn.visibility = View.VISIBLE
+                //}
+                    //manage the "make an agreement" button
+                    startChatBtn.setOnClickListener {
+                        //go to chat
+                        //create the chat/pending request for the users
+                        findNavController().navigate(
+                            R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                            bundleOf(
+                                "requestUser" to requestingUserId,
+                                "timeSlotId" to to_show_timeSlot.id,
+                                "authorUser" to authorId
+                            )
+                        )
+                    }
 
                 //manage the "delete request" button
                 deleteRequestBtn.setOnClickListener {
@@ -176,6 +199,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
 
         }
+
 
 
         //manage the back button pressure to go back in the list of timeSlots, we need to pass in a bundle
