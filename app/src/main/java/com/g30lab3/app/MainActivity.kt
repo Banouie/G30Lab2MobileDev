@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.skillsListFragment,
-                R.id.showProfileFragment
+                R.id.showProfileFragment,
+                R.id.showRequestsFragment
             ), drawerLayout
         )
 

@@ -6,7 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
+import com.g30lab3.app.ui.PendingRequests.PendingRequests
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
@@ -20,7 +23,10 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
     val currentChat = _currentChat
     private val _allPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
     val allChats = _allPendingRequests
+    private val _loggedUserPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
+    val loggedUserPendingRequests = _loggedUserPendingRequests
     private lateinit var allPendingRequestsListener: ListenerRegistration
+    private lateinit var loggedUserSentPendingRequestsListener: ListenerRegistration
 
 
     init {
@@ -39,6 +45,22 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                 _allPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
             }
 
+        loggedUserSentPendingRequestsListener = db.collection("PendingRequests")
+            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.d("LogUsrPenRequestError", "error1")
+                    _loggedUserPendingRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                if (value?.isEmpty == true || value == null) {
+                    Log.d("RequestsEmptyOrNull", "No requests sent")
+                    _loggedUserPendingRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                _loggedUserPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
+            }
+
     }
 
     /**This function is used when a user want to request a timeslot: creates a new PendingRequest in firebase and initialize the chat between the two users with a request
@@ -52,8 +74,8 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
         val info = PendingRequestInfo(chatId, authorUserId, requestUserId, timeSlotId)
         db.collection("PendingRequests").document(chatId).set(info).addOnSuccessListener {
             Log.d("CHAT", "Created pending request Info")
-            var startingRequest = textMessage("",Date(),requestUserId,true)
-            addMessage(chatId,startingRequest)
+            var startingRequest = textMessage("", Date(), requestUserId, true)
+            addMessage(chatId, startingRequest)
         }
     }
 
@@ -105,6 +127,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
     override fun onCleared() {
         super.onCleared()
         allPendingRequestsListener.remove()
+        loggedUserSentPendingRequestsListener.remove()
     }
 
 

@@ -1,10 +1,12 @@
 package com.g30lab3.app
 
 import android.app.Application
+import android.location.GnssAntennaInfo
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.timeSlot
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
@@ -17,6 +19,8 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
     val all: LiveData<List<timeSlot>> = _all
     val filtered: MutableLiveData<MutableList<timeSlot>> = MutableLiveData()
     private val listner: ListenerRegistration
+    private val _requested = MutableLiveData<List<timeSlot>>()
+    val requested = _requested
 
     init {
         val collectionRef = db.collection("TimeSlotAdvCollection")
@@ -28,6 +32,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     }
             }
         }
+
     }
 
     /**Add a timeSlot to firebase DB, return the task in order to perform actions where it's called with callback (addOnFailureListener, ecc) */
@@ -73,6 +78,20 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
                     filtered.value = filteredList
                 }
         }
+    }
+
+    /**Function that set the requested variable to a list of timeslot containing all timeSlots in the timeSlotReqeusted list passed*/
+    fun getRequestedTimeSlots(timeSlotRequested: List<PendingRequestInfo>) {
+        db.collection("TimeSlotAdvCollection").get().addOnSuccessListener {
+            val list = mutableListOf<timeSlot>()
+            for(element in it){
+                if(timeSlotRequested.any { request -> request.leadingTimeSlot == element.id }){
+                    list.add(element.toTimeSlot())
+                }
+            }
+            _requested.value = list
+        }
+
     }
 
 

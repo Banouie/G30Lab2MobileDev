@@ -88,4 +88,9 @@
         android:id="@+id/chatFragment"
         android:name="com.g30lab3.app.ui.chat.chatFragment"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/showRequestsFragment"
+        android:name="com.g30lab3.app.ui.PendingRequests.PendingRequests"
+        android:label="Sent pending requests"
+        tools:layout="@layout/fragment_pending_requests" />
 </navigation>
