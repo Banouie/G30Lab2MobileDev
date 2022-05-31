@@ -6,18 +6,19 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
+        style="@style/CardRoundAllCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        app:strokeWidth="1dp"
         app:strokeColor="@color/stroke_color"
-        app:cardElevation="3dp"
-        style="@style/CardRoundAllCorners">
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,22 +45,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:drawableStartCompat="@drawable/ic_date_time"
                     android:drawablePadding="8dp"
                     android:text="@string/date"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableStartCompat="@drawable/ic_date_time" />
                 <!-- Time slot time-->
                 <TextView
                     android:id="@+id/time_slot_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:drawableStartCompat="@drawable/ic_time"
                     android:drawablePadding="8dp"
                     android:text="@string/time"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableStartCompat="@drawable/ic_time" />
 
                 <!-- Time slot location-->
                 <TextView
@@ -67,11 +68,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:drawableStartCompat="@drawable/ic_location"
                     android:drawablePadding="8dp"
                     android:text="@string/location"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableStartCompat="@drawable/ic_location" />
 
             </LinearLayout>
 
@@ -79,8 +80,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_edit_time_slot"

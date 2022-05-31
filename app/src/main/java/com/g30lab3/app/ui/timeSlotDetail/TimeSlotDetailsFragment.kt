@@ -180,16 +180,37 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
         //manage the back button pressure to go back in the list of timeSlots, we need to pass in a bundle
         // the actual skill to retrieve timeSlots there
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment,
-                        bundleOf("skill" to to_show_timeSlot.skill)
-                    )
+
+                    when (findNavController().previousBackStackEntry?.destination?.id){
+                        R.id.timeSlotEditFragment ->{
+                            //if we come from the timeSlot edit screen, go back to the home
+                            findNavController().navigate(
+                                R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment,
+                                bundleOf("skill" to to_show_timeSlot.skill)
+                            )
+                        }
+                        R.id.timeSlotListFragment -> {
+                            //if we come from the home, go back to the home
+                            findNavController().navigate(
+                                R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment,
+                                bundleOf("skill" to to_show_timeSlot.skill)
+                            )
+                        }
+                        R.id.showRequestsFragment ->{
+                            //we came from the pending requests fragment, come back there
+                            findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_showRequestsFragment)
+                        }
+                    }
+
                 }
             })
+
+
 
 
     }

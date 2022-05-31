@@ -13,6 +13,7 @@ import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -191,7 +192,14 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                     timeSlotVM.add(newTimeSlot)
                         .addOnSuccessListener {
                             createSnackBar("Saved", view, requireContext(), true)
-                            if (findNavController().currentDestination?.id == R.id.timeSlotEditFragment) {
+                            Log.d("TESTNAV", findNavController().previousBackStackEntry?.destination?.displayName!!)
+                            if(findNavController().previousBackStackEntry?.destination?.id == R.id.timeSlotDetailsFragment){
+                                //if we come from timeSlot details, come back there showing the new timeSlot updated
+                                findNavController().navigate(R.id.action_timeSlotEditFragment_to_timeSlotDetailsFragment,
+                                    bundleOf("time_slot_ID" to arguments?.get("time_slot_ID") as String))
+
+                            }else {
+                                //we come from the add FAB, navigate to the home screen
                                 findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
                             }
                         }

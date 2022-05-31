@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_timeSlotDetailsFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_timeSlotDetailsFragment_to_showRequestsFragment"
+            app:destination="@id/showRequestsFragment" />
     </fragment>
     <fragment
         android:id="@+id/timeSlotEditFragment"
@@ -61,6 +64,9 @@
         <action
             android:id="@+id/action_timeSlotEditFragment_to_skillsListFragment"
             app:destination="@id/skillsListFragment" />
+        <action
+            android:id="@+id/action_timeSlotEditFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/showProfileFragment"
@@ -91,10 +97,13 @@
     <fragment
         android:id="@+id/showRequestsFragment"
         android:name="com.g30lab3.app.ui.PendingRequests.PendingRequestsFragment"
-        android:label="Sent pending requests"
+        android:label="Your requests"
         tools:layout="@layout/fragment_pending_requests" >
         <action
             android:id="@+id/action_showRequestsFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_showRequestsFragment_to_timeSlotDetailsFragment"
+            app:destination="@id/timeSlotDetailsFragment" />
     </fragment>
 </navigation>

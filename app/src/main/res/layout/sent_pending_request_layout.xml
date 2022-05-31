@@ -100,7 +100,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/request_detailsBtn"
+                    android:id="@+id/sent_request_detailsBtn"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/request_chatBtn"
+                    android:id="@+id/sent_request_chatBtn"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,8 +119,8 @@
                     android:text="Chat"
                     app:icon="@drawable/ic_chat"
                     app:iconGravity="textStart"
-                    app:layout_constraintBottom_toBottomOf="@+id/request_detailsBtn"
-                    app:layout_constraintStart_toEndOf="@+id/request_detailsBtn" />
+                    app:layout_constraintBottom_toBottomOf="@+id/sent_request_detailsBtn"
+                    app:layout_constraintStart_toEndOf="@+id/sent_request_detailsBtn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

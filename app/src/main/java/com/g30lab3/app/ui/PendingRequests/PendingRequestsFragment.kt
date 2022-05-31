@@ -1,10 +1,13 @@
 package com.g30lab3.app.ui.PendingRequests
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.adapters.ViewPagerAdapter
@@ -16,6 +19,15 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
 
     val pendingVM by viewModels<chatsVM>()
     val tsVM by viewModels<TimeSlotVM>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (requireActivity() as MainActivity).supportActionBar?.subtitle=""
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
