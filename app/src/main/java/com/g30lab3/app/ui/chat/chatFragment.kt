@@ -107,7 +107,6 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val id = if(requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
         FirebaseFirestore.getInstance().collection("Users").document(id).get().addOnSuccessListener {
             (activity as MainActivity).supportActionBar?.title= it.get("full_name") as String
-            (activity as MainActivity).supportActionBar?.subtitle = "Nickname: ${it.get("nickname") as String}"
         }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
