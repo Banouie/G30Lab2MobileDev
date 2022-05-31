@@ -92,5 +92,9 @@
         android:id="@+id/showRequestsFragment"
         android:name="com.g30lab3.app.ui.PendingRequests.PendingRequestsFragment"
         android:label="Sent pending requests"
-        tools:layout="@layout/fragment_pending_requests" />
+        tools:layout="@layout/fragment_pending_requests" >
+        <action
+            android:id="@+id/action_showRequestsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 </navigation>

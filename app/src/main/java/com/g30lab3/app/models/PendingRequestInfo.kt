@@ -19,4 +19,8 @@ class PendingRequestInfo{
         this.requestingUser = requestingUser
         this.leadingTimeSlot = leadingTimeSlot
     }
+
+    override fun toString(): String {
+        return "ReqUsr: ${this.requestingUser}, AuthUsr: ${this.authorOfTimeSlot}, TS: ${this.leadingTimeSlot}"
+    }
 }

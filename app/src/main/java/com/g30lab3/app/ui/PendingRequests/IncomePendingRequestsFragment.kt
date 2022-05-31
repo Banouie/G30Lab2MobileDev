@@ -38,8 +38,6 @@ class IncomePendingRequestsFragment : Fragment() {
             rv.adapter = IncomePendingRequestAdapter(it, requireActivity())
         }
 
-
-
     }
 
 }
