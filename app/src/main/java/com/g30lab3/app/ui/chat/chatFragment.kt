@@ -29,6 +29,21 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
 
     val chatVM by viewModels<chatsVM>()
 
+    //set as title of the chat fragment the interlocutor
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val authorUserId = arguments?.get("authorUser") as String
+        val requestUserId = arguments?.get("requestUser") as String
+        val id = if(requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
+        FirebaseFirestore.getInstance().collection("Users").document(id).get().addOnSuccessListener {
+            (activity as MainActivity).supportActionBar?.title= it.get("full_name") as String
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.chat)
@@ -67,25 +82,29 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         }
 
         var sender: TextInputLayout = view.findViewById(R.id.insert_message)
-        sender.helperText = HtmlCompat.fromHtml(
-            "<b>Tap</b>: send a message, <b>long press</b>: send a request",
-            HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
-        sender.setEndIconOnLongClickListener {
-            // todo make this appear only for the author of timeslot
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Send a request")
-                .setMessage("Are you shure you want to request this Time Slot?")
-                .setNegativeButton("Discard") { dialog, which ->
-                    // Respond to negative button press
-                    Log.d("BTNPRESSED", "Discard selected")
-                }
-                .setPositiveButton("Yes I'm sure") { dialog, which ->
 
-                }
-                .show()
-            true
+        if(Firebase.auth.currentUser?.uid!= requestUserId){
+            //the user that is looking at the chat is the author of the timeslot requested with this chat, he is able to accept or decline the request
+            sender.helperText = HtmlCompat.fromHtml(
+                "<b>Tap</b>: send a message, <b>long press</b>: answer request",
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            sender.setEndIconOnLongClickListener {
+                // todo make this appear only for the author of timeslot
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Answer to the request")
+                    .setMessage("What do you want to do with this request?")
+                    .setNegativeButton("Reject") { dialog, which ->
+                        // Respond to negative button press
+                    }
+                    .setPositiveButton("Accept") { dialog, which ->
+                        //accept request
+                    }
+                    .show()
+                true
+            }
         }
+
         sender.setEndIconOnClickListener {
             val messageText = sender.editText?.text.toString()
             val senderId = Firebase.auth.currentUser?.uid!!
@@ -96,20 +115,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         }
     }
 
-    //set as title of the chat fragment the interlocutor
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val authorUserId = arguments?.get("authorUser") as String
-        val requestUserId = arguments?.get("requestUser") as String
-        val id = if(requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
-        FirebaseFirestore.getInstance().collection("Users").document(id).get().addOnSuccessListener {
-            (activity as MainActivity).supportActionBar?.title= it.get("full_name") as String
-        }
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+
 
 }
 
