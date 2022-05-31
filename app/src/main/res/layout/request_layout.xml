@@ -56,62 +56,14 @@
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
 
+                <!-- Time -->
                 <TextView
+                    android:id="@+id/time_income_request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Request text 2"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary" />
-
+                    android:text="time"
+                    android:textSize="11sp"/>
             </LinearLayout>
-
-
-            <!-- Buttons and time/date-->
-            <!-- Buttons -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-
-                <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="#4CAF50"
-                    android:text="Accept"
-                    android:textColor="@color/white"
-                    app:icon="@drawable/ic_sign"
-                    app:iconTint="@color/white" />
-
-                <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#F44336"
-                    android:text="Decline"
-                    android:textColor="@color/white"
-                    app:icon="@drawable/ic_decline"
-                    app:iconTint="@color/white" />
-            </LinearLayout>
-
-            <!-- Time -->
-            <TextView
-                android:id="@+id/time_income_request"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="time"
-                android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

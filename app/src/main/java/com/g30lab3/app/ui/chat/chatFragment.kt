@@ -57,7 +57,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                         // dismiss dialog, remains in chat
                     }
                     .setPositiveButton("See pending requests") { dialog, which ->
-                        // go to pending requests
+                        // todo go to pending requests
                     }
                     .show()
             }
@@ -70,6 +70,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
         sender.setEndIconOnLongClickListener {
+            // todo make this appear only for the author of timeslot
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Send a request")
                 .setMessage("Are you shure you want to request this Time Slot?")
@@ -78,13 +79,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     Log.d("BTNPRESSED", "Discard selected")
                 }
                 .setPositiveButton("Yes I'm sure") { dialog, which ->
-                    val request = textMessage(
-                        timeSlotId,
-                        Date(),
-                        Firebase.auth.currentUser?.uid!!,
-                        true
-                    ) //if is a request the text of the message will contain the timeSlot id which is requested
-                    chatVM.addMessage(chatId, request)
+
                 }
                 .show()
             true
