@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sent"
-            android:icon="@drawable/ic_arrow_up"
+            android:icon="@drawable/ic_sent"
             />
 
         <com.google.android.material.tabs.TabItem
