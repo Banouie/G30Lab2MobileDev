@@ -87,13 +87,15 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
 
         if(Firebase.auth.currentUser?.uid!= requestUserId){
             //the user that is looking at the chat is the author of the timeslot requested with this chat, he is able to accept or decline the request
+
+            //this appear only for the author of timeslot (1 of 2)
             sender.helperText = HtmlCompat.fromHtml(
                 "<b>Tap</b>: send a message, <b>long press</b>: answer request",
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
             sender.setEndIconOnLongClickListener {
-                // todo make this appear only for the author of timeslot
-                MaterialAlertDialogBuilder(requireContext())
+
+                MaterialAlertDialogBuilder(requireContext())//this appear only for the author of timeslot (2 of 2)
                     .setTitle("Answer to the request")
                     .setMessage("What do you want to do with this request?")
                     .setNegativeButton("Reject") { dialog, which ->
@@ -107,6 +109,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
             }
         }
 
+        //single tap send a new message
         sender.setEndIconOnClickListener {
             val messageText = sender.editText?.text.toString()
             val senderId = Firebase.auth.currentUser?.uid!!

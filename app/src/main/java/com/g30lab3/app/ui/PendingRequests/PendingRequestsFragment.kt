@@ -38,6 +38,17 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
         val adapter = ViewPagerAdapter(requireContext(),childFragmentManager,tab.tabCount)
         vp.adapter = adapter
 
+        // set badges
+        var badgeSent = tab.getTabAt(0)?.orCreateBadge
+        var badgeIncome = tab.getTabAt(1)?.orCreateBadge
+        pendingVM.loggedUserPendingRequests.observe(requireActivity()){
+            badgeSent?.number = it.size
+        }
+        pendingVM.loggedUserIncomeRequests.observe(requireActivity()){
+            badgeIncome?.number = it.size
+        }
+
+        //viewpager section
         vp.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab))
         tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab) {

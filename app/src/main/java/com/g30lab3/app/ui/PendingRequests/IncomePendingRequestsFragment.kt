@@ -13,6 +13,8 @@ import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.adapters.IncomePendingRequestAdapter
 import com.g30lab3.app.adapters.SentPendingRequestAdapter
 import com.g30lab3.app.chatsVM
+import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
 
 
 class IncomePendingRequestsFragment : Fragment() {
@@ -30,6 +32,7 @@ class IncomePendingRequestsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val rv = view.findViewById<RecyclerView>(R.id.pending_requests_rv_2)
         rv.layoutManager = LinearLayoutManager(requireContext())
