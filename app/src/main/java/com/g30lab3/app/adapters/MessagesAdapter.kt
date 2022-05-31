@@ -8,17 +8,20 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.R
+import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 
 internal enum class VIEW_TYPE {
     MESSAGE_VIEW, REQUEST_VIEW
 }
 
-class MessagesAdapter(val messages: List<textMessage>) :
+class MessagesAdapter(val messages: List<textMessage>, val info: PendingRequestInfo) :
     RecyclerView.Adapter<MessagesAdapter.ItemViewHolder>() {
     val dateFormat =
         SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT)
@@ -90,6 +93,8 @@ class MessagesAdapter(val messages: List<textMessage>) :
             //variables to interact with request layout
             val incomeRequest : CardView = holder.view.findViewById(R.id.income_request)
             val sentRequest : CardView = holder.view.findViewById(R.id.request_sent)
+            val incomeRequestTitle: TextView = holder.view.findViewById(R.id.income_request_title)
+            val incomeRequestSubtitle : TextView = holder.view.findViewById(R.id.income_request_subtitle)
             val incomeRequestTime : TextView = holder.view.findViewById(R.id.time_income_request)
             val sentRequestTime : TextView = holder.view.findViewById(R.id.time_request_sent)
             if(item.senderId== Firebase.auth.currentUser?.uid){
@@ -99,6 +104,14 @@ class MessagesAdapter(val messages: List<textMessage>) :
             }else{
                 sentRequest.visibility = View.GONE
                 incomeRequestTime.text = dateFormat.format(item.time)
+                FirebaseFirestore.getInstance().collection("Users").document(item.senderId).get().addOnSuccessListener {
+                    incomeRequestTitle.text = "${it.get("full_name") as String} sent you a request!"
+                    FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection").document(info.leadingTimeSlot).get().addOnSuccessListener { d ->
+                        incomeRequestSubtitle.text = "Time Slot requested:\n${d.get("title") as String}"
+                    }
+                }
+
+
             }
         }
     }

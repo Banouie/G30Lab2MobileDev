@@ -42,6 +42,7 @@
 
                 <!-- Title, secondary and supporting text -->
                 <TextView
+                    android:id="@+id/income_request_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title"
@@ -49,6 +50,7 @@
                     android:textColor="@color/design_default_color_primary" />
 
                 <TextView
+                    android:id="@+id/income_request_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -61,6 +63,7 @@
                     android:id="@+id/time_income_request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="time"
                     android:textSize="11sp"/>
             </LinearLayout>

@@ -15,6 +15,7 @@ import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
+import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.textMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -37,6 +38,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val authorUserId = arguments?.get("authorUser") as String
         val requestUserId = arguments?.get("requestUser") as String
         val chatId = requestUserId + authorUserId + timeSlotId //obtain the unique Id for the chat
+        val info = PendingRequestInfo(chatId,authorUserId,requestUserId,timeSlotId)
 
         //TODO create the pending request and the chat only if the loggedUser has credits
 
@@ -61,7 +63,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     }
                     .show()
             }
-            recyclerView.adapter = MessagesAdapter(it)
+            recyclerView.adapter = MessagesAdapter(it,info)
         }
 
         var sender: TextInputLayout = view.findViewById(R.id.insert_message)
