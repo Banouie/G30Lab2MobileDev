@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.MainActivity
@@ -74,7 +75,8 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                         // dismiss dialog, remains in chat
                     }
                     .setPositiveButton("See pending requests") { dialog, which ->
-                        // todo go to pending requests
+                        //go to pending requests
+                        findNavController().navigate(R.id.action_chatFragment_to_showRequestsFragment)
                     }
                     .show()
             }
