@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.TimeSlotStatus
 import com.g30lab3.app.models.timeSlot
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
@@ -129,6 +130,7 @@ fun DocumentSnapshot.toTimeSlot(): timeSlot {
         duration = (get("duration") as Long).toInt(),
         author = if (get("author") != null) get("author") as String else "unknown",
         time = get("time") as String,
-        skill = if (get("skill") != null) get("skill") as String else ""
+        skill = if (get("skill") != null) get("skill") as String else "",
+        status = TimeSlotStatus.valueOf(get("status") as String)
     )
 }

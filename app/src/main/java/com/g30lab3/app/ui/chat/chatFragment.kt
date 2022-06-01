@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
+import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
-import com.g30lab3.app.models.PendingRequestInfo
-import com.g30lab3.app.models.Status
-import com.g30lab3.app.models.textMessage
+import com.g30lab3.app.models.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
@@ -31,6 +30,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
 
     private val chatVM by viewModels<chatsVM>()
 
+
     //set as title of the chat fragment the interlocutor
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,10 +39,12 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
     ): View? {
         val authorUserId = arguments?.get("authorUser") as String
         val requestUserId = arguments?.get("requestUser") as String
-        val id = if(requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
-        FirebaseFirestore.getInstance().collection("Users").document(id).get().addOnSuccessListener {
-            (activity as MainActivity).supportActionBar?.title= it.get("full_name") as String
-        }
+        val id =
+            if (requestUserId == Firebase.auth.currentUser?.uid) authorUserId else requestUserId
+        FirebaseFirestore.getInstance().collection("Users").document(id).get()
+            .addOnSuccessListener {
+                (activity as MainActivity).supportActionBar?.title = it.get("full_name") as String
+            }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -55,14 +57,14 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val authorUserId = arguments?.get("authorUser") as String
         val requestUserId = arguments?.get("requestUser") as String
         val chatId = requestUserId + authorUserId + timeSlotId //obtain the unique Id for the chat
-        val info = PendingRequestInfo(chatId,authorUserId,requestUserId,timeSlotId)
+        val info = PendingRequestInfo(chatId, authorUserId, requestUserId, timeSlotId)
 
         //TODO create the pending request and the chat only if the loggedUser has credits
 
         //check if the chat with passed chatId already exists or must be initialized in ChatInfo
-        chatVM.allChats.observe(requireActivity()){
-            if(!it.any { item -> item.chatId == chatId }){
-                chatVM.createNewPendingRequestInfo(chatId,requestUserId,authorUserId,timeSlotId)
+        chatVM.allChats.observe(requireActivity()) {
+            if (!it.any { item -> item.chatId == chatId }) {
+                chatVM.createNewPendingRequestInfo(chatId, requestUserId, authorUserId, timeSlotId)
             }
         }
         chatVM.getChat(chatId)//get the list of messages for the chat
@@ -81,12 +83,12 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     }
                     .show()
             }
-            recyclerView.adapter = MessagesAdapter(it,info)
+            recyclerView.adapter = MessagesAdapter(it, info)
         }
 
         var sender: TextInputLayout = view.findViewById(R.id.insert_message)
 
-        if(Firebase.auth.currentUser?.uid!= requestUserId){
+        if (Firebase.auth.currentUser?.uid != requestUserId) {
             //the user that is looking at the chat is the author of the timeslot requested with this chat, he is able to accept or decline the request
 
             //this appear only for the author of timeslot (1 of 2)
@@ -101,21 +103,27 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     .setMessage("What do you want to do with this request?")
                     .setNegativeButton("Reject") { dialog, which ->
                         // decline request
-                        chatVM.updatePendingRequestInfo(info,Status.DECLINED)
+                        chatVM.updatePendingRequestInfo(info, Status.DECLINED)
                         val messageText = "DECLINED"
                         val senderId = Firebase.auth.currentUser?.uid!!
                         val now = Date()
                         val message = textMessage(messageText, now, senderId, false)
-                        chatVM.addMessage(chatId,message)
+                        chatVM.addMessage(chatId, message)
                     }
                     .setPositiveButton("Accept") { dialog, which ->
                         //accept request
-                        chatVM.updatePendingRequestInfo(info,Status.ACCEPTED)
+                        chatVM.updatePendingRequestInfo(info, Status.ACCEPTED)
                         val messageText = "ACCEPTED!"
                         val senderId = Firebase.auth.currentUser?.uid!!
                         val now = Date()
                         val message = textMessage(messageText, now, senderId, false)
-                        chatVM.addMessage(chatId,message)
+                        chatVM.addMessage(chatId, message)
+                        //update timeslot status
+                        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+                            .document(timeSlotId)
+                            .update("status",TimeSlotStatus.UNAVAILABLE).addOnSuccessListener {
+                                Log.d("UP_TS","Updated")
+                            }
                     }
                     .show()
                 true
@@ -132,7 +140,6 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
             sender.editText?.text?.clear()
         }
     }
-
 
 
 }
