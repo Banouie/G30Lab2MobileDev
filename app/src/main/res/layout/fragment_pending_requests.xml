@@ -10,32 +10,41 @@
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="3dp">
+        app:tabPaddingEnd="8dp"
+        app:tabPaddingStart="8dp"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Body2">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/sent_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sent"
             android:icon="@drawable/ic_sent"
-            />
+            android:text="Sent" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/income_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Income"
-            android:icon="@drawable/ic_inbox"/>
+            android:icon="@drawable/ic_inbox"
+            android:text="Income" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/accepted_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_accepted"
+            android:text="Accepted" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/assigned_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Assigned"
-            android:icon="@drawable/ic_sign"/>
+            android:icon="@drawable/ic_sign"
+            android:text="Assigned" />
 
 
     </com.google.android.material.tabs.TabLayout>

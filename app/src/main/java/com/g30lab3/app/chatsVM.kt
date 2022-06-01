@@ -24,12 +24,19 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
     private val _allPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
     val allChats = _allPendingRequests
     private val _loggedUserPendingRequests = MutableLiveData<List<PendingRequestInfo>>()
-    val loggedUserPendingRequests = _loggedUserPendingRequests
+    val loggedUserPendingRequests = _loggedUserPendingRequests //requests sent from current user still pending
     private val _loggedUserIncomeRequests = MutableLiveData<List<PendingRequestInfo>>()
-    val loggedUserIncomeRequests = _loggedUserIncomeRequests
+    val loggedUserIncomeRequests = _loggedUserIncomeRequests //request received from other user to the logged user still pending
+    private val _loggedUserAcceptedRequests = MutableLiveData<List<PendingRequestInfo>>()
+    val loggedUserAcceptedRequests = _loggedUserAcceptedRequests //requests received from the current user and accepted
+    private val _loggedUserAssignedRequests = MutableLiveData<List<PendingRequestInfo>>()
+    val loggedUserAssignedRequests = _loggedUserAssignedRequests //requests sent and assigned to the current user
+
     private lateinit var allPendingRequestsListener: ListenerRegistration
     private lateinit var loggedUserSentPendingRequestsListener: ListenerRegistration
     private lateinit var loggedUserIncomeRequestsListener: ListenerRegistration
+    private lateinit var loggedUserAcceptedRequestsListener: ListenerRegistration
+    private lateinit var loggedUserAssignedRequestsListener: ListenerRegistration
 
 
     init {
@@ -49,7 +56,8 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             }
 
         loggedUserSentPendingRequestsListener = db.collection("PendingRequests")
-            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid).whereEqualTo("status","PENDING")
+            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("status", "PENDING")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.d("LogUsrPenRequestError", "error1")
@@ -61,11 +69,13 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                     _loggedUserPendingRequests.value = listOf()
                     return@addSnapshotListener
                 }
-                _loggedUserPendingRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
+                _loggedUserPendingRequests.value =
+                    value.mapNotNull { d -> d.toPendingRequestInfo() }
             }
 
         loggedUserIncomeRequestsListener = db.collection("PendingRequests")
-            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid).whereEqualTo("status","PENDING")
+            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("status", "PENDING")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     _loggedUserIncomeRequests.value = listOf()
@@ -78,7 +88,38 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
                 _loggedUserIncomeRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
             }
 
+        loggedUserAcceptedRequestsListener = db.collection("PendingRequests")
+            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("status", "ACCEPTED")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    _loggedUserAcceptedRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                if (value?.isEmpty == true || value == null) {
+                    _loggedUserAcceptedRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                _loggedUserAcceptedRequests.value =
+                    value.mapNotNull { d -> d.toPendingRequestInfo() }
+            }
+
+       loggedUserAssignedRequestsListener=  db.collection("PendingRequests")
+            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid).whereEqualTo("status","ACCEPTED")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    _loggedUserAssignedRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                if (value?.isEmpty == true || value == null) {
+                    _loggedUserAssignedRequests.value = listOf()
+                    return@addSnapshotListener
+                }
+                _loggedUserAssignedRequests.value = value.mapNotNull { d -> d.toPendingRequestInfo() }
+            }
     }
+
+
 
     /**This function is used when a user want to request a timeslot: creates a new PendingRequest in firebase and initialize the chat between the two users with a request
      *  from the requesting user to the author of the timeslot*/
@@ -153,6 +194,9 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
         super.onCleared()
         allPendingRequestsListener.remove()
         loggedUserSentPendingRequestsListener.remove()
+        loggedUserIncomeRequestsListener.remove()
+        loggedUserAcceptedRequestsListener.remove()
+        loggedUserAssignedRequestsListener.remove()
     }
 
 

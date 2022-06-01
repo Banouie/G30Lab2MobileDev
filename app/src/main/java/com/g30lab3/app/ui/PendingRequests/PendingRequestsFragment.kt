@@ -1,11 +1,17 @@
 package com.g30lab3.app.ui.PendingRequests
 
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
@@ -14,7 +20,7 @@ import com.g30lab3.app.adapters.ViewPagerAdapter
 import com.g30lab3.app.chatsVM
 import com.google.android.material.tabs.TabLayout
 
-/**This fragment shows all the requested time slots from the logged user, in other words the timeSlots he is interested in*/
+
 class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
 
     val pendingVM by viewModels<chatsVM>()
@@ -25,9 +31,10 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (requireActivity() as MainActivity).supportActionBar?.subtitle=""
+        (requireActivity() as MainActivity).supportActionBar?.title= "Sent by you" //initialize the title to this because when created the tab implicitly selected is sent
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,24 +42,49 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
         val tab: TabLayout = view.findViewById(R.id.tab)
         val vp: ViewPager = view.findViewById(R.id.vp)
 
+        tab.tabSelectedIndicator
+
         val adapter = ViewPagerAdapter(requireContext(),childFragmentManager,tab.tabCount)
         vp.adapter = adapter
 
         // set badges
         var badgeSent = tab.getTabAt(0)?.orCreateBadge
         var badgeIncome = tab.getTabAt(1)?.orCreateBadge
+        var badgeAccepted = tab.getTabAt(2)?.orCreateBadge
+        var badgeAssigned = tab.getTabAt(3)?.orCreateBadge
         pendingVM.loggedUserPendingRequests.observe(requireActivity()){
             badgeSent?.number = it.size
         }
         pendingVM.loggedUserIncomeRequests.observe(requireActivity()){
             badgeIncome?.number = it.size
         }
+        pendingVM.loggedUserAcceptedRequests.observe(requireActivity()){
+            badgeAccepted?.number = it.size
+        }
+        pendingVM.loggedUserAssignedRequests.observe(requireActivity()){
+            badgeAssigned?.number = it.size
+        }
+        // end set badges
 
         //viewpager section
         vp.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab))
         tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab) {
                 vp.currentItem = tab.position
+                when(tab.position){
+                    0 ->{
+                        (requireActivity() as MainActivity).supportActionBar?.title= "Sent by you"
+                    }
+                    1 ->{
+                        (requireActivity() as MainActivity).supportActionBar?.title= "Sent to you"
+                    }
+                    2 ->{
+                        (requireActivity() as MainActivity).supportActionBar?.title= "Accepted by you"
+                    }
+                    3 ->{
+                        (requireActivity() as MainActivity).supportActionBar?.title= "Assigned to you"
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -64,8 +96,9 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
             }
         })
 
-
     }
+
+
 
 }
 
