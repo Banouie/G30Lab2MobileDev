@@ -17,6 +17,7 @@ import com.g30lab3.app.R
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.Status
 import com.g30lab3.app.models.textMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -28,7 +29,7 @@ import java.util.*
 
 class chatFragment : Fragment(R.layout.fragment_chat) {
 
-    val chatVM by viewModels<chatsVM>()
+    private val chatVM by viewModels<chatsVM>()
 
     //set as title of the chat fragment the interlocutor
     override fun onCreateView(
@@ -99,10 +100,12 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     .setTitle("Answer to the request")
                     .setMessage("What do you want to do with this request?")
                     .setNegativeButton("Reject") { dialog, which ->
-                        // Respond to negative button press
+                        // decline request
+                        chatVM.updatePendingRequestInfo(info,Status.DECLINED)
                     }
                     .setPositiveButton("Accept") { dialog, which ->
                         //accept request
+                        chatVM.updatePendingRequestInfo(info,Status.ACCEPTED)
                     }
                     .show()
                 true

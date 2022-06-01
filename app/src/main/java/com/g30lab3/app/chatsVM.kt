@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.Status
 import com.g30lab3.app.models.textMessage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
@@ -48,7 +49,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             }
 
         loggedUserSentPendingRequestsListener = db.collection("PendingRequests")
-            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("requestingUser", Firebase.auth.currentUser?.uid).whereEqualTo("status","PENDING")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.d("LogUsrPenRequestError", "error1")
@@ -64,7 +65,7 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             }
 
         loggedUserIncomeRequestsListener = db.collection("PendingRequests")
-            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("authorOfTimeSlot", Firebase.auth.currentUser?.uid).whereEqualTo("status","PENDING")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     _loggedUserIncomeRequests.value = listOf()
@@ -92,6 +93,14 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             Log.d("CHAT", "Created pending request Info")
             var startingRequest = textMessage("", Date(), requestUserId, true)
             addMessage(chatId, startingRequest)
+        }
+    }
+
+    /**Function that update the status of a pending request*/
+    fun updatePendingRequestInfo(RequestToUpdate:PendingRequestInfo, newStatus : Status){
+        RequestToUpdate.status = newStatus
+        db.collection("PendingRequests").document(RequestToUpdate.chatId).set(RequestToUpdate).addOnSuccessListener {
+            Log.d("UPDATEPR","Updated")
         }
     }
 
@@ -163,7 +172,8 @@ fun DocumentSnapshot.toPendingRequestInfo(): PendingRequestInfo {
         chatId = get("chatId") as String,
         authorOfTimeSlot = get("authorOfTimeSlot") as String,
         requestingUser = get("requestingUser") as String,
-        leadingTimeSlot = get("leadingTimeSlot") as String
+        leadingTimeSlot = get("leadingTimeSlot") as String,
+        status = Status.valueOf(get("status") as String)
     )
 }
 
