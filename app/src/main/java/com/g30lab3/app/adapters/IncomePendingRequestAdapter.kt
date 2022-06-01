@@ -14,8 +14,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.R
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.Status
 import com.g30lab3.app.toTimeSlot
 import com.g30lab3.app.toUser
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -30,6 +32,7 @@ class IncomePendingRequestAdapter(
         val image: ImageView = v.findViewById(R.id.income_request_image)
         val timeSlotName: TextView = v.findViewById(R.id.income_request_text2)
         val card: MaterialCardView = v.findViewById(R.id.income_request_card)
+        val rateBtn: MaterialButton = v.findViewById(R.id.rate_btn)
         val view = v
     }
 
@@ -45,26 +48,58 @@ class IncomePendingRequestAdapter(
     ) {
         val item = incomeRequests[position]
 
+        if (item.status == Status.PENDING) {
+            //we are displaying the request in the income field
+            FirebaseFirestore.getInstance().collection("Users").document(item.requestingUser).get()
+                .addOnSuccessListener {
+                    val user = it.toUser()
+                    holder.text.text = "From: ${user.full_name}"
+                    val imageRef =
+                        FirebaseStorage.getInstance().reference.child("ProfileImages/" + user.id)
+                    Glide
+                        .with(activity)
+                        .load(imageRef)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .circleCrop()
+                        .into(holder.image)
 
-        FirebaseFirestore.getInstance().collection("Users").document(item.requestingUser).get()
-            .addOnSuccessListener {
-                val user = it.toUser()
-                holder.text.text = "From: ${user.full_name}"
-                val imageRef =
-                    FirebaseStorage.getInstance().reference.child("ProfileImages/" + user.id)
-                Glide
-                    .with(activity)
-                    .load(imageRef)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .circleCrop()
-                    .into(holder.image)
-            }
+                    FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+                        .document(item.leadingTimeSlot).get().addOnSuccessListener {
+                            holder.timeSlotName.text = "For: ${it.toTimeSlot().title}"
+                        }
+                }
+        } else {
+            //we are displaying the request assigned to the logged user in assigned Fragment, show rating button and information
+            holder.rateBtn.visibility = View.VISIBLE
+            FirebaseFirestore.getInstance().collection("Users").document(item.authorOfTimeSlot)
+                .get()
+                .addOnSuccessListener {
+                    val user = it.toUser()
+                    holder.text.text = "Offerer user: ${user.full_name}"
+                    val imageRef =
+                        FirebaseStorage.getInstance().reference.child("ProfileImages/" + user.id)
+                    Glide
+                        .with(activity)
+                        .load(imageRef)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .circleCrop()
+                        .into(holder.image)
 
-        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
-            .document(item.leadingTimeSlot).get().addOnSuccessListener {
-                holder.timeSlotName.text = "For: ${it.toTimeSlot().title}"
-            }
+                    FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+                        .document(item.leadingTimeSlot).get().addOnSuccessListener {
+                            holder.timeSlotName.text =
+                                "Time Slot assigned:\n${it.toTimeSlot().title}"
+                        }
+
+                    holder.rateBtn.setOnClickListener {
+                        //todo add rating to the owner of the timeslot assigned
+                    }
+                }
+        }
+
+
 
         holder.card.setOnClickListener {
             val bundle = bundleOf(
