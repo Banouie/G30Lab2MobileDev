@@ -33,16 +33,16 @@ class AcceptedPendingRequestsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
         val rv = view.findViewById<RecyclerView>(R.id.pending_requests_rv_3)
         rv.layoutManager = LinearLayoutManager(requireContext())
 
         pendingVM.loggedUserAcceptedRequests.observe(requireActivity()) {
             tsVM.getAcceptedTimeSlots(it) //set the accepted variable to a list of accepted timeSLot
             if (context != null) {
-                tsVM.accepted.observe(requireActivity()){ t ->
-                    rv.adapter = SentPendingRequestAdapter(t,it,requireActivity())
+                tsVM.accepted.observe(requireActivity()) { t ->
+                    if (context != null) {
+                        rv.adapter = SentPendingRequestAdapter(t, it, requireActivity())
+                    }
                 }
 
             }

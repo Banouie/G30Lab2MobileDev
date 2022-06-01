@@ -26,12 +26,11 @@ class SentPendingRequestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_sent_pending_request,container,false)
+        return inflater.inflate(R.layout.fragment_sent_pending_request, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
         val rv = view.findViewById<RecyclerView>(R.id.pending_requests_rv)
@@ -41,7 +40,9 @@ class SentPendingRequestFragment : Fragment() {
             tsVM.getRequestedTimeSlots(it) //set the requested variable of this VM to a list of requested timeSlot
             if (context != null) {
                 tsVM.requested.observe(requireActivity()) { t ->
-                    rv.adapter = SentPendingRequestAdapter(t, it,requireActivity())
+                    if (context != null) {
+                        rv.adapter = SentPendingRequestAdapter(t, it, requireActivity())
+                    }
                 }
             }
 

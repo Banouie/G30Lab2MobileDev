@@ -101,6 +101,7 @@ class MessagesAdapter(val messages: List<textMessage>, val info: PendingRequestI
                 //the request has been sent from the current user
                 incomeRequest.visibility = View.GONE
                 sentRequestTime.text = dateFormat.format(item.time)
+
             }else{
                 sentRequest.visibility = View.GONE
                 incomeRequestTime.text = dateFormat.format(item.time)

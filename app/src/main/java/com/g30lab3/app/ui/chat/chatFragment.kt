@@ -102,10 +102,20 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                     .setNegativeButton("Reject") { dialog, which ->
                         // decline request
                         chatVM.updatePendingRequestInfo(info,Status.DECLINED)
+                        val messageText = "DECLINED"
+                        val senderId = Firebase.auth.currentUser?.uid!!
+                        val now = Date()
+                        val message = textMessage(messageText, now, senderId, false)
+                        chatVM.addMessage(chatId,message)
                     }
                     .setPositiveButton("Accept") { dialog, which ->
                         //accept request
                         chatVM.updatePendingRequestInfo(info,Status.ACCEPTED)
+                        val messageText = "ACCEPTED!"
+                        val senderId = Firebase.auth.currentUser?.uid!!
+                        val now = Date()
+                        val message = textMessage(messageText, now, senderId, false)
+                        chatVM.addMessage(chatId,message)
                     }
                     .show()
                 true

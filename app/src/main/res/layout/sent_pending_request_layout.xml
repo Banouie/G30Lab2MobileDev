@@ -63,16 +63,17 @@
                     android:layout_gravity="center"
                     android:textAppearance="?attr/textAppearanceBody1"/>
 
-
-
                 </LinearLayout>
 
 
             </LinearLayout>
+
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/request_accepted_div"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import com.g30lab3.app.models.Status
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.toUser
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.divider.MaterialDivider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
@@ -75,6 +76,8 @@ class SentPendingRequestAdapter(
 
         if (item.status == Status.ACCEPTED) {
             //this adapter is used in Accepted layout, show more info:
+            val divider: MaterialDivider = holder.view.findViewById(R.id.request_accepted_div)
+            divider.visibility = View.VISIBLE
             val acceptedRequestLayout: LinearLayout =
                 holder.view.findViewById(R.id.accepted_request_info)
             acceptedRequestLayout.visibility = View.VISIBLE
