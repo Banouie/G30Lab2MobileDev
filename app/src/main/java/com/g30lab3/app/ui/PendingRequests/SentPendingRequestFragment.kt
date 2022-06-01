@@ -41,7 +41,7 @@ class SentPendingRequestFragment : Fragment() {
             tsVM.getRequestedTimeSlots(it) //set the requested variable of this VM to a list of requested timeSlot
             if (context != null) {
                 tsVM.requested.observe(requireActivity()) { t ->
-                    rv.adapter = SentPendingRequestAdapter(t, it)
+                    rv.adapter = SentPendingRequestAdapter(t, it,requireActivity())
                 }
             }
 

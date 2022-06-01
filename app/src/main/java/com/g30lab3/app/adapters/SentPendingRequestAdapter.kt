@@ -3,19 +3,30 @@ package com.g30lab3.app.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.Status
 import com.g30lab3.app.models.timeSlot
+import com.g30lab3.app.toUser
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 
 class SentPendingRequestAdapter(
     val timeSlots: List<timeSlot>,
-    val requests: List<PendingRequestInfo>
+    val requests: List<PendingRequestInfo>,
+    val activity: FragmentActivity
 ) :
     RecyclerView.Adapter<SentPendingRequestAdapter.ItemViewHolder>() {
 
@@ -53,14 +64,45 @@ class SentPendingRequestAdapter(
                 "authorUser" to item.authorOfTimeSlot
             )
             holder.view.findNavController()
-                .navigate(R.id.action_showRequestsFragment_to_chatFragment,bundle)
+                .navigate(R.id.action_showRequestsFragment_to_chatFragment, bundle)
         }
 
         detailsBtn.setOnClickListener {
             val bundle = bundleOf("time_slot_ID" to item.leadingTimeSlot)
-            holder.view.findNavController().navigate(R.id.action_showRequestsFragment_to_timeSlotDetailsFragment,bundle)
+            holder.view.findNavController()
+                .navigate(R.id.action_showRequestsFragment_to_timeSlotDetailsFragment, bundle)
         }
 
+        if (item.status == Status.ACCEPTED) {
+            //this adapter is used in Accepted layout, show more info:
+            val acceptedRequestLayout: LinearLayout =
+                holder.view.findViewById(R.id.accepted_request_info)
+            acceptedRequestLayout.visibility = View.VISIBLE
+            val acceptedText: TextView = holder.view.findViewById(R.id.request_accepted_text)
+            val acceptedImg: ImageView = holder.view.findViewById(R.id.request_accepted_Img)
+            val rateButton : MaterialButton = holder.view.findViewById(R.id.accepted_request_rateBtn)
+            FirebaseFirestore.getInstance().collection("Users").document(item.requestingUser)
+                .get()
+                .addOnSuccessListener {
+                    val user = it.toUser()
+                    acceptedText.text = user.full_name
+                    val imageRef =
+                        FirebaseStorage.getInstance().reference.child("ProfileImages/" + user.id)
+                    Glide
+                        .with(activity)
+                        .load(imageRef)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .circleCrop()
+                        .into(acceptedImg)
+                }
+            rateButton.visibility = View.VISIBLE
+            rateButton.setOnClickListener {
+                //todo open rate format
+            }
+
+
+        }
     }
 
     override fun getItemCount(): Int {

@@ -42,7 +42,7 @@ class AcceptedPendingRequestsFragment : Fragment() {
             tsVM.getAcceptedTimeSlots(it) //set the accepted variable to a list of accepted timeSLot
             if (context != null) {
                 tsVM.accepted.observe(requireActivity()){ t ->
-                    rv.adapter = SentPendingRequestAdapter(t,it)
+                    rv.adapter = SentPendingRequestAdapter(t,it,requireActivity())
                 }
 
             }

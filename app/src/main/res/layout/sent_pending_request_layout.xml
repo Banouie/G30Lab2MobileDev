@@ -28,6 +28,53 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/accepted_request_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Request from:"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textColor="@color/design_default_color_primary"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/request_accepted_Img"
+                        android:layout_margin="8dp"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp">
+                    </ImageView>
+
+                <TextView
+                    android:id="@+id/request_accepted_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username"
+                    android:layout_gravity="center"
+                    android:textAppearance="?attr/textAppearanceBody1"/>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -122,6 +169,20 @@
                     app:layout_constraintBottom_toBottomOf="@+id/sent_request_detailsBtn"
                     app:layout_constraintStart_toEndOf="@+id/sent_request_detailsBtn" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accepted_request_rateBtn"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Rate"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_star"
+                    app:iconGravity="textStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/sent_request_chatBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
