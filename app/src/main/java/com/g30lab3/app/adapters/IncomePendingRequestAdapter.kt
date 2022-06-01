@@ -76,7 +76,7 @@ class IncomePendingRequestAdapter(
                 .get()
                 .addOnSuccessListener {
                     val user = it.toUser()
-                    holder.text.text = "Offerer user: ${user.full_name}"
+                    holder.text.text = "Offerer: ${user.full_name}"
                     val imageRef =
                         FirebaseStorage.getInstance().reference.child("ProfileImages/" + user.id)
                     Glide

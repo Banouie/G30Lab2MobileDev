@@ -21,6 +21,8 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
     private val listner: ListenerRegistration
     private val _requested = MutableLiveData<List<timeSlot>>()
     val requested = _requested
+    private val _accepted = MutableLiveData<List<timeSlot>>()
+    val accepted = _accepted
 
     init {
         val collectionRef = db.collection("TimeSlotAdvCollection")
@@ -80,7 +82,7 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /**Function that set the requested variable to a list of timeslot containing all timeSlots in the timeSlotReqeusted list passed*/
+    /**Function that set the requested variable to a list of timeslot containing all timeSlots in the timeSlotRequested list passed*/
     fun getRequestedTimeSlots(timeSlotRequested: List<PendingRequestInfo>) {
         db.collection("TimeSlotAdvCollection").get().addOnSuccessListener {
             val list = mutableListOf<timeSlot>()
@@ -91,8 +93,21 @@ class TimeSlotVM(application: Application) : AndroidViewModel(application) {
             }
             _requested.value = list
         }
-
     }
+
+    /**Function that set the accepted variable to a list of timeslot containing all timeSlots in the timeSlotAccepted list passed*/
+    fun getAcceptedTimeSlots(timeSlotAccepted: List<PendingRequestInfo>) {
+        db.collection("TimeSlotAdvCollection").get().addOnSuccessListener {
+            val list = mutableListOf<timeSlot>()
+            for(element in it){
+                if(timeSlotAccepted.any { request -> request.leadingTimeSlot == element.id }){
+                    list.add(element.toTimeSlot())
+                }
+            }
+            _accepted.value = list
+        }
+    }
+
 
 
     override fun onCleared() {
