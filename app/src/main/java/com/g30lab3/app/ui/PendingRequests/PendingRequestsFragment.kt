@@ -53,16 +53,36 @@ class PendingRequestsFragment : Fragment(R.layout.fragment_pending_requests) {
         var badgeAccepted = tab.getTabAt(2)?.orCreateBadge
         var badgeAssigned = tab.getTabAt(3)?.orCreateBadge
         pendingVM.loggedUserPendingRequests.observe(requireActivity()){
-            badgeSent?.number = it.size
+            val number = it.size
+            if (number!=0) {
+                badgeSent?.number = it.size
+            } else {
+                tab.getTabAt(0)?.removeBadge()
+            }
         }
         pendingVM.loggedUserIncomeRequests.observe(requireActivity()){
-            badgeIncome?.number = it.size
+            val number = it.size
+            if (number!=0) {
+                badgeIncome?.number = it.size
+            } else {
+                tab.getTabAt(1)?.removeBadge()
+            }
         }
         pendingVM.loggedUserAcceptedRequests.observe(requireActivity()){
-            badgeAccepted?.number = it.size
+            val number = it.size
+            if (number!=0) {
+                badgeAccepted?.number = it.size
+            } else {
+                tab.getTabAt(2)?.removeBadge()
+            }
         }
         pendingVM.loggedUserAssignedRequests.observe(requireActivity()){
-            badgeAssigned?.number = it.size
+            val number = it.size
+            if (number!=0) {
+                badgeAssigned?.number = it.size
+            } else {
+                tab.getTabAt(3)?.removeBadge()
+            }
         }
         // end set badges
 
