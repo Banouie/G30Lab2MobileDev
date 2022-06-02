@@ -4,88 +4,84 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RatingBar
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
+import android.widget.RatingBar.OnRatingBarChangeListener
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.R
 import com.g30lab3.app.ReviewVM
+import com.g30lab3.app.models.Review
+import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+
 
 class ReviewFragment : Fragment(R.layout.fragment_review)  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        Log.d("Test", "File ok")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val reviewVM by viewModels<ReviewVM>()
-        val authorID = arguments?.get("authorID")
-        val requestingID = arguments?.get("requestingID")
-        val timeSlotID = arguments?.get("timeSlotId")
+
+
+        val writerUser = arguments?.get("writerUser") as String
+        val valuedUser = arguments?.get("valuedUser") as String
+        val forRequest = arguments?.get("forRequest") as String
+        val valuedUserIsOfferer =arguments?.get("valuedUserIsOfferer") as Boolean
+
         val ratingbar: RatingBar = view.findViewById(R.id.ratingBar)
-        val showRating: MaterialButton = view.findViewById(R.id.btn_save_rating)
+        val saveReview: MaterialButton = view.findViewById(R.id.btn_save_rating)
         val reviewComment:EditText = view.findViewById(R.id.edit_review_text)
-        //val box :TextInputLayout = view.findViewById(R.id.edit_box_review)
-        var senderId: String
-        var receiverId : String
+        val reviewTitleImg : ImageView = view.findViewById(R.id.review_title_img)
+        val reviewTitle: TextView = view.findViewById(R.id.review_title)
 
-        // unique review Id
-        val reviewId = authorID.toString() + timeSlotID
-
-        showRating.setOnClickListener {
-
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle("Saving review")
-            builder.setMessage("Are you sure you want to save this review?")
-
-            builder.setPositiveButton("Yes") { _, _ ->
-
-                if (Firebase.auth.uid == authorID){
-                    senderId = authorID as String
-                    receiverId =  requestingID as String
-                }else {
-                    senderId = requestingID as String
-                    receiverId = authorID as String
-                }
-                Firebase.auth.uid?.let { _ ->
-                    reviewVM.createNewReview(reviewId, senderId, receiverId, ratingbar.rating.toFloat(), reviewComment.text.toString())
-                }
-
-                Toast.makeText(context,
-                    android.R.string.yes, Toast.LENGTH_SHORT).show()
-                Log.d("OkSaved", "Current is saved!")
-
+        ratingbar.onRatingBarChangeListener =
+            OnRatingBarChangeListener { ratingBar, rating, _ ->
+                if (rating < 1.0f) ratingBar.rating = 1.0f
             }
 
-            builder.setNegativeButton("No") { _, _ ->
-                Toast.makeText(
-                    context,
-                    android.R.string.no, Toast.LENGTH_SHORT
-                ).show()
 
-                Log.d(
-                    "Test", "File ok, rating= " + ratingbar.rating +
-                            "userID= " + Firebase.auth.uid.toString() + " authorID= " + authorID +
-                            "\nText in edit text= " + reviewComment.text.toString()
-                )
+        //get to evaluate user's name and image and set those in the title of this review
+        FirebaseFirestore.getInstance().collection("Users").document(valuedUser).get().addOnSuccessListener {
+            reviewTitle.text = it.get("full_name") as String
+        }
+        val imageRef = FirebaseStorage.getInstance().reference.child("ProfileImages/$valuedUser")
+        Glide
+            .with(requireActivity())
+            .load(imageRef)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .circleCrop()
+            .into(reviewTitleImg)
+
+
+
+        saveReview.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Publish review")
+            builder.setMessage("Are you sure you want to publish this review?")
+            builder.setPositiveButton("Yes") { _, _ ->
+                //todo create the review only if a rating has been selected, otherwise force the user to do it
+                val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
+                reviewVM.createNewReview(newReview)
+                createSnackBar("Thank you!",requireView(),requireContext(),true)
+                Log.d("OkSaved", "Current is saved!")
+            }
+            builder.setNegativeButton("Continue editing") { _, _ ->
+                //continue editing
             }
             builder.show()
-
         }
 
     }

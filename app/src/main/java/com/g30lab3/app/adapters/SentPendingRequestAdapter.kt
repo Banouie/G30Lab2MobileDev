@@ -15,12 +15,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.MainActivity
 import com.g30lab3.app.R
 import com.g30lab3.app.models.PendingRequestInfo
+import com.g30lab3.app.models.Review
 import com.g30lab3.app.models.Status
 import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.toUser
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.divider.MaterialDivider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
 
@@ -83,7 +86,7 @@ class SentPendingRequestAdapter(
             acceptedRequestLayout.visibility = View.VISIBLE
             val acceptedText: TextView = holder.view.findViewById(R.id.request_accepted_text)
             val acceptedImg: ImageView = holder.view.findViewById(R.id.request_accepted_Img)
-            val rateButton : MaterialButton = holder.view.findViewById(R.id.accepted_request_rateBtn)
+            val rateButton: MaterialButton = holder.view.findViewById(R.id.accepted_request_rateBtn)
             FirebaseFirestore.getInstance().collection("Users").document(item.requestingUser)
                 .get()
                 .addOnSuccessListener {
@@ -98,11 +101,20 @@ class SentPendingRequestAdapter(
                         .skipMemoryCache(true)
                         .circleCrop()
                         .into(acceptedImg)
+
+                    rateButton.visibility = View.VISIBLE
+                    //todo do this only if there is no review for accepted request with those fields
+                    rateButton.setOnClickListener {
+                        //insert in bundle some useful info for the review using data of this accepted request and send it to rate format, also open rate format
+                        val bundle = bundleOf(
+                            "writerUser" to Firebase.auth.currentUser?.uid!!,
+                            "valuedUser" to user.id,
+                            "forRequest" to item.chatId,
+                            "valuedUserIsOfferer" to false
+                        )
+                        holder.view.findNavController().navigate(R.id.action_showRequestsFragment_to_reviewFragment, bundle)
+                    }
                 }
-            rateButton.visibility = View.VISIBLE
-            rateButton.setOnClickListener {
-                //todo open rate format
-            }
 
 
         }

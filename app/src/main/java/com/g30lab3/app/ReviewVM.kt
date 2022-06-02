@@ -37,18 +37,14 @@ class ReviewVM(application: Application) : AndroidViewModel(application) {
             }
     }
 
-    fun createNewReview(
-        reviewId:String,
-        senderUserId: String,
-        receiverUserId: String,
-        ratingReview: Float,
-        commentReview: String
-    ){
-        val review = Review(reviewId, senderUserId, receiverUserId, ratingReview, commentReview)
-        db.collection("Reviews").document(reviewId).set(review).addOnSuccessListener {
+
+    fun createNewReview(review : Review){
+        db.collection("Reviews").document().set(review).addOnSuccessListener {
             Log.d("REVIEW", "Created new review")
         }
     }
+
+
 
 
     override fun onCleared() {
@@ -57,17 +53,21 @@ class ReviewVM(application: Application) : AndroidViewModel(application) {
     }
 
     /** Save the user profile into Firestore DB, returns the Task in order to specify callbacks where is called **/
+    /*
     fun upload(review: Review): Task<Void> {
         return db.collection("Reviews").document(review.id).set(review)
     }
+
+     */
 
 
     //convert the retrieved data from Firebase to a kotlin User object class
     fun DocumentSnapshot.toReview(): Review {
         return Review(
-            reviewId = get("id") as String,
-            receiverUserId = get("receiverUserId") as String,
-            senderUserId = get("senderUserId") as String,
+            writerUser = get("writerUser") as String,
+            valuedUser= get("valuedUser") as String,
+            forRequest = get("forRequest") as String,
+            valuedUserIsOfferer = get("valuedUserIsOfferer") as Boolean,
             ratingReview = get("ratingReview") as Float,
             commentReview = get("commentReview") as String
         )

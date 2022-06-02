@@ -4,77 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbarSize="40dp"
+    android:layout_margin="16dp"
     tools:context="ui.review.ReviewFragment">
 
-    <TextView
-        android:id="@+id/review_title"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_marginTop="30dp"
-        android:text=""
-        android:hint="Review X"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/review_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="Review X"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColorHint="#78909C"
+            app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/review_title_img"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
 
 
     <RatingBar
         android:id="@+id/ratingBar"
-        android:layout_width="237dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="36dp"
-        android:foregroundGravity="center"
-        android:foregroundTint="@color/purple_500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:numStars="5"
+        android:rating="1"
         android:progressTint="@color/purple_500"
         android:secondaryProgressTint="@color/purple_500"
         android:secondaryProgressTintMode="@color/purple_200"
         app:layout_constraintBottom_toTopOf="@+id/edit_box_review"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/review_title" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/btn_save_rating"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginHorizontal="20dp"
         android:text="Send review"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_box_review"
+        tools:layout_editor_absoluteX="20dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_box_review"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:inputType="textMultiLine"
         app:endIconMode="clear_text"
-        app:helperText="Tell us about your experience, was it good enough, are you satisfied?"
+        app:helperText="Write a review for the user, this will help other user"
         app:helperTextEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_save_rating"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/review_title">
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar">
 
         <EditText
             android:id="@+id/edit_review_text"
             android:layout_width="match_parent"
-            android:gravity="top"
-            android:padding="10dp"
             android:layout_height="256dp"
-            android:hint="Write here your impressions"
+            android:gravity="top"
+            android:hint="Write here your review"
             android:inputType="textMultiLine"
+            android:padding="10dp"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>

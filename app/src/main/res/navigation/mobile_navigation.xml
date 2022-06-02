@@ -109,5 +109,12 @@
         <action
             android:id="@+id/action_showRequestsFragment_to_timeSlotDetailsFragment"
             app:destination="@id/timeSlotDetailsFragment" />
+        <action
+            android:id="@+id/action_showRequestsFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.g30lab3.app.ui.review.ReviewFragment"
+        android:label="Create review" />
 </navigation>
