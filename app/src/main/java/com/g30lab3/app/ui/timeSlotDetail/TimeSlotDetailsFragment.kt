@@ -141,62 +141,65 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 val authorId = to_show_timeSlot.author
 
 
-
-                    // manage the possibility that the request from the logged user already exist for this timeslot
-                    chatVM.allChats.observe(requireActivity()) { list ->
-                        var requestFromCurrentUser = list.find { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }
-                        if (requestFromCurrentUser != null) {
-                            //exist already a chatInfo created from the current logged user, so he can also delete the chatInfo from this layout
-                            startChatBtn.text = "Open chat"
-                            startChatBtn.setIconResource(R.drawable.ic_chat)
-                            deleteRequestBtn.visibility = View.VISIBLE
-                        }else if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE){
-                            //the logged user has no request for this timeslot and the status of the timeslot is Unavailable -> don't able request button
-                            startChatBtn.setIconResource(R.drawable.ic_cancel)
-                            startChatBtn.text="Unavailable TimeSlot"
+                // manage the possibility that the request from the logged user already exist for this timeslot
+                chatVM.allChats.observe(requireActivity()) { list ->
+                    val requestFromCurrentUser =
+                        list.find { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }
+                    if (requestFromCurrentUser != null) {
+                        //exist already a chatInfo created from the current logged user, so he can also delete the chatInfo from this layout
+                        startChatBtn.text = "Open chat"
+                        startChatBtn.setIconResource(R.drawable.ic_chat)
+                        deleteRequestBtn.visibility = View.VISIBLE
+                    } else if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE) {
+                        //the logged user has no request for this timeslot and the status of the timeslot is Unavailable -> don't able request button
+                        startChatBtn.setIconResource(R.drawable.ic_cancel)
+                        startChatBtn.text = "Unavailable TimeSlot"
+                        startChatBtn.isEnabled = false
+                        startChatBtn.isCheckable = false
+                    }
+                    if (authorId == requestingUserId){
+                        //the logged user is watching their timeslot, remove start request/chat btn:
+                        startChatBtn.setOnClickListener {
+                            createSnackBar("This is your Time Slot!",requireView(),requireContext(),false)
                             startChatBtn.isEnabled = false
                             startChatBtn.isCheckable = false
                         }
                     }
-
-                    //manage the "request" button
-                    startChatBtn.setOnClickListener {
-                        //go to chat or create the chat/pending request for the users
-                        findNavController().navigate(
-                            R.id.action_timeSlotDetailsFragment_to_chatFragment,
-                            bundleOf(
-                                "requestUser" to requestingUserId,
-                                "timeSlotId" to to_show_timeSlot.id,
-                                "authorUser" to authorId
-                            )
-                        )
-                    }
-
-                    //manage the "delete request" button
-                    deleteRequestBtn.setOnClickListener {
-                        //delete list of messages and relative PendingRequest, than hide this button, also change the start request button text and icon
-                        val chatId = requestingUserId + authorId + to_show_timeSlot.id
-                        chatVM.deleteChat(chatId)
-                        deleteRequestBtn.visibility = View.GONE
-                        startChatBtn.text = "Request this Time Slot"
-                        startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
-                        //if the user is the one that has this timeslot (the author accepted his request) we have also to make the timeSLot available again
-                        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
-                            .document(to_show_timeSlot.id)
-                            .update("status",TimeSlotStatus.AVAILABLE).addOnSuccessListener {
-                                Log.d("UP_TS","Updated")
-                            }
-                        createSnackBar("Deleted", requireView(), requireContext(), true)
-                    }
-
-
-                    //the timeSlot is already assigned to someone, check if the assigned user is the logged one:
-
-
                 }
+
+                //manage the "request" button
+                startChatBtn.setOnClickListener {
+                    //go to chat or create the chat/pending request for the users
+                    findNavController().navigate(
+                        R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                        bundleOf(
+                            "requestUser" to requestingUserId,
+                            "timeSlotId" to to_show_timeSlot.id,
+                            "authorUser" to authorId
+                        )
+                    )
+                }
+
+                //manage the "delete request" button
+                deleteRequestBtn.setOnClickListener {
+                    //delete list of messages and relative PendingRequest, than hide this button, also change the start request button text and icon
+                    val chatId = requestingUserId + authorId + to_show_timeSlot.id
+                    chatVM.deleteChat(chatId)
+                    deleteRequestBtn.visibility = View.GONE
+                    startChatBtn.text = "Request this Time Slot"
+                    startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
+                    //if the user is the one that has this timeslot (the author accepted his request) we have also to make the timeSLot available again
+                    FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+                        .document(to_show_timeSlot.id)
+                        .update("status", TimeSlotStatus.AVAILABLE).addOnSuccessListener {
+                            Log.d("UP_TS", "Updated")
+                        }
+                    createSnackBar("Deleted", requireView(), requireContext(), true)
+                }
+
+
             }
-
-
+        }
 
 
         //manage the back button pressure to go back in the list of timeSlots, we need to pass in a bundle
@@ -207,8 +210,8 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
-                    when (findNavController().previousBackStackEntry?.destination?.id){
-                        R.id.timeSlotEditFragment ->{
+                    when (findNavController().previousBackStackEntry?.destination?.id) {
+                        R.id.timeSlotEditFragment -> {
                             //if we come from the timeSlot edit screen, go back to the home
                             findNavController().navigate(
                                 R.id.action_timeSlotDetailsFragment_to_timeSlotListFragment,
@@ -222,7 +225,7 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                                 bundleOf("skill" to to_show_timeSlot.skill)
                             )
                         }
-                        R.id.showRequestsFragment ->{
+                        R.id.showRequestsFragment -> {
                             //we came from the pending requests fragment, come back there
                             findNavController().navigate(R.id.action_timeSlotDetailsFragment_to_showRequestsFragment)
                         }
@@ -230,8 +233,6 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
                 }
             })
-
-
 
 
     }
