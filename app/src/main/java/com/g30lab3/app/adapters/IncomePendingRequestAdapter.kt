@@ -19,7 +19,9 @@ import com.g30lab3.app.toTimeSlot
 import com.g30lab3.app.toUser
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
 class IncomePendingRequestAdapter(
@@ -94,7 +96,15 @@ class IncomePendingRequestAdapter(
                         }
 
                     holder.rateBtn.setOnClickListener {
-                        //todo add rating to the owner of the timeslot assigned
+                        //todo make this button appear only if the user has not already published a review
+                        //insert in bundle some useful info for the review using data of this accepted request and send it to rate format, also open rate format
+                        val bundle = bundleOf(
+                            "writerUser" to Firebase.auth.currentUser?.uid!!,
+                            "valuedUser" to user.id,
+                            "forRequest" to item.chatId,
+                            "valuedUserIsOfferer" to true
+                        )
+                        holder.view.findNavController().navigate(R.id.action_showRequestsFragment_to_reviewFragment, bundle)
                     }
                 }
         }

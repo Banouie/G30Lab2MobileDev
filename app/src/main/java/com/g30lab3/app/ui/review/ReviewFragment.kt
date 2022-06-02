@@ -46,13 +46,13 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
         val reviewTitleImg : ImageView = view.findViewById(R.id.review_title_img)
         val reviewTitle: TextView = view.findViewById(R.id.review_title)
 
+        // this makes 1 the minimum number of stars for the rating
         ratingbar.onRatingBarChangeListener =
             OnRatingBarChangeListener { ratingBar, rating, _ ->
                 if (rating < 1.0f) ratingBar.rating = 1.0f
             }
 
-
-        //get to evaluate user's name and image and set those in the title of this review
+        //get the user to evaluate name and  profile image and set those in the title of this review
         FirebaseFirestore.getInstance().collection("Users").document(valuedUser).get().addOnSuccessListener {
             reviewTitle.text = it.get("full_name") as String
         }
@@ -76,7 +76,6 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
                 val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
                 reviewVM.createNewReview(newReview)
                 createSnackBar("Thank you!",requireView(),requireContext(),true)
-                Log.d("OkSaved", "Current is saved!")
             }
             builder.setNegativeButton("Continue editing") { _, _ ->
                 //continue editing
