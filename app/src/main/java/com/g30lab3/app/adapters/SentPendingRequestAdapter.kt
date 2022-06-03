@@ -117,7 +117,6 @@ class SentPendingRequestAdapter(
                             }
                         }
                     rateButton.visibility = View.VISIBLE
-                    //todo do this only if there is no review for accepted request with those fields
                     rateButton.setOnClickListener {
                         //insert in bundle some useful info for the review using data of this accepted request and send it to rate format, also open rate format
                         val bundle = bundleOf(
