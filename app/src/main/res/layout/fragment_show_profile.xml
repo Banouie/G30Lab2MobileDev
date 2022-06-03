@@ -75,6 +75,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_nickname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -88,6 +91,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_full_name" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -100,33 +106,90 @@
                     android:text="Description"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_ask"
+                    android:drawablePadding="16dp"
+                    android:text="Consumer rating:"
+                    android:paddingTop="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/ratingConsumer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/show_description" />
+
+                <RatingBar
+                    android:id="@+id/ratingConsumer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_give_rating"
+                    android:drawablePadding="16dp"
+                    android:paddingTop="16dp"
+                    android:text="Offerer rating:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/ratingOfferer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ratingConsumer" />
+
+                <RatingBar
+                    android:id="@+id/ratingOfferer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/materialTextView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:drawableStart="@drawable/ic_skills"
                     android:drawablePadding="16dp"
                     android:text="Skills:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_skills"
-                    app:layout_constraintTop_toBottomOf="@+id/show_description" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ratingOfferer" />
 
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/show_skills"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
                     app:layout_constraintBottom_toTopOf="@+id/show_mail"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/materialTextView2">
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
+                    tools:layout_editor_absoluteX="24dp">
                     <!-- Chips can be declared here, or added dynamically. -->
                 </com.google.android.material.chip.ChipGroup>
 
@@ -142,6 +205,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/show_location"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_skills" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -155,6 +221,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_mail" />
 
 
