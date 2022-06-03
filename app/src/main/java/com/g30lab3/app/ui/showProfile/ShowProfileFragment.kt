@@ -70,38 +70,9 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         ratingOffererText = view.findViewById(R.id.rating_offerer_text)
         val fab: View = view.findViewById(R.id.floating_action_button)
 
-        // if the arguments IS NOT NULL means that we want to show info of a timeSlot author
-        arguments?.let {
-            userVM.getUserInfo(arguments?.get("uid") as String).observe(requireActivity()) {
-                if (it != null) {
-                    Log.d("PPP", "Profile info downloaded")
-                    fullNameTextView.text = it.full_name
-                    nickNameTextView.text = it.nickname
-                    mailTextView.text = it.mail
-                    locationTextView.text = it.location
-                    descriptionTextView.text = it.description
-                    skills = it.skills.toMutableSet()
-                    //show the skills in chipGroup
-                    if (context != null) { //this check on context avoid errors
-                        for (skill in skills) {
-                            skillsChipGroup.addView(
-                                createTagChip(
-                                    requireContext(),
-                                    skill,
-                                    null,
-                                    null
-                                )
-                            )
-                        }
-                    }
-                    //disable the editProfileButton in this case
-                    fab.isEnabled = false
-                    fab.visibility = View.GONE
-                }
-            }
-        }
-        // OTHERWISE if arguments IS NULL we want to show the current logged user info
-        if (arguments == null) {
+
+        // we want to show the current logged user info
+
             userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
                 if (it != null) {
                     fullNameTextView.text = it.full_name
@@ -168,7 +139,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                 }
             }
 
-        }
+
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
