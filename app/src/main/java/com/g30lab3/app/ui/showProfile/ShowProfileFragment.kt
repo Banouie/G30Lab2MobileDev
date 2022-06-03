@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -14,14 +15,18 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 
 import com.g30lab3.app.R
+import com.g30lab3.app.ReviewVM
 import com.g30lab3.app.UserVM
+import com.g30lab3.app.toReview
 
 import com.g30lab3.app.ui.editProfile.createTagChip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import org.w3c.dom.Text
 
 
 class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
@@ -36,6 +41,10 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     lateinit var profilePicImageView: ImageView
     lateinit var skillsChipGroup: ChipGroup
     lateinit var descriptionTextView: TextView
+    lateinit var ratingConsumer: RatingBar
+    lateinit var ratingConsumerText: TextView
+    lateinit var ratingOfferer: RatingBar
+    lateinit var ratingOffererText: TextView
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
@@ -55,6 +64,10 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         descriptionTextView = view.findViewById(R.id.show_description)
         skillsChipGroup = view.findViewById(R.id.show_skills)
         profilePicImageView = view.findViewById(R.id.imageView)
+        ratingConsumer = view.findViewById(R.id.ratingConsumer)
+        ratingOfferer = view.findViewById(R.id.ratingOfferer)
+        ratingConsumerText = view.findViewById(R.id.rating_consumer_text)
+        ratingOffererText = view.findViewById(R.id.rating_offerer_text)
         val fab: View = view.findViewById(R.id.floating_action_button)
 
         // if the arguments IS NOT NULL means that we want to show info of a timeSlot author
@@ -110,12 +123,54 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                             )
                         }
                     }
+                    //retrieve eventual ratings of the user
+                    FirebaseFirestore.getInstance().collection("Reviews")
+                        .whereEqualTo("valuedUser", Firebase.auth.currentUser?.uid)
+                        .get()
+                        .addOnSuccessListener { rev ->
+                            if (rev.isEmpty) {
+                                //the user has no reviews as both offerer or consumer
+                                ratingConsumer.visibility = View.GONE
+                                ratingConsumerText.text = "Consumer Rating: no rating"
+                                ratingOfferer.visibility = View.GONE
+                                ratingOffererText.text = "Offerer Rating: no rating"
+                            } else {
+
+                                var consumerValue = 0f
+                                var x = 0
+                                var offererValue = 0f
+                                var y = 0
+
+                                for (review in rev) {
+                                    val r = review.toReview()
+                                    if (r.valuedUserIsOfferer) {
+                                        offererValue += r.ratingReview
+                                        x++
+                                    } else {
+                                        consumerValue += r.ratingReview
+                                        y++
+                                    }
+                                }
+                                if (y == 0) {
+                                    //no review as consumer
+                                    ratingConsumer.visibility = View.GONE
+                                    ratingConsumerText.text = "Consumer Rating: no rating"
+                                }
+                                if (x == 0) {
+                                    //no review as offerer
+                                    ratingOfferer.visibility = View.GONE
+                                    ratingOffererText.text = "Offerer Rating: no rating"
+                                }
+                                ratingConsumer.rating = if (y != 0) (consumerValue / y) else 0f
+                                ratingOfferer.rating = if (x != 0) (offererValue / x) else 0f
+                            }
+                        }
                 }
             }
 
         }
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             findNavController().navigate(R.id.action_showProfileFragment_to_editProfileFragment)
         }
 

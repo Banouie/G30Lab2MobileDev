@@ -89,6 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/showAuthorProfileFragment"
+        android:label="Author"
         android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment"/>
     <fragment
         android:id="@+id/chatFragment"

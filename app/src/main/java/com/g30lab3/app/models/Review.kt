@@ -6,7 +6,7 @@ class Review{
     var valuedUser: String = ""
     var forRequest : String = "" //id of the request associated with this review
     var valuedUserIsOfferer : Boolean = false
-    var ratingReview: Float = 0F
+    var ratingReview: Float = 0f
     var commentReview: String = ""
 
 

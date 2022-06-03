@@ -106,14 +106,14 @@
                     android:text="Description"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintBottom_toTopOf="@+id/rating_consumer_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/show_nickname" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/rating_consumer_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_ask"
@@ -132,15 +132,17 @@
                     android:id="@+id/ratingConsumer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:isIndicator="true"
                     android:numStars="5"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    android:progressTint="@color/design_default_color_primary"
+                    app:layout_constraintBottom_toTopOf="@+id/rating_offerer_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintTop_toBottomOf="@+id/rating_consumer_text" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/rating_offerer_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_give_rating"
@@ -159,12 +161,14 @@
                     android:id="@+id/ratingOfferer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:isIndicator="true"
                     android:numStars="5"
+                    android:progressTint="@color/design_default_color_primary"
                     app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/rating_offerer_text" />
 
 
                 <com.google.android.material.textview.MaterialTextView

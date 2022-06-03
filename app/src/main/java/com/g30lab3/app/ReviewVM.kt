@@ -56,18 +56,16 @@ class ReviewVM(application: Application) : AndroidViewModel(application) {
     }
 
      */
+}
 
-
-    //convert the retrieved data from Firebase to a kotlin User object class
-    fun DocumentSnapshot.toReview(): Review {
-        return Review(
-            writerUser = get("writerUser") as String,
-            valuedUser= get("valuedUser") as String,
-            forRequest = get("forRequest") as String,
-            valuedUserIsOfferer = get("valuedUserIsOfferer") as Boolean,
-            ratingReview = get("ratingReview") as Float,
-            commentReview = get("commentReview") as String
-        )
-    }
-
+//convert the retrieved data from Firebase to a kotlin User object class
+fun DocumentSnapshot.toReview(): Review {
+    return Review(
+        writerUser = get("writerUser") as String,
+        valuedUser= get("valuedUser") as String,
+        forRequest = get("forRequest") as String,
+        valuedUserIsOfferer = get("valuedUserIsOfferer") as Boolean,
+        ratingReview = (get("ratingReview") as Double).toFloat(),
+        commentReview = get("commentReview") as String
+    )
 }
