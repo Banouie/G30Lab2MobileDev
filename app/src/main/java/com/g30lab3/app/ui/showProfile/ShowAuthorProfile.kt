@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import java.io.File
 
+//todo tap on stars bring to fragment with list of reviews
 
 class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
 

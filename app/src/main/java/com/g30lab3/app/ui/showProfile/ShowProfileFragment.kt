@@ -28,6 +28,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import org.w3c.dom.Text
 
+//todo tap on stars bring to fragment with list of reviews
 
 class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
@@ -73,71 +74,71 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
         // we want to show the current logged user info
 
-            userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
-                if (it != null) {
-                    fullNameTextView.text = it.full_name
-                    nickNameTextView.text = it.nickname
-                    mailTextView.text = it.mail
-                    locationTextView.text = it.location
-                    descriptionTextView.text = it.description
-                    skills = it.skills.toMutableSet()
-                    //show the skills in chipGroup
-                    if (context != null) { //this check on context avoid errors
-                        for (skill in skills) {
-                            skillsChipGroup.addView(
-                                createTagChip(
-                                    requireContext(),
-                                    skill,
-                                    null,
-                                    null
-                                )
+        userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
+            if (it != null) {
+                fullNameTextView.text = it.full_name
+                nickNameTextView.text = it.nickname
+                mailTextView.text = it.mail
+                locationTextView.text = it.location
+                descriptionTextView.text = it.description
+                skills = it.skills.toMutableSet()
+                //show the skills in chipGroup
+                if (context != null) { //this check on context avoid errors
+                    for (skill in skills) {
+                        skillsChipGroup.addView(
+                            createTagChip(
+                                requireContext(),
+                                skill,
+                                null,
+                                null
                             )
-                        }
+                        )
                     }
-                    //retrieve eventual ratings of the user
-                    FirebaseFirestore.getInstance().collection("Reviews")
-                        .whereEqualTo("valuedUser", Firebase.auth.currentUser?.uid)
-                        .get()
-                        .addOnSuccessListener { rev ->
-                            if (rev.isEmpty) {
-                                //the user has no reviews as both offerer or consumer
+                }
+                //retrieve eventual ratings of the user
+                FirebaseFirestore.getInstance().collection("Reviews")
+                    .whereEqualTo("valuedUser", Firebase.auth.currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { rev ->
+                        if (rev.isEmpty) {
+                            //the user has no reviews as both offerer or consumer
+                            ratingConsumer.visibility = View.GONE
+                            ratingConsumerText.text = "Consumer Rating: no rating"
+                            ratingOfferer.visibility = View.GONE
+                            ratingOffererText.text = "Offerer Rating: no rating"
+                        } else {
+
+                            var consumerValue = 0f
+                            var x = 0
+                            var offererValue = 0f
+                            var y = 0
+
+                            for (review in rev) {
+                                val r = review.toReview()
+                                if (r.valuedUserIsOfferer) {
+                                    offererValue += r.ratingReview
+                                    x++
+                                } else {
+                                    consumerValue += r.ratingReview
+                                    y++
+                                }
+                            }
+                            if (y == 0) {
+                                //no review as consumer
                                 ratingConsumer.visibility = View.GONE
                                 ratingConsumerText.text = "Consumer Rating: no rating"
+                            }
+                            if (x == 0) {
+                                //no review as offerer
                                 ratingOfferer.visibility = View.GONE
                                 ratingOffererText.text = "Offerer Rating: no rating"
-                            } else {
-
-                                var consumerValue = 0f
-                                var x = 0
-                                var offererValue = 0f
-                                var y = 0
-
-                                for (review in rev) {
-                                    val r = review.toReview()
-                                    if (r.valuedUserIsOfferer) {
-                                        offererValue += r.ratingReview
-                                        x++
-                                    } else {
-                                        consumerValue += r.ratingReview
-                                        y++
-                                    }
-                                }
-                                if (y == 0) {
-                                    //no review as consumer
-                                    ratingConsumer.visibility = View.GONE
-                                    ratingConsumerText.text = "Consumer Rating: no rating"
-                                }
-                                if (x == 0) {
-                                    //no review as offerer
-                                    ratingOfferer.visibility = View.GONE
-                                    ratingOffererText.text = "Offerer Rating: no rating"
-                                }
-                                ratingConsumer.rating = if (y != 0) (consumerValue / y) else 0f
-                                ratingOfferer.rating = if (x != 0) (offererValue / x) else 0f
                             }
+                            ratingConsumer.rating = if (y != 0) (consumerValue / y) else 0f
+                            ratingOfferer.rating = if (x != 0) (offererValue / x) else 0f
                         }
-                }
+                    }
             }
+        }
 
 
 
