@@ -72,7 +72,6 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
             builder.setTitle("Publish review")
             builder.setMessage("Are you sure you want to publish this review?")
             builder.setPositiveButton("Yes") { _, _ ->
-                //todo create the review only if a rating has been selected, otherwise force the user to do it
                 val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
                 reviewVM.createNewReview(newReview)
                 createSnackBar("Thank you!",requireView(),requireContext(),true)

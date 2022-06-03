@@ -102,6 +102,20 @@ class SentPendingRequestAdapter(
                         .circleCrop()
                         .into(acceptedImg)
 
+                    //check if exists the review for this accepted request with valuedUser == OffererUser (if the logged user has reviewed the offerer basically)
+                    FirebaseFirestore.getInstance().collection("Reviews")
+                        .whereEqualTo("forRequest", item.chatId)
+                        .whereEqualTo("valuedUser", user.id)
+                        .whereEqualTo("writerUser", Firebase.auth.currentUser?.uid)
+                        .get()
+                        .addOnSuccessListener { q ->
+                            if (!q.isEmpty) {
+                                //review already exists
+                                rateButton.setIconResource(R.drawable.ic_review_done)
+                                rateButton.isCheckable = false
+                                rateButton.isEnabled = false
+                            }
+                        }
                     rateButton.visibility = View.VISIBLE
                     //todo do this only if there is no review for accepted request with those fields
                     rateButton.setOnClickListener {

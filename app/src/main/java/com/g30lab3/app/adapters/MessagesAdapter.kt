@@ -68,25 +68,12 @@ class MessagesAdapter(val messages: List<textMessage>, val info: PendingRequestI
                 incomeLayout.visibility = View.GONE
                 sentText.text = item.text
                 timeRight.text = dateFormat.format(item.time)
-                //TODO update image profile or remove it if it's too complex manage images
-                /*val profileImgRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + Firebase.auth.currentUser?.uid)
-            Glide
-                .with(holder.view.context)
-                .load(profileImgRef)
-                .circleCrop().into(holder.rightProfileImage)
-             */
+
             } else {
                 //it's an incoming message from the other user
                 sentLayout.visibility = View.GONE
                 incomeText.text = item.text
                 timeLeft.text = dateFormat.format(item.time)
-                //TODO update image profile or remove it if it's too complex manage images
-                /*val profileImgRef = FirebaseStorage.getInstance().reference.child("ProfileImages/" + item.senderId)
-            Glide
-                .with(holder.view.context)
-                .load(profileImgRef)
-                .circleCrop().into(holder.leftProfileImage)
-             */
             }
         } else {
             //the message is a request!!!

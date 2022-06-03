@@ -72,8 +72,7 @@ class IncomePendingRequestAdapter(
                         }
                 }
         } else {
-            //we are displaying the request assigned to the logged user in assigned Fragment, show rating button and information
-            holder.rateBtn.visibility = View.VISIBLE
+            //we are displaying the request assigned to the logged user in assigned Fragment, show information about the offerer
             FirebaseFirestore.getInstance().collection("Users").document(item.authorOfTimeSlot)
                 .get()
                 .addOnSuccessListener {
@@ -95,8 +94,23 @@ class IncomePendingRequestAdapter(
                                 "Time Slot assigned:\n${it.toTimeSlot().title}"
                         }
 
+                    //check if exists the review for this accepted request with valuedUser == OffererUser (if the logged user has reviewed the offerer basically)
+                    FirebaseFirestore.getInstance().collection("Reviews")
+                        .whereEqualTo("forRequest", item.chatId)
+                        .whereEqualTo("valuedUser", user.id)
+                        .whereEqualTo("writerUser", Firebase.auth.currentUser?.uid)
+                        .get()
+                        .addOnSuccessListener { q ->
+                            if (!q.isEmpty) {
+                                //review already exists
+                                holder.rateBtn.text = "Review done!"
+                                holder.rateBtn.setIconResource(R.drawable.ic_review_done)
+                                holder.rateBtn.isCheckable = false
+                                holder.rateBtn.isEnabled = false
+                            }
+                        }
+                    holder.rateBtn.visibility = View.VISIBLE //show the button, if the review already exists will be disabled, otherwise will lead to the review layout
                     holder.rateBtn.setOnClickListener {
-                        //todo make this button appear only if the user has not already published a review
                         //insert in bundle some useful info for the review using data of this accepted request and send it to rate format, also open rate format
                         val bundle = bundleOf(
                             "writerUser" to Firebase.auth.currentUser?.uid!!,
@@ -104,7 +118,8 @@ class IncomePendingRequestAdapter(
                             "forRequest" to item.chatId,
                             "valuedUserIsOfferer" to true
                         )
-                        holder.view.findNavController().navigate(R.id.action_showRequestsFragment_to_reviewFragment, bundle)
+                        holder.view.findNavController()
+                            .navigate(R.id.action_showRequestsFragment_to_reviewFragment, bundle)
                     }
                 }
         }
