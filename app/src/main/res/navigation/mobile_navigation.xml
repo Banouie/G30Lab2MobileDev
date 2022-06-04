@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_showProfileFragment_to_skillsListFragment"
             app:destination="@id/skillsListFragment" />
+        <action
+            android:id="@+id/action_showProfileFragment_to_reviewsListFragment"
+            app:destination="@id/reviewsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -90,7 +93,11 @@
     <fragment
         android:id="@+id/showAuthorProfileFragment"
         android:label="Author"
-        android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment"/>
+        android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment">
+        <action
+            android:id="@+id/action_showAuthorProfileFragment_to_reviewsListFragment"
+            app:destination="@id/reviewsListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.g30lab3.app.ui.chat.chatFragment"
@@ -118,4 +125,9 @@
         android:id="@+id/reviewFragment"
         android:name="com.g30lab3.app.ui.review.ReviewFragment"
         android:label="Create review" />
+    <fragment
+        android:id="@+id/reviewsListFragment"
+        android:name="com.g30lab3.app.ui.review.ReviewsListFragment"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_reviews_list" />
 </navigation>

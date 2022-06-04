@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -46,6 +48,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     lateinit var ratingConsumerText: TextView
     lateinit var ratingOfferer: RatingBar
     lateinit var ratingOffererText: TextView
+    lateinit var ratingConsumerLayout: LinearLayout
+    lateinit var ratingOffererLayout: LinearLayout
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
@@ -69,6 +73,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         ratingOfferer = view.findViewById(R.id.ratingOfferer)
         ratingConsumerText = view.findViewById(R.id.rating_consumer_text)
         ratingOffererText = view.findViewById(R.id.rating_offerer_text)
+        ratingConsumerLayout = view.findViewById(R.id.ratingConsumerLayout)
+        ratingOffererLayout = view.findViewById(R.id.ratingOffererLayout)
         val fab: View = view.findViewById(R.id.floating_action_button)
 
 
@@ -102,9 +108,9 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                     .addOnSuccessListener { rev ->
                         if (rev.isEmpty) {
                             //the user has no reviews as both offerer or consumer
-                            ratingConsumer.visibility = View.GONE
+                            ratingConsumerLayout.visibility = View.GONE
                             ratingConsumerText.text = "Consumer Rating: no rating"
-                            ratingOfferer.visibility = View.GONE
+                            ratingOffererLayout.visibility = View.GONE
                             ratingOffererText.text = "Offerer Rating: no rating"
                         } else {
 
@@ -125,12 +131,12 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                             }
                             if (y == 0) {
                                 //no review as consumer
-                                ratingConsumer.visibility = View.GONE
+                                ratingConsumerLayout.visibility = View.GONE
                                 ratingConsumerText.text = "Consumer Rating: no rating"
                             }
                             if (x == 0) {
                                 //no review as offerer
-                                ratingOfferer.visibility = View.GONE
+                                ratingOffererLayout.visibility = View.GONE
                                 ratingOffererText.text = "Offerer Rating: no rating"
                             }
                             ratingConsumer.rating = if (y != 0) (consumerValue / y) else 0f
@@ -138,6 +144,16 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                         }
                     }
             }
+        }
+
+        //add navigation on pressing on ratings to the list of reviews
+        ratingConsumerLayout.setOnClickListener {
+            val bundle = bundleOf("valuedUser" to Firebase.auth.currentUser?.uid,"valuedUserIsOfferer" to false)
+            findNavController().navigate(R.id.action_showProfileFragment_to_reviewsListFragment,bundle)
+        }
+        ratingOffererLayout.setOnClickListener {
+            val bundle = bundleOf("valuedUser" to Firebase.auth.currentUser?.uid,"valuedUserIsOfferer" to true)
+            findNavController().navigate(R.id.action_showProfileFragment_to_reviewsListFragment,bundle)
         }
 
 

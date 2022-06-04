@@ -19,50 +19,37 @@ import java.util.*
 class ReviewVM(application: Application) : AndroidViewModel(application) {
 
     private val db = FirebaseFirestore.getInstance()
-    private var currentUser = Firebase.auth.currentUser //get the current logged user from Firebase auth
+    private val _retrievedReviews = MutableLiveData<List<Review>>()
+    val retrievedReviews = _retrievedReviews
 
-    private var _receiverReview = MutableLiveData<User>()
-    var receiverUserId = _receiverReview //for getting info of the logged user
-    private var _senderReview = MutableLiveData<User>()
-    var senderUserId = _senderReview // for timeslot author details
-    private val listener: ListenerRegistration
-
-
-    init {
-        listener = db.collection("Reviews").document()
-            .addSnapshotListener { value, error ->
-                if (value != null) {
-                    // I will fix this and other parts before Thrusday
+    /** Function that update the value of retrievedReviews with a list of review of the passed user depending on the parameter iOfferer passed*/
+    fun getUserReviews(user: String, isOfferer: Boolean) {
+        FirebaseFirestore.getInstance().collection("Reviews")
+            .whereEqualTo("valuedUser", user)
+            .whereEqualTo("valuedUserIsOfferer", isOfferer)
+            .get()
+            .addOnSuccessListener {
+                val list = mutableListOf<Review>()
+                for(x in it){
+                    list.add(x.toReview())
                 }
+                _retrievedReviews.value= list
             }
     }
 
-
-    fun createNewReview(review : Review){
+    fun createNewReview(review: Review) {
         db.collection("Reviews").document().set(review).addOnSuccessListener {
             Log.d("REVIEW", "Created new review")
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        listener.remove()
-    }
-
-    /** Save the user profile into Firestore DB, returns the Task in order to specify callbacks where is called **/
-    /*
-    fun upload(review: Review): Task<Void> {
-        return db.collection("Reviews").document(review.id).set(review)
-    }
-
-     */
 }
 
 //convert the retrieved data from Firebase to a kotlin User object class
 fun DocumentSnapshot.toReview(): Review {
     return Review(
         writerUser = get("writerUser") as String,
-        valuedUser= get("valuedUser") as String,
+        valuedUser = get("valuedUser") as String,
         forRequest = get("forRequest") as String,
         valuedUserIsOfferer = get("valuedUserIsOfferer") as Boolean,
         ratingReview = (get("ratingReview") as Double).toFloat(),
