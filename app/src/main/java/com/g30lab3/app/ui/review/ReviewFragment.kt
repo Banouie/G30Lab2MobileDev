@@ -11,6 +11,7 @@ import android.widget.RatingBar.OnRatingBarChangeListener
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.g30lab3.app.R
@@ -75,6 +76,7 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
                 val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
                 reviewVM.createNewReview(newReview)
                 createSnackBar("Thank you!",requireView(),requireContext(),true)
+                findNavController().popBackStack()
             }
             builder.setNegativeButton("Continue editing") { _, _ ->
                 //continue editing
