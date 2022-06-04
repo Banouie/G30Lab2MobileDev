@@ -18,6 +18,7 @@ import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.adapters.MessagesAdapter
 import com.g30lab3.app.chatsVM
 import com.g30lab3.app.models.*
+import com.g30lab3.app.ui.timeSlotEdit.createSnackBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
@@ -59,8 +60,6 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         val chatId = requestUserId + authorUserId + timeSlotId //obtain the unique Id for the chat
         val info = PendingRequestInfo(chatId, authorUserId, requestUserId, timeSlotId)
 
-        //TODO create the pending request and the chat only if the loggedUser has credits
-
         //check if the chat with passed chatId already exists or must be initialized in ChatInfo
         chatVM.allChats.observe(requireActivity()) {
             if (!it.any { item -> item.chatId == chatId }) {
@@ -96,36 +95,101 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                 "<b>Tap</b>: send a message, <b>long press</b>: answer request",
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            sender.setEndIconOnLongClickListener {
 
-                MaterialAlertDialogBuilder(requireContext())//this appear only for the author of timeslot (2 of 2)
-                    .setTitle("Answer to the request")
-                    .setMessage("What do you want to do with this request?")
-                    .setNegativeButton("Reject") { dialog, which ->
-                        // decline request
-                        chatVM.updatePendingRequestInfo(info, Status.DECLINED)
-                        val messageText = "DECLINED"
-                        val senderId = Firebase.auth.currentUser?.uid!!
-                        val now = Date()
-                        val message = textMessage(messageText, now, senderId, false)
-                        chatVM.addMessage(chatId, message)
+            sender.setEndIconOnLongClickListener {
+                //before accepting the request, check if the requesting user has some credits, if not abort
+                FirebaseFirestore.getInstance().collection("Credits").document(requestUserId).get()
+                    .addOnSuccessListener { x ->
+                        val credits = (x.get("credits") as Long).toInt()
+                        if (credits == 0) {
+                            createSnackBar(
+                                "Impossible to accept the request: requesting user has no credits!",
+                                requireView(),
+                                requireContext(), false
+                            )
+                        } else {
+                            //requesting user has enough credits, show confirm dialog
+                            MaterialAlertDialogBuilder(requireContext())//this appear only for the author of timeslot (2 of 2)
+                                .setTitle("Answer to the request")
+                                .setMessage("What do you want to do with this request?")
+                                .setNegativeButton("Reject") { dialog, which ->
+                                    // decline request
+                                    chatVM.updatePendingRequestInfo(info, Status.DECLINED)
+                                    val messageText = "DECLINED"
+                                    val senderId = Firebase.auth.currentUser?.uid!!
+                                    val now = Date()
+                                    val message = textMessage(messageText, now, senderId, false)
+                                    chatVM.addMessage(chatId, message)
+                                }
+                                .setPositiveButton("Accept") { dialog, which ->
+                                    Log.d("CreditDIalog", "HERE")
+                                    //accept request and transfer credits
+                                    val timeSlotRef = FirebaseFirestore.getInstance()
+                                        .collection("TimeSlotAdvCollection").document(timeSlotId)
+                                    val requestingUserCreditRef =
+                                        FirebaseFirestore.getInstance().collection("Credits")
+                                            .document(requestUserId)
+                                    val authorUserCreditRef =
+                                        FirebaseFirestore.getInstance().collection("Credits")
+                                            .document(authorUserId)
+                                    //start transaction: update TimeSlot status, decrement credits in requesting user and increment in author user
+                                    FirebaseFirestore.getInstance().runTransaction { transaction ->
+                                        //obtain credits of the two users and increment one, decrement the other
+                                        val newRequestingUserCredit =
+                                            (transaction.get(requestingUserCreditRef)
+                                                .get("credits") as Long).toInt() - 1
+                                        val newAuthorUserCredit =
+                                            (transaction.get(authorUserCreditRef)
+                                                .get("credits") as Long).toInt() + 1
+                                        //update timeslot status
+                                        transaction.update(
+                                            timeSlotRef,
+                                            "status",
+                                            TimeSlotStatus.UNAVAILABLE
+                                        )
+                                        //update the two credits
+                                        transaction.update(
+                                            requestingUserCreditRef,
+                                            "credits",
+                                            newRequestingUserCredit
+                                        )
+                                        transaction.update(
+                                            authorUserCreditRef,
+                                            "credits",
+                                            newAuthorUserCredit
+                                        )
+                                    }.addOnSuccessListener {
+                                        Log.d("Credit transaction", "OK")
+                                        //show confirm in chat
+                                        chatVM.updatePendingRequestInfo(info, Status.ACCEPTED)
+                                        val messageText = "ACCEPTED!"
+                                        val senderId = Firebase.auth.currentUser?.uid!!
+                                        val now = Date()
+                                        val message = textMessage(messageText, now, senderId, false)
+                                        chatVM.addMessage(chatId, message)
+                                        MaterialAlertDialogBuilder(requireContext())
+                                            .setTitle("Great!")
+                                            .setMessage("Now you will find this conversation in the \"Accepted\" section.")
+                                            .setPositiveButton("OK") { dialog, which ->
+                                                // just hide the dialog
+                                            }
+                                            .show()
+
+                                    }.addOnFailureListener {
+                                        Log.d("CreditError", it.message!!)
+                                        createSnackBar(
+                                            "Something gone wrong",
+                                            requireView(),
+                                            requireContext(),
+                                            false
+                                        )
+                                    }
+                                }
+                                .show()
+                        }
                     }
-                    .setPositiveButton("Accept") { dialog, which ->
-                        //accept request
-                        chatVM.updatePendingRequestInfo(info, Status.ACCEPTED)
-                        val messageText = "ACCEPTED!"
-                        val senderId = Firebase.auth.currentUser?.uid!!
-                        val now = Date()
-                        val message = textMessage(messageText, now, senderId, false)
-                        chatVM.addMessage(chatId, message)
-                        //update timeslot status
-                        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
-                            .document(timeSlotId)
-                            .update("status",TimeSlotStatus.UNAVAILABLE).addOnSuccessListener {
-                                Log.d("UP_TS","Updated")
-                            }
-                    }
-                    .show()
+
+
                 true
             }
         }

@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
-        android:rating="2.5"
+        android:rating="1"
         android:progressTint="@color/purple_500"
         android:secondaryProgressTint="@color/purple_500"
         android:secondaryProgressTintMode="@color/purple_200"

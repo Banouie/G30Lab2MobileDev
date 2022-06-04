@@ -81,7 +81,8 @@ class ShowAuthorProfileFragment : Fragment(R.layout.fragment_show_profile) {
             //set correctly the image reference to the author profile picture
             imageRef = storageRef.child("ProfileImages/$authorID")
             // show the author information:
-            userVM.getUserInfo(authorID).observe(requireActivity()) {
+            userVM.getUserInfo(authorID)
+            userVM.retrievedUser.observe(requireActivity()) {
                 if (it != null) {
                     fullNameTextView.text = it.full_name
                     nickNameTextView.text = it.nickname

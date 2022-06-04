@@ -93,7 +93,6 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
 
 
         vm.all.observe(requireActivity()) {
-
             //get from the list of timeSLot the correct one selected in the home fragment from the user, its ID is passed to this fragment in the arguments variable
             var result: List<timeSlot> =
                 it.filter { timeSlot -> timeSlot.id == arguments?.get("time_slot_ID") }
@@ -123,95 +122,97 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
             //obtain the author info of the author of the timeslot
-            UserVM.getUserInfo(to_show_timeSlot.author).observe(requireActivity()) { x ->
-                author.text = HtmlCompat.fromHtml(
-                    "<b>Author</b>:<br> " + x.full_name,
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                )
-                // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
-                goToProfileBtn.setOnClickListener {
-                    findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment,
-                        bundleOf("uid" to to_show_timeSlot.author)
+            UserVM.getUserInfo(to_show_timeSlot.author)
+            UserVM.retrievedUser.observe(requireActivity()) { x ->
+                if (context != null) {
+                    author.text = HtmlCompat.fromHtml(
+                        "<b>Author</b>:<br> " + x.full_name,
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
-                }
+                    // manage the "go to profile" button, send a bundle containing the uid of the author in order to retrieve its info in the showProfile screen
+                    goToProfileBtn.setOnClickListener {
+                        findNavController().navigate(
+                            R.id.action_timeSlotDetailsFragment_to_showAuthorProfileFragment,
+                            bundleOf("uid" to to_show_timeSlot.author)
+                        )
+                    }
 
-                //values for chats
-                val requestingUserId = Firebase.auth.currentUser?.uid
-                val authorId = to_show_timeSlot.author
+                    //values for chats
+                    val requestingUserId = Firebase.auth.currentUser?.uid
+                    val authorId = to_show_timeSlot.author
 
 
-                // manage the possibility that the request from the logged user already exist for this timeslot
-                chatVM.allChats.observe(requireActivity()) { list ->
-                    val requestFromCurrentUser =
-                        list.find { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }
-                    if (requestFromCurrentUser != null) {
-                        //exist already a chatInfo/request created from the current logged user, so he can also delete the chatInfo from this layout
-                        startChatBtn.text = "Open chat"
-                        startChatBtn.setIconResource(R.drawable.ic_chat)
-                        deleteRequestBtn.visibility = View.VISIBLE
-                    } else {
-                        //the logged user has no request for this timeslot:
-                        if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE) {
-                            // if the status of the timeslot is Unavailable -> don't able request button
-                            startChatBtn.setIconResource(R.drawable.ic_cancel)
-                            startChatBtn.text = "Unavailable TimeSlot"
+                    // manage the possibility that the request from the logged user already exist for this timeslot
+                    chatVM.allChats.observe(requireActivity()) { list ->
+                        val requestFromCurrentUser =
+                            list.find { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }
+                        if (requestFromCurrentUser != null) {
+                            //exist already a chatInfo/request created from the current logged user, so he can also delete the chatInfo from this layout
+                            startChatBtn.text = "Open chat"
+                            startChatBtn.setIconResource(R.drawable.ic_chat)
+                            deleteRequestBtn.visibility = View.VISIBLE
+                        } else {
+                            //the logged user has no request for this timeslot:
+                            if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE) {
+                                // if the status of the timeslot is Unavailable -> don't able request button
+                                startChatBtn.setIconResource(R.drawable.ic_cancel)
+                                startChatBtn.text = "Unavailable TimeSlot"
+                                startChatBtn.isEnabled = false
+                                startChatBtn.isCheckable = false
+                            }
+                            //now check if the user can request a timeslot because they have enough credits:
+                            FirebaseFirestore.getInstance().collection("Credits")
+                                .document(Firebase.auth.currentUser?.uid!!).get()
+                                .addOnSuccessListener { x ->
+                                    val credits = (x.get("credits") as Long).toInt()
+                                    if (credits == 0) {
+                                        startChatBtn.setIconResource(R.drawable.ic_cancel)
+                                        startChatBtn.text = "You don't have enough credits"
+                                        startChatBtn.isEnabled = false
+                                        startChatBtn.isCheckable = false
+                                    }
+                                }
+
+                        }
+                        if (authorId == requestingUserId) {
+                            //the logged user is watching their timeslot, remove start request/chat btn:
                             startChatBtn.isEnabled = false
                             startChatBtn.isCheckable = false
+                            startChatBtn.text = "You are the owner"
                         }
-                        //now check if the user can request a timeslot because they have enough credits:
-                        FirebaseFirestore.getInstance().collection("Credits").document(Firebase.auth.currentUser?.uid!!).get()
-                            .addOnSuccessListener { x ->
-                                val credits = (x.get("credits") as Long).toInt()
-                                if(credits==0){
-                                    startChatBtn.setIconResource(R.drawable.ic_cancel)
-                                    startChatBtn.text = "You don't have enough credits"
-                                    startChatBtn.isEnabled = false
-                                    startChatBtn.isCheckable = false
-                            }
                     }
 
-                    }
-                    if (authorId == requestingUserId) {
-                        //the logged user is watching their timeslot, remove start request/chat btn:
-                        startChatBtn.isEnabled = false
-                        startChatBtn.isCheckable = false
-                        startChatBtn.text = "You are the owner"
-                    }
-                }
 
-
-                //manage the "request" button
-                startChatBtn.setOnClickListener {
-                    //go to chat or create the chat/pending request for the users
-                    findNavController().navigate(
-                        R.id.action_timeSlotDetailsFragment_to_chatFragment,
-                        bundleOf(
-                            "requestUser" to requestingUserId,
-                            "timeSlotId" to to_show_timeSlot.id,
-                            "authorUser" to authorId
+                    //manage the "request" button
+                    startChatBtn.setOnClickListener {
+                        //go to chat or create the chat/pending request for the users
+                        findNavController().navigate(
+                            R.id.action_timeSlotDetailsFragment_to_chatFragment,
+                            bundleOf(
+                                "requestUser" to requestingUserId,
+                                "timeSlotId" to to_show_timeSlot.id,
+                                "authorUser" to authorId
+                            )
                         )
-                    )
+                    }
+
+                    //manage the "delete request" button
+                    deleteRequestBtn.setOnClickListener {
+                        //delete list of messages and relative PendingRequest, than hide this button, also change the start request button text and icon
+                        val chatId = requestingUserId + authorId + to_show_timeSlot.id
+                        chatVM.deleteChat(chatId)
+                        deleteRequestBtn.visibility = View.GONE
+                        startChatBtn.text = "Request this Time Slot"
+                        startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
+                        //if the user is the one that has this timeslot (the author accepted his request) we have also to make the timeSLot available again
+                        FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
+                            .document(to_show_timeSlot.id)
+                            .update("status", TimeSlotStatus.AVAILABLE).addOnSuccessListener {
+                                Log.d("UP_TS", "Updated")
+                            }
+                        createSnackBar("Deleted", requireView(), requireContext(), true)
+                    }
                 }
-
-                //manage the "delete request" button
-                deleteRequestBtn.setOnClickListener {
-                    //delete list of messages and relative PendingRequest, than hide this button, also change the start request button text and icon
-                    val chatId = requestingUserId + authorId + to_show_timeSlot.id
-                    chatVM.deleteChat(chatId)
-                    deleteRequestBtn.visibility = View.GONE
-                    startChatBtn.text = "Request this Time Slot"
-                    startChatBtn.setIconResource(R.drawable.ic_bookmark_add)
-                    //if the user is the one that has this timeslot (the author accepted his request) we have also to make the timeSLot available again
-                    FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection")
-                        .document(to_show_timeSlot.id)
-                        .update("status", TimeSlotStatus.AVAILABLE).addOnSuccessListener {
-                            Log.d("UP_TS", "Updated")
-                        }
-                    createSnackBar("Deleted", requireView(), requireContext(), true)
-                }
-
-
             }
         }
 

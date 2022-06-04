@@ -22,8 +22,7 @@ class UserVM(application: Application) : AndroidViewModel(application) {
     private var _retrievedUser = MutableLiveData<User>()
     var retrievedUser = _retrievedUser // for timeslot author details
     private val listener: ListenerRegistration
-    private val _starredTimeSlots = MutableLiveData<List<String>>()
-    val starredTimeSlots = _starredTimeSlots
+
 
     init {
         listener = db.collection("Users").document(currentUser?.uid!!)
@@ -45,7 +44,7 @@ class UserVM(application: Application) : AndroidViewModel(application) {
     }
 
     /**Function that returns info of a user identified by its user unique ID*/
-    fun getUserInfo(uid: String): MutableLiveData<User> {
+    fun getUserInfo(uid: String) {
         db.collection("Users").document(uid)
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -53,51 +52,12 @@ class UserVM(application: Application) : AndroidViewModel(application) {
                     _retrievedUser.value = User("", "", "", "", mutableListOf(), "", "")
                     return@addSnapshotListener
                 }
-                Log.d("USER_Author", value.toString())
                 _retrievedUser.value = value?.toUser()
             }
-        return retrievedUser
+
     }
 
-    /**Function that update the variable "starredTimeSlots" retrieving a list of timeSlot ID which are the ones "starred" from the current logged user, if the user has no starred timeSlots the list is empty*/
-    fun getStarredTimeSlotsOfLoggedUser(){
-        db.collection("Users").document(currentUser?.uid!!).collection("starred").addSnapshotListener { value, error ->
-            if(error!=null){
-                Log.d("StarredTimeSlotsError", "Error retrieving starred timeSlots of current user")
-                _starredTimeSlots.value= mutableListOf()
-                return@addSnapshotListener
-            }
-            if(value?.isEmpty == true || value==null){
-                Log.d("StarredTimeSlotsEmpty", "retrieved value is: ${value.toString()}")
-                _starredTimeSlots.value= mutableListOf()
-                return@addSnapshotListener
-            }
-            val list = mutableListOf<String>()
-            for (starred in value){
-                list.add(starred.toString())
-            }
-            _starredTimeSlots.value=list
-        }
-    }
-    /**Function that add a star to a timeSlot, save the timeSlotId in the "starred" collection of the current user*/
-    fun addStarredTimeSlot(timeSlotId : String){
-        db.collection("Users").document(currentUser?.uid!!).collection("starred").add(timeSlotId)
-            .addOnSuccessListener {
-            Log.d("NewStar","Added correctly the timeslot $timeSlotId to starred ones of current logged user")
-        }.addOnFailureListener {
-            Log.d("NewStar","Error starring the timeslot, exception: ${it.message} ")
-        }
-    }
 
-    /**Function that remove a star from a timeSlot, delete the timeSlotId from the "starred" collection of the current user*/
-    fun removeStarredTimeSlot(timeSlotId : String){
-        db.collection("Users").document(currentUser?.uid!!).collection("starred").document(timeSlotId).delete()
-            .addOnSuccessListener {
-                Log.d("RemoveStar","Removed correctly the timeslot $timeSlotId from the starred ones of current logged user")
-            }.addOnFailureListener {
-                Log.d("RemoveStar","Error removing timeslot from starred ones, exception: ${it.message} ")
-            }
-    }
 
 
 

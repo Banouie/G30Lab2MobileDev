@@ -79,8 +79,8 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
 
 
         // we want to show the current logged user info
-
-        userVM.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(requireActivity()) {
+        userVM.getUserInfo(Firebase.auth.currentUser?.uid!!)
+        userVM.retrievedUser.observe(requireActivity()) {
             if (it != null) {
                 fullNameTextView.text = it.full_name
                 nickNameTextView.text = it.nickname
