@@ -53,6 +53,7 @@ fun DocumentSnapshot.toReview(): Review {
         forRequest = get("forRequest") as String,
         valuedUserIsOfferer = get("valuedUserIsOfferer") as Boolean,
         ratingReview = (get("ratingReview") as Double).toFloat(),
-        commentReview = get("commentReview") as String
+        commentReview = get("commentReview") as String,
+        date = getTimestamp("date")?.toDate()!!
     )
 }

@@ -144,6 +144,7 @@
                         android:isIndicator="true"
                         android:numStars="5"
                         android:progressTint="@color/design_default_color_primary"
+                        android:secondaryProgressTint="@color/design_default_color_primary"
                         app:layout_constraintBottom_toTopOf="@+id/rating_offerer_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -182,7 +183,8 @@
                         android:focusable="true"
                         android:isIndicator="true"
                         android:numStars="5"
-                        android:progressTint="@color/design_default_color_primary" />
+                        android:progressTint="@color/design_default_color_primary"
+                        android:secondaryProgressTint="@color/design_default_color_primary"/>
                 </LinearLayout>
 
                 <com.google.android.material.textview.MaterialTextView

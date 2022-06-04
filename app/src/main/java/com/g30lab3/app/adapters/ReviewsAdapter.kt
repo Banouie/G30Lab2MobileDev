@@ -10,7 +10,9 @@ import com.g30lab3.app.R
 import com.g30lab3.app.models.Review
 import com.g30lab3.app.toUser
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 
+val dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
 
 class ReviewsAdapter(val reviews: List<Review>) :
     RecyclerView.Adapter<ReviewsAdapter.ItemViewHolder>() {
@@ -32,7 +34,7 @@ class ReviewsAdapter(val reviews: List<Review>) :
         holder.stars.rating = review.ratingReview
         FirebaseFirestore.getInstance().collection("Users").document(review.writerUser).get().addOnSuccessListener {
             val writerUser = it.toUser()
-            holder.info.text = "Written by ${writerUser.full_name} on DATE" //todo insert date in reviews
+            holder.info.text = "- ${writerUser.full_name} on ${dateFormat.format(review.date)}" //todo insert date in reviews
         }
 
     }
