@@ -146,26 +146,40 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                     val requestFromCurrentUser =
                         list.find { chatInfo -> chatInfo.leadingTimeSlot == to_show_timeSlot.id && chatInfo.requestingUser == Firebase.auth.currentUser?.uid }
                     if (requestFromCurrentUser != null) {
-                        //exist already a chatInfo created from the current logged user, so he can also delete the chatInfo from this layout
+                        //exist already a chatInfo/request created from the current logged user, so he can also delete the chatInfo from this layout
                         startChatBtn.text = "Open chat"
                         startChatBtn.setIconResource(R.drawable.ic_chat)
                         deleteRequestBtn.visibility = View.VISIBLE
-                    } else if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE) {
-                        //the logged user has no request for this timeslot and the status of the timeslot is Unavailable -> don't able request button
-                        startChatBtn.setIconResource(R.drawable.ic_cancel)
-                        startChatBtn.text = "Unavailable TimeSlot"
-                        startChatBtn.isEnabled = false
-                        startChatBtn.isCheckable = false
-                    }
-                    if (authorId == requestingUserId){
-                        //the logged user is watching their timeslot, remove start request/chat btn:
-                        startChatBtn.setOnClickListener {
-                            createSnackBar("This is your Time Slot!",requireView(),requireContext(),false)
+                    } else {
+                        //the logged user has no request for this timeslot:
+                        if (to_show_timeSlot.status == TimeSlotStatus.UNAVAILABLE) {
+                            // if the status of the timeslot is Unavailable -> don't able request button
+                            startChatBtn.setIconResource(R.drawable.ic_cancel)
+                            startChatBtn.text = "Unavailable TimeSlot"
                             startChatBtn.isEnabled = false
                             startChatBtn.isCheckable = false
                         }
+                        //now check if the user can request a timeslot because they have enough credits:
+                        FirebaseFirestore.getInstance().collection("Credits").document(Firebase.auth.currentUser?.uid!!).get()
+                            .addOnSuccessListener { x ->
+                                val credits = (x.get("credits") as Long).toInt()
+                                if(credits==0){
+                                    startChatBtn.setIconResource(R.drawable.ic_cancel)
+                                    startChatBtn.text = "You don't have enough credits"
+                                    startChatBtn.isEnabled = false
+                                    startChatBtn.isCheckable = false
+                            }
+                    }
+
+                    }
+                    if (authorId == requestingUserId) {
+                        //the logged user is watching their timeslot, remove start request/chat btn:
+                        startChatBtn.isEnabled = false
+                        startChatBtn.isCheckable = false
+                        startChatBtn.text = "You are the owner"
                     }
                 }
+
 
                 //manage the "request" button
                 startChatBtn.setOnClickListener {

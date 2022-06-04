@@ -180,8 +180,10 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
         // *** Skill selection dropdown initialization code ***
         userVM.loggedUser.observe(requireActivity()) {
             val items = it.skills
-            val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, items)
-            (skillSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+            if(context!= null) {
+                val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, items)
+                (skillSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+            }
         }
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
@@ -209,9 +211,6 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
                         }
                 }
             })
-
-
-
     }
 
     //Avoid back arrow in appBar

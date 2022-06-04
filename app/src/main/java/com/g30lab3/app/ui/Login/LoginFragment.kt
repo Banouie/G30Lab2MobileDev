@@ -155,6 +155,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                                         .document(Firebase.auth.currentUser?.uid!!)
                                                         .set(newUser)
                                                         .addOnSuccessListener {
+                                                            //create also a document for the new user credits (after first login 1 credit)
+                                                            FirebaseFirestore.getInstance()
+                                                                .collection("Credits")
+                                                                .document(Firebase.auth.currentUser?.uid!!)
+                                                                .set(mapOf("credits" to 1))
                                                             updateDrawer()
                                                             progressDialog.dismiss()
                                                             findNavController().navigate(R.id.action_loginFragment_to_skillsListFragment)

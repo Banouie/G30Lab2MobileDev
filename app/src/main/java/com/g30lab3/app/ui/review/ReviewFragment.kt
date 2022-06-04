@@ -76,7 +76,7 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
                 val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
                 reviewVM.createNewReview(newReview)
                 createSnackBar("Thank you!",requireView(),requireContext(),true)
-                findNavController().popBackStack()
+                findNavController().popBackStack() // go back
             }
             builder.setNegativeButton("Continue editing") { _, _ ->
                 //continue editing
