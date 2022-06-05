@@ -40,6 +40,16 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Credits:"
+                android:drawableStart="@drawable/ic_credits"
+                android:id="@+id/credits_number"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:layout_margin="8dp"/>
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"

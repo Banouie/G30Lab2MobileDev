@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/showProfileFragment"
         android:name="com.g30lab3.app.ui.showProfile.ShowProfileFragment"
-        android:label="Profile info" >
+        android:label="Your Profile" >
         <action
             android:id="@+id/action_showProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -92,7 +92,7 @@
     </fragment>
     <fragment
         android:id="@+id/showAuthorProfileFragment"
-        android:label="Author"
+        android:label="Author profile"
         android:name="com.g30lab3.app.ui.showProfile.ShowAuthorProfileFragment">
         <action
             android:id="@+id/action_showAuthorProfileFragment_to_reviewsListFragment"

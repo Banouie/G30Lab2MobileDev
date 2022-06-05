@@ -50,6 +50,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
     lateinit var ratingOffererText: TextView
     lateinit var ratingConsumerLayout: LinearLayout
     lateinit var ratingOffererLayout: LinearLayout
+    lateinit var creditsNumber: TextView
 
     //Firebase storage to manage images
     var storageRef = FirebaseStorage.getInstance().reference
@@ -75,6 +76,7 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
         ratingOffererText = view.findViewById(R.id.rating_offerer_text)
         ratingConsumerLayout = view.findViewById(R.id.ratingConsumerLayout)
         ratingOffererLayout = view.findViewById(R.id.ratingOffererLayout)
+        creditsNumber = view.findViewById(R.id.credits_number)
         val fab: View = view.findViewById(R.id.floating_action_button)
 
 
@@ -143,17 +145,39 @@ class ShowProfileFragment : Fragment(R.layout.fragment_show_profile) {
                             ratingOfferer.rating = if (x != 0) (offererValue / x) else 0f
                         }
                     }
+                //retrieve credits number of the user
+                FirebaseFirestore.getInstance().collection("Credits")
+                    .document(Firebase.auth.currentUser?.uid!!).get()
+                    .addOnSuccessListener { c ->
+                        creditsNumber.text = "Credits: ${(c.get("credits") as Long)}"
+                        creditsNumber.visibility = View.VISIBLE
+                    }
+                    .addOnFailureListener {
+                        Log.d("Credits", "Error")
+                    }
             }
         }
 
         //add navigation on pressing on ratings to the list of reviews
         ratingConsumerLayout.setOnClickListener {
-            val bundle = bundleOf("valuedUser" to Firebase.auth.currentUser?.uid,"valuedUserIsOfferer" to false)
-            findNavController().navigate(R.id.action_showProfileFragment_to_reviewsListFragment,bundle)
+            val bundle = bundleOf(
+                "valuedUser" to Firebase.auth.currentUser?.uid,
+                "valuedUserIsOfferer" to false
+            )
+            findNavController().navigate(
+                R.id.action_showProfileFragment_to_reviewsListFragment,
+                bundle
+            )
         }
         ratingOffererLayout.setOnClickListener {
-            val bundle = bundleOf("valuedUser" to Firebase.auth.currentUser?.uid,"valuedUserIsOfferer" to true)
-            findNavController().navigate(R.id.action_showProfileFragment_to_reviewsListFragment,bundle)
+            val bundle = bundleOf(
+                "valuedUser" to Firebase.auth.currentUser?.uid,
+                "valuedUserIsOfferer" to true
+            )
+            findNavController().navigate(
+                R.id.action_showProfileFragment_to_reviewsListFragment,
+                bundle
+            )
         }
 
 
