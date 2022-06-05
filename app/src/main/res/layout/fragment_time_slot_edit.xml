@@ -30,7 +30,10 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ic_title">
+            app:startIconDrawable="@drawable/ic_title"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <EditText
                 android:layout_width="match_parent"
@@ -55,7 +58,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_title_Field"
-            app:startIconDrawable="@drawable/ic_info">
+            app:startIconDrawable="@drawable/ic_info"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <EditText
                 android:layout_width="match_parent"
@@ -76,7 +82,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_description_Field"
             app:startIconDrawable="@drawable/ic_skills"
-            app:helperText="Select one of your skills">
+            app:helperText="Select one of your skills"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <AutoCompleteTextView
                 android:layout_width="match_parent"
@@ -104,7 +113,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_skill_Field"
-            app:startIconDrawable="@drawable/ic_date_time">
+            app:startIconDrawable="@drawable/ic_date_time"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <EditText
                 android:id="@+id/edit_date"
@@ -132,7 +144,10 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_date_Field"
-            app:startIconDrawable="@drawable/ic_time">
+            app:startIconDrawable="@drawable/ic_time"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <EditText
                 android:id="@+id/edit_time"
@@ -157,7 +172,10 @@
             app:layout_constraintStart_toEndOf="@+id/edit_time_Field"
             app:layout_constraintTop_toTopOf="@+id/edit_time_Field"
             app:startIconDrawable="@drawable/ic_duration"
-            app:suffixText="hours">
+            app:suffixText="hours"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,7 +198,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_duration_Field"
-            app:startIconDrawable="@drawable/ic_location">
+            app:startIconDrawable="@drawable/ic_location"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:errorEnabled="true">
 
             <EditText
                 android:layout_width="match_parent"

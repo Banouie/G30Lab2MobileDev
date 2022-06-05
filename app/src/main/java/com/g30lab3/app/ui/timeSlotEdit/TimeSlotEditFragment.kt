@@ -24,6 +24,7 @@ import com.g30lab3.app.models.timeSlot
 import com.g30lab3.app.TimeSlotVM
 import com.g30lab3.app.UserVM
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -156,6 +157,7 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             time = timePicker.hour.toString() + " : " + timePicker.minute.toString()
             timeSelector.setText(time)
             newTimeSlot.time = time
+            timeSelector.error= null
         }
 
         // *** DATE picker relative code ***
@@ -175,40 +177,140 @@ class TimeSlotEditFragment : Fragment(R.layout.fragment_time_slot_edit) {
             date = format.format(utc.time)
             dateSelector.setText(date)
             newTimeSlot.date = date
+            dateSelector.error = null
         }
 
         // *** Skill selection dropdown initialization code ***
         userVM.loggedUser.observe(requireActivity()) {
             val items = it.skills
-            if(context!= null) {
+            if (context != null) {
                 val adapter = ArrayAdapter(requireContext(), R.layout.skill_dropdown_item, items)
                 (skillSelector.editText as? AutoCompleteTextView)?.setAdapter(adapter)
             }
         }
+
+        //MANAGE ERRORS
+        //manage skill missing
+        skillSelector.editText?.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = skillSelector.editText?.text?.isEmpty()!!
+                skillSelector.error = if (errorNeeded) "Select a skill" else null
+            }
+        }
+        //manage title missing
+        titleSelector.editText?.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = titleSelector.editText?.text?.isEmpty()!!
+                titleSelector.error = if (errorNeeded) "Required" else null
+            }
+        }
+        //manage description missing
+        descriptionSelector.editText?.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = descriptionSelector.editText?.text?.isEmpty()!!
+                descriptionSelector.error = if (errorNeeded) "Required" else null
+            }
+        }
+        //manage date missing
+        dateSelector.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = dateSelector.text?.isEmpty()!!
+                dateSelector.error = if (errorNeeded) "Insert date" else null
+            }
+        }
+        //manage time missing
+        timeSelector.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = timeSelector.text?.isEmpty()!!
+                timeSelector.error = if (errorNeeded) "Insert time" else null
+            }
+        }
+        //manage Location missing
+        locationSelector.editText?.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val errorNeeded = locationSelector.editText?.text?.isEmpty()!!
+                locationSelector.error = if (errorNeeded) "Insert location" else null
+            }
+        }
+
 
         // Manage the BACK BUTTON pressed event saving the created timeSLot and navigating to the Home
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    timeSlotVM.add(newTimeSlot)
-                        .addOnSuccessListener {
-                            createSnackBar("Saved", view, requireContext(), true)
-                            Log.d("TESTNAV", findNavController().previousBackStackEntry?.destination?.displayName!!)
-                            if(findNavController().previousBackStackEntry?.destination?.id == R.id.timeSlotDetailsFragment){
-                                //if we come from timeSlot details, come back there showing the new timeSlot updated
-                                findNavController().navigate(R.id.action_timeSlotEditFragment_to_timeSlotDetailsFragment,
-                                    bundleOf("time_slot_ID" to arguments?.get("time_slot_ID") as String))
+                    var hasError = false
+                    if (skillSelector.editText?.text?.isEmpty()!!) {
+                        skillSelector.error = "Select a skill"
+                        hasError = true
+                    }
+                    if (titleSelector.editText?.text?.isEmpty()!!) {
+                        titleSelector.error = "Required"
+                        hasError = true
+                    }
+                    if (descriptionSelector.editText?.text?.isEmpty()!!) {
+                        descriptionSelector.error = "Required"
+                        hasError = true
+                    }
+                    if (dateSelector.text?.isEmpty()!!) {
+                        dateSelector.error = "Insert date"
+                        hasError = true
+                    }
+                    if (timeSelector.text?.isEmpty()!!) {
+                        timeSelector.error = "Insert time"
+                        hasError = true
+                    }
+                    if (locationSelector.editText?.text?.isEmpty()!!) {
+                        locationSelector.error = "Insert location"
+                        hasError = true
+                    }
+                    if (!hasError) {
+                        timeSlotVM.add(newTimeSlot)
+                            .addOnSuccessListener {
+                                createSnackBar("Saved", view, requireContext(), true)
+                                if (findNavController().previousBackStackEntry?.destination?.id == R.id.timeSlotDetailsFragment) {
+                                    //if we come from timeSlot details, come back there showing the new timeSlot updated
+                                    findNavController().navigate(
+                                        R.id.action_timeSlotEditFragment_to_timeSlotDetailsFragment,
+                                        bundleOf("time_slot_ID" to arguments?.get("time_slot_ID") as String)
+                                    )
 
-                            }else {
-                                //we come from the add FAB, navigate to the home screen
-                                findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
+                                } else {
+                                    //we come from the add FAB, navigate to the home screen
+                                    findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
+                                }
                             }
-                        }
-                        .addOnFailureListener {
-                            Log.d("FirebaseError", it.toString())
-                            createSnackBar("Something went wrong", view, requireContext(), false)
-                        }
+                            .addOnFailureListener {
+                                Log.d("FirebaseError", it.toString())
+                                createSnackBar(
+                                    "Something went wrong",
+                                    view,
+                                    requireContext(),
+                                    false
+                                )
+                            }
+                    }else{
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Warning!")
+                            .setMessage("Fill all the required fields or go back without creating a Time Slot")
+                            .setPositiveButton("Edit") { _, _ ->
+                                // just hide the dialog
+                            }
+                            .setNegativeButton("Go back"){_,_ ->
+                                if (findNavController().previousBackStackEntry?.destination?.id == R.id.timeSlotDetailsFragment) {
+                                    //if we come from timeSlot details, come back there showing the new timeSlot updated
+                                    findNavController().navigate(
+                                        R.id.action_timeSlotEditFragment_to_timeSlotDetailsFragment,
+                                        bundleOf("time_slot_ID" to arguments?.get("time_slot_ID") as String)
+                                    )
+
+                                } else {
+                                    //we come from the add FAB, navigate to the home screen
+                                    findNavController().navigate(R.id.action_timeSlotEditFragment_to_skillsListFragment)
+                                }
+                            }
+                            .show()
+                    }
                 }
             })
     }
