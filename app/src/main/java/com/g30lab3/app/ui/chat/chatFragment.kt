@@ -125,14 +125,17 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                                     val now = Date()
                                     val message = textMessage(messageText, now, senderId, false)
                                     chatVM.addMessage(chatId, message)
-                                    //reset the status of timeslot to available
-                                    FirebaseFirestore.getInstance()
-                                        .collection("TimeSlotAdvCollection")
-                                        .document(timeSlotId)
-                                        .update("status", TimeSlotStatus.AVAILABLE)
-                                        .addOnSuccessListener {
-                                            Log.d("Timeslot status:", " new status: AVAILABLE")
-                                        }
+                                    //reset the status of timeslot to available and delete request from this user
+                                    val timeslotRef = FirebaseFirestore.getInstance().collection("TimeSlotAdvCollection").document(timeSlotId)
+                                    val requestsCollectionRef = FirebaseFirestore.getInstance().collection("PendingRequests").document(chatId)
+                                    FirebaseFirestore.getInstance().runTransaction { transaction ->
+                                        transaction.update(timeslotRef,"status",TimeSlotStatus.AVAILABLE)
+                                        transaction.delete(requestsCollectionRef)
+                                    }.addOnSuccessListener {
+                                        createSnackBar("Declined correctly",requireView(),requireContext(),true)
+                                        findNavController().popBackStack()
+                                    }
+
                                 }
                                 .setPositiveButton("Accept") { dialog, which ->
                                     Log.d("CreditDIalog", "HERE")
