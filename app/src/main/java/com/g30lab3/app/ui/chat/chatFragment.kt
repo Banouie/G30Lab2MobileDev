@@ -63,7 +63,12 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
         //check if the chat with passed chatId already exists or must be initialized in ChatInfo
         chatVM.allChats.observe(requireActivity()) {
             if (!it.any { item -> item.chatId == chatId }) {
-                chatVM.createNewPendingRequestInfo(chatId, requestUserId, authorUserId, timeSlotId)
+                chatVM.createNewPendingRequestInfo(
+                    chatId,
+                    requestUserId,
+                    authorUserId,
+                    timeSlotId
+                ) //this function also set the status of timeslot to requested
             }
         }
         chatVM.getChat(chatId)//get the list of messages for the chat
@@ -120,6 +125,14 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                                     val now = Date()
                                     val message = textMessage(messageText, now, senderId, false)
                                     chatVM.addMessage(chatId, message)
+                                    //reset the status of timeslot to available
+                                    FirebaseFirestore.getInstance()
+                                        .collection("TimeSlotAdvCollection")
+                                        .document(timeSlotId)
+                                        .update("status", TimeSlotStatus.AVAILABLE)
+                                        .addOnSuccessListener {
+                                            Log.d("Timeslot status:", " new status: AVAILABLE")
+                                        }
                                 }
                                 .setPositiveButton("Accept") { dialog, which ->
                                     Log.d("CreditDIalog", "HERE")
@@ -160,6 +173,7 @@ class chatFragment : Fragment(R.layout.fragment_chat) {
                                         )
                                     }.addOnSuccessListener {
                                         Log.d("Credit transaction", "OK")
+                                        Log.d("Timeslot status:", " new status: UNAVAILABLE" )
                                         //show confirm in chat
                                         chatVM.updatePendingRequestInfo(info, Status.ACCEPTED)
                                         val messageText = "ACCEPTED!"

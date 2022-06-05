@@ -1,7 +1,7 @@
 package com.g30lab3.app.models
 
 enum class TimeSlotStatus{
-    AVAILABLE,UNAVAILABLE
+    AVAILABLE,UNAVAILABLE,REQUESTED
 }
 
 class timeSlot {

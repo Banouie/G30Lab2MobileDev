@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.g30lab3.app.models.PendingRequestInfo
 import com.g30lab3.app.models.Status
+import com.g30lab3.app.models.TimeSlotStatus
 import com.g30lab3.app.models.textMessage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
@@ -134,6 +135,10 @@ class chatsVM(application: Application) : AndroidViewModel(application) {
             Log.d("CHAT", "Created pending request Info")
             var startingRequest = textMessage("", Date(), requestUserId, true)
             addMessage(chatId, startingRequest)
+            //update the timeslot status from available to requested
+            db.collection("TimeSlotAdvCollection").document(timeSlotId).update("status",TimeSlotStatus.REQUESTED).addOnSuccessListener {
+                Log.d("Timeslot status:", " new status: REQUESTED" )
+            }
         }
     }
 

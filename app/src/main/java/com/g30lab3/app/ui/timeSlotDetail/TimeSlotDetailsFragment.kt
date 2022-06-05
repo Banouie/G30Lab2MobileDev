@@ -160,6 +160,13 @@ class TimeSlotDetailsFragment : Fragment(R.layout.fragment_time_slot_details) {
                                 startChatBtn.isEnabled = false
                                 startChatBtn.isCheckable = false
                             }
+                            //another user already requested this timeslot but the agreeement is not done yet
+                            if(to_show_timeSlot.status == TimeSlotStatus.REQUESTED){
+                                startChatBtn.setIconResource(R.drawable.ic_cancel)
+                                startChatBtn.text = "Already requested from another user, try later"
+                                startChatBtn.isEnabled = false
+                                startChatBtn.isCheckable = false
+                            }
                             //now check if the user can request a timeslot because they have enough credits:
                             FirebaseFirestore.getInstance().collection("Credits")
                                 .document(Firebase.auth.currentUser?.uid!!).get()
