@@ -71,7 +71,7 @@ class ReviewFragment : Fragment(R.layout.fragment_review)  {
         saveReview.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Publish review")
-            builder.setMessage("Are you sure you want to publish this review?")
+            builder.setMessage("Are you sure you want to publish this review?\nYou will not be able to change it!")
             builder.setPositiveButton("Yes") { _, _ ->
                 val newReview = Review(writerUser,valuedUser,forRequest,valuedUserIsOfferer,ratingbar.rating,reviewComment.text.toString())
                 reviewVM.createNewReview(newReview)

@@ -30,7 +30,7 @@ class ReviewsAdapter(val reviews: List<Review>) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val review = reviews[position]
-        holder.text.text = "\"${review.commentReview}\""
+        holder.text.text = if (review.commentReview != "") "\"${review.commentReview}\"" else "No review message"
         holder.stars.rating = review.ratingReview
         FirebaseFirestore.getInstance().collection("Users").document(review.writerUser).get().addOnSuccessListener {
             val writerUser = it.toUser()
