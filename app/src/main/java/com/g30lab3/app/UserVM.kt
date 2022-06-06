@@ -45,20 +45,10 @@ class UserVM(application: Application) : AndroidViewModel(application) {
 
     /**Function that returns info of a user identified by its user unique ID*/
     fun getUserInfo(uid: String) {
-        db.collection("Users").document(uid)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w("UserErr", "Listener failed", error)
-                    _retrievedUser.value = User("", "", "", "", mutableListOf(), "", "")
-                    return@addSnapshotListener
-                }
-                _retrievedUser.value = value?.toUser()
-            }
-
+        db.collection("Users").document(uid).get().addOnSuccessListener {
+            _retrievedUser.value = it.toUser()
+        }
     }
-
-
-
 
 
 }
